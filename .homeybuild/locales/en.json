@@ -1,0 +1,59 @@
+{
+  "pair": {
+    "start": {
+      "title": "Set up your lawn",
+      "subtitle": "Tell us about your lawn so we can estimate soil conditions accurately."
+    }
+  },
+  "settings": {
+    "location": "Location",
+    "latitude": "Latitude",
+    "longitude": "Longitude",
+    "lawn_profile": "Lawn Profile",
+    "lawn_name": "Lawn Name",
+    "grass_type": "Grass Type",
+    "cool_season": "Cool Season",
+    "warm_season": "Warm Season",
+    "mixed": "Mixed",
+    "soil_type": "Soil Type",
+    "sand": "Sandy",
+    "loam": "Loam",
+    "clay": "Clay",
+    "shade_level": "Shade Level",
+    "full_sun": "Full Sun",
+    "partial_shade": "Partial Shade",
+    "shade": "Full Shade",
+    "root_depth_cm": "Root Depth (cm)",
+    "update_interval_minutes": "Update Interval (minutes)",
+    "enable_notifications": "Enable Homey Notifications",
+    "thresholds": "Thresholds",
+    "preferred_mowing_min_temp": "Min. Temp for Mowing (°C)",
+    "preferred_fertilizing_min_temp": "Min. Temp for Fertilizing (°C)",
+    "watering_threshold_mm_24h": "Watering Threshold – Max Rain 24 h (mm)"
+  },
+  "capabilities": {
+    "measure_temperature": {
+      "soil_surface": "Soil Surface Temp",
+      "soil_6cm": "Soil Temp (6 cm)",
+      "root_zone": "Root Zone Temp",
+      "air": "Air Temperature"
+    },
+    "measure_humidity": {
+      "soil": "Soil Moisture"
+    },
+    "measure_rain": "Rain (24 h)",
+    "lawn_growth_score": "Growth Score",
+    "mowing_recommended": "Mowing Recommended",
+    "watering_recommended": "Watering Recommended",
+    "fertilizing_recommended": "Fertilizing Recommended",
+    "frost_risk": "Frost Risk",
+    "heat_stress_risk": "Heat Stress Risk",
+    "last_updated": "Last Updated"
+  },
+  "errors": {
+    "invalid_latitude": "Invalid latitude. Must be between -90 and 90.",
+    "invalid_longitude": "Invalid longitude. Must be between -180 and 180.",
+    "no_location": "No location set. Please configure latitude and longitude in device settings.",
+    "fetch_failed": "Failed to fetch weather data. Will retry on next poll."
+  }
+}

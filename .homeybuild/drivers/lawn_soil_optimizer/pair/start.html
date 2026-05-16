@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lawn Soil Optimizer – Setup</title>
+  <style>
+    /* ── Reset & base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f5f5f5;
+      color: #1a1a1a;
+      padding: 24px 16px 40px;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    h1 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .subtitle {
+      color: #666;
+      font-size: 0.88rem;
+      margin-bottom: 24px;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.08);
+    }
+    .card-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: #888;
+      margin-bottom: 14px;
+    }
+
+    /* ── Form controls ── */
+    .field { margin-bottom: 14px; }
+    .field:last-child { margin-bottom: 0; }
+
+    label {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: #333;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1.5px solid #ddd;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      background: #fafafa;
+      transition: border-color .15s;
+      appearance: none;
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: #4caf50;
+      background: #fff;
+    }
+
+    .hint {
+      font-size: 0.78rem;
+      color: #999;
+      margin-top: 4px;
+    }
+
+    /* ── Location row ── */
+    .location-row {
+      display: flex;
+      gap: 10px;
+    }
+    .location-row .field { flex: 1; }
+
+    /* ── Use Homey button ── */
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      background: #eaf6eb;
+      color: #2e7d32;
+      border: 1.5px solid #a5d6a7;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 14px;
+    }
+    .btn-secondary:hover { background: #d4edda; }
+
+    /* ── Submit ── */
+    .btn-primary {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      background: #4caf50;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background .15s;
+    }
+    .btn-primary:hover { background: #43a047; }
+    .btn-primary:disabled { background: #aaa; cursor: not-allowed; }
+
+    /* ── Error ── */
+    .error-msg {
+      background: #ffebee;
+      color: #c62828;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 0.88rem;
+      margin-top: 14px;
+      display: none;
+    }
+    .error-msg.visible { display: block; }
+
+    .spinner {
+      display: none;
+      text-align: center;
+      color: #888;
+      font-size: 0.9rem;
+      margin-top: 12px;
+    }
+    .spinner.visible { display: block; }
+
+    /* ── Lawn icon ── */
+    .hero {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .hero svg { width: 64px; height: 64px; }
+  </style>
+</head>
+
+<body>
+  <div class="hero">
+    <!-- Inline grass/lawn SVG icon -->
+    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="32" cy="32" r="32" fill="#E8F5E9"/>
+      <path d="M12 48 C12 36 20 28 32 28 C44 28 52 36 52 48 Z" fill="#66BB6A"/>
+      <path d="M32 28 C32 20 28 12 24 10 C26 16 27 22 32 28 Z" fill="#43A047"/>
+      <path d="M32 28 C32 18 36 10 40 8 C38 14 37 22 32 28 Z" fill="#388E3C"/>
+      <path d="M32 28 C25 24 18 24 14 20 C20 22 26 25 32 28 Z" fill="#4CAF50"/>
+      <path d="M32 28 C39 24 46 24 50 20 C44 22 38 25 32 28 Z" fill="#4CAF50"/>
+      <rect x="8" y="46" width="48" height="4" rx="2" fill="#5D4037"/>
+    </svg>
+  </div>
+
+  <h1>Set up your lawn</h1>
+  <p class="subtitle">Tell us about your lawn so we can estimate soil conditions accurately.</p>
+
+  <form id="pairForm" novalidate>
+
+    <!-- Location -->
+    <div class="card">
+      <div class="card-title">Location</div>
+
+      <button type="button" class="btn-secondary" id="btnHomeyLocation">
+        📍 Use Homey's location
+      </button>
+
+      <div class="location-row">
+        <div class="field">
+          <label for="latitude">Latitude</label>
+          <input type="number" id="latitude" name="latitude" step="0.0001"
+                 min="-90" max="90" placeholder="59.3293" required />
+          <div class="hint">–90 to 90</div>
+        </div>
+        <div class="field">
+          <label for="longitude">Longitude</label>
+          <input type="number" id="longitude" name="longitude" step="0.0001"
+                 min="-180" max="180" placeholder="18.0686" required />
+          <div class="hint">–180 to 180</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lawn profile -->
+    <div class="card">
+      <div class="card-title">Lawn Profile</div>
+
+      <div class="field">
+        <label for="lawnName">Lawn Name</label>
+        <input type="text" id="lawnName" name="lawnName" value="My Lawn" required />
+      </div>
+
+      <div class="field">
+        <label for="grassType">Grass Type</label>
+        <select id="grassType" name="grassType">
+          <option value="cool_season">Cool Season (Fescue, Bluegrass, Rye…)</option>
+          <option value="warm_season">Warm Season (Bermuda, Zoysia, St. Augustine…)</option>
+          <option value="mixed">Mixed</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="soilType">Soil Type</label>
+        <select id="soilType" name="soilType">
+          <option value="loam">Loam (balanced)</option>
+          <option value="sand">Sandy (fast-draining)</option>
+          <option value="clay">Clay (slow-draining)</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="shadeLevel">Shade Level</label>
+        <select id="shadeLevel" name="shadeLevel">
+          <option value="full_sun">Full Sun (&lt; 2 h shade/day)</option>
+          <option value="partial_shade">Partial Shade (2–6 h shade/day)</option>
+          <option value="shade">Full Shade (&gt; 6 h shade/day)</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="rootDepth">Root Depth (cm)</label>
+        <input type="number" id="rootDepth" name="rootDepth" value="6" min="1" max="30" />
+        <div class="hint">Typical lawn grass: 5–10 cm</div>
+      </div>
+    </div>
+
+    <div id="errorMsg" class="error-msg"></div>
+    <div id="spinner" class="spinner">Saving settings…</div>
+
+    <button type="submit" id="btnNext" class="btn-primary">Next →</button>
+  </form>
+
+  <script>
+    // ── Helpers ──────────────────────────────────────────────────────────────
+
+    function showError(msg) {
+      var el = document.getElementById('errorMsg');
+      el.textContent = msg;
+      el.classList.add('visible');
+    }
+
+    function hideError() {
+      document.getElementById('errorMsg').classList.remove('visible');
+    }
+
+    function setLoading(loading) {
+      document.getElementById('btnNext').disabled = loading;
+      var sp = document.getElementById('spinner');
+      if (loading) sp.classList.add('visible');
+      else         sp.classList.remove('visible');
+    }
+
+    // ── Homey location prefill ────────────────────────────────────────────────
+
+    document.getElementById('btnHomeyLocation').addEventListener('click', function () {
+      // window.homey is injected by the Homey pair runtime
+      window.homey.emit('getHomeyLocation', null, function (err, location) {
+        if (err || !location) {
+          showError('Could not read Homey location. Please enter it manually.');
+          return;
+        }
+        document.getElementById('latitude').value  = location.latitude  != null ? location.latitude.toFixed(4)  : '';
+        document.getElementById('longitude').value = location.longitude != null ? location.longitude.toFixed(4) : '';
+        hideError();
+      });
+    });
+
+    // ── Form submission ───────────────────────────────────────────────────────
+
+    document.getElementById('pairForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      hideError();
+
+      var lat = parseFloat(document.getElementById('latitude').value);
+      var lon = parseFloat(document.getElementById('longitude').value);
+      var lawnName = document.getElementById('lawnName').value.trim();
+
+      if (!lawnName) {
+        showError('Please enter a lawn name.');
+        return;
+      }
+      if (isNaN(lat) || lat < -90 || lat > 90) {
+        showError('Please enter a valid latitude between -90 and 90.');
+        document.getElementById('latitude').focus();
+        return;
+      }
+      if (isNaN(lon) || lon < -180 || lon > 180) {
+        showError('Please enter a valid longitude between -180 and 180.');
+        document.getElementById('longitude').focus();
+        return;
+      }
+
+      var formData = {
+        lawnName:   lawnName,
+        latitude:   lat,
+        longitude:  lon,
+        grassType:  document.getElementById('grassType').value,
+        soilType:   document.getElementById('soilType').value,
+        shadeLevel: document.getElementById('shadeLevel').value,
+        rootDepth:  parseInt(document.getElementById('rootDepth').value, 10) || 6,
+      };
+
+      setLoading(true);
+
+      // Send data to driver.js onPair session handler 'saveSettings'
+      window.homey.emit('saveSettings', formData, function (err) {
+        setLoading(false);
+        if (err) {
+          showError('Error: ' + (err.message || err));
+          return;
+        }
+        // Move to Homey's built-in add_device view which calls list_devices
+        window.homey.showView('add_device');
+      });
+    });
+  </script>
+</body>
+</html>

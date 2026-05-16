@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Background circle -->
+  <circle cx="50" cy="50" r="50" fill="#E8F5E9"/>
+
+  <!-- Soil layer -->
+  <rect x="10" y="68" width="80" height="22" rx="4" fill="#8D6E63"/>
+
+  <!-- Grass blades -->
+  <path d="M50 68 C50 52 44 40 38 34 C40 44 44 56 50 68 Z" fill="#388E3C"/>
+  <path d="M50 68 C50 50 56 38 62 32 C60 42 56 56 50 68 Z" fill="#43A047"/>
+  <path d="M50 68 C44 58 34 52 26 50 C34 54 44 62 50 68 Z" fill="#4CAF50"/>
+  <path d="M50 68 C56 58 66 52 74 50 C66 54 56 62 50 68 Z" fill="#66BB6A"/>
+  <path d="M50 68 C46 56 40 46 32 40 C38 48 46 60 50 68 Z" fill="#2E7D32"/>
+  <path d="M50 68 C54 56 60 46 68 40 C62 48 54 60 50 68 Z" fill="#388E3C"/>
+
+  <!-- Sun rays -->
+  <circle cx="72" cy="22" r="10" fill="#FDD835"/>
+  <line x1="72" y1="6"  x2="72" y2="1"  stroke="#FDD835" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="72" y1="38" x2="72" y2="43" stroke="#FDD835" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="56" y1="22" x2="51" y2="22" stroke="#FDD835" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="88" y1="22" x2="93" y2="22" stroke="#FDD835" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="61" y1="11" x2="57.5" y2="7.5" stroke="#FDD835" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="83" y1="33" x2="86.5" y2="36.5" stroke="#FDD835" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="83" y1="11" x2="86.5" y2="7.5" stroke="#FDD835" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="61" y1="33" x2="57.5" y2="36.5" stroke="#FDD835" stroke-width="2.5" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,757 @@
+{
+  "id": "com.bureus.lawnoptimizer",
+  "version": "1.0.0",
+  "compatibility": ">=5.0.0",
+  "sdk": 3,
+  "platforms": ["local"],
+  "name": {
+    "en": "Lawn Soil Optimizer"
+  },
+  "description": {
+    "en": "Estimates and tracks soil temperature for lawn optimization using Open-Meteo weather data."
+  },
+  "tags": {
+    "en": ["lawn", "garden", "soil", "temperature", "mowing", "watering", "fertilizing"]
+  },
+  "category": ["tools"],
+  "permissions": [
+    "homey:manager:geolocation"
+  ],
+  "author": {
+    "name": "Bure Råman Vinnå",
+    "email": "bure.raman.vinna@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/bureus/com.bureus.lawnoptimizer/issues"
+  },
+  "source": "https://github.com/bureus/com.bureus.lawnoptimizer",
+  "homepage": "https://github.com/bureus/com.bureus.lawnoptimizer",
+
+  "capabilities": {
+    "lawn_growth_score": {
+      "type": "number",
+      "title": {
+        "en": "Growth Score"
+      },
+      "units": {
+        "en": "pts"
+      },
+      "min": 0,
+      "max": 100,
+      "decimals": 0,
+      "insights": true,
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor"
+    },
+    "mowing_recommended": {
+      "type": "boolean",
+      "title": {
+        "en": "Mowing Recommended"
+      },
+      "insights": false,
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor"
+    },
+    "watering_recommended": {
+      "type": "boolean",
+      "title": {
+        "en": "Watering Recommended"
+      },
+      "insights": false,
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor"
+    },
+    "fertilizing_recommended": {
+      "type": "boolean",
+      "title": {
+        "en": "Fertilizing Recommended"
+      },
+      "insights": false,
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor"
+    },
+    "frost_risk": {
+      "type": "boolean",
+      "title": {
+        "en": "Frost Risk"
+      },
+      "insights": false,
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor"
+    },
+    "heat_stress_risk": {
+      "type": "boolean",
+      "title": {
+        "en": "Heat Stress Risk"
+      },
+      "insights": false,
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor"
+    },
+    "last_updated": {
+      "type": "string",
+      "title": {
+        "en": "Last Updated"
+      },
+      "insights": false,
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor"
+    }
+  },
+
+  "drivers": [
+    {
+      "id": "lawn_soil_optimizer",
+      "name": {
+        "en": "Lawn Soil Optimizer"
+      },
+      "class": "sensor",
+      "capabilities": [
+        "measure_temperature.soil_surface",
+        "measure_temperature.soil_6cm",
+        "measure_temperature.root_zone",
+        "measure_temperature.air",
+        "measure_humidity.soil",
+        "measure_rain",
+        "lawn_growth_score",
+        "mowing_recommended",
+        "watering_recommended",
+        "fertilizing_recommended",
+        "frost_risk",
+        "heat_stress_risk",
+        "last_updated"
+      ],
+      "capabilitiesOptions": {
+        "measure_temperature.soil_surface": {
+          "title": {
+            "en": "Soil Surface Temp"
+          }
+        },
+        "measure_temperature.soil_6cm": {
+          "title": {
+            "en": "Soil Temp (6 cm)"
+          }
+        },
+        "measure_temperature.root_zone": {
+          "title": {
+            "en": "Root Zone Temp"
+          }
+        },
+        "measure_temperature.air": {
+          "title": {
+            "en": "Air Temperature"
+          }
+        },
+        "measure_humidity.soil": {
+          "title": {
+            "en": "Soil Moisture"
+          }
+        }
+      },
+      "icon": "/drivers/lawn_soil_optimizer/assets/icon.svg",
+      "pair": [
+        {
+          "id": "start"
+        },
+        {
+          "id": "add_device",
+          "template": "add_device"
+        }
+      ],
+      "settings": [
+        {
+          "type": "group",
+          "label": {
+            "en": "Location"
+          },
+          "children": [
+            {
+              "id": "latitude",
+              "type": "number",
+              "label": {
+                "en": "Latitude"
+              },
+              "hint": {
+                "en": "Decimal degrees (e.g. 59.3293)"
+              },
+              "value": 0
+            },
+            {
+              "id": "longitude",
+              "type": "number",
+              "label": {
+                "en": "Longitude"
+              },
+              "hint": {
+                "en": "Decimal degrees (e.g. 18.0686)"
+              },
+              "value": 0
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "label": {
+            "en": "Lawn Profile"
+          },
+          "children": [
+            {
+              "id": "lawn_name",
+              "type": "text",
+              "label": {
+                "en": "Lawn Name"
+              },
+              "value": "My Lawn"
+            },
+            {
+              "id": "grass_type",
+              "type": "dropdown",
+              "label": {
+                "en": "Grass Type"
+              },
+              "value": "cool_season",
+              "values": [
+                { "id": "cool_season", "label": { "en": "Cool Season" } },
+                { "id": "warm_season", "label": { "en": "Warm Season" } },
+                { "id": "mixed",       "label": { "en": "Mixed" } }
+              ]
+            },
+            {
+              "id": "soil_type",
+              "type": "dropdown",
+              "label": {
+                "en": "Soil Type"
+              },
+              "value": "loam",
+              "values": [
+                { "id": "sand", "label": { "en": "Sandy" } },
+                { "id": "loam", "label": { "en": "Loam" } },
+                { "id": "clay", "label": { "en": "Clay" } }
+              ]
+            },
+            {
+              "id": "shade_level",
+              "type": "dropdown",
+              "label": {
+                "en": "Shade Level"
+              },
+              "value": "full_sun",
+              "values": [
+                { "id": "full_sun",      "label": { "en": "Full Sun" } },
+                { "id": "partial_shade", "label": { "en": "Partial Shade" } },
+                { "id": "shade",         "label": { "en": "Full Shade" } }
+              ]
+            },
+            {
+              "id": "root_depth_cm",
+              "type": "number",
+              "label": {
+                "en": "Root Depth (cm)"
+              },
+              "value": 6,
+              "min": 1,
+              "max": 30
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "label": {
+            "en": "Thresholds"
+          },
+          "children": [
+            {
+              "id": "preferred_mowing_min_temp",
+              "type": "number",
+              "label": {
+                "en": "Min. Temp for Mowing (°C)"
+              },
+              "value": 8
+            },
+            {
+              "id": "preferred_fertilizing_min_temp",
+              "type": "number",
+              "label": {
+                "en": "Min. Temp for Fertilizing (°C)"
+              },
+              "value": 10
+            },
+            {
+              "id": "watering_threshold_mm_24h",
+              "type": "number",
+              "label": {
+                "en": "Watering Threshold – Max Rain 24 h (mm)"
+              },
+              "value": 3
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "label": {
+            "en": "Update & Notifications"
+          },
+          "children": [
+            {
+              "id": "update_interval_minutes",
+              "type": "number",
+              "label": {
+                "en": "Update Interval (minutes)"
+              },
+              "value": 60,
+              "min": 15,
+              "max": 360
+            },
+            {
+              "id": "enable_notifications",
+              "type": "checkbox",
+              "label": {
+                "en": "Enable Homey Notifications"
+              },
+              "value": false
+            }
+          ]
+        }
+      ]
+    }
+  ],
+
+  "flow": {
+    "triggers": [
+      {
+        "id": "soil_temp_above",
+        "title": {
+          "en": "Root zone temperature rises above"
+        },
+        "titleFormatted": {
+          "en": "Root zone temperature rises above [[temperature]] °C"
+        },
+        "hint": {
+          "en": "Fires once when root zone temperature crosses above the set threshold."
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=lawn_soil_optimizer"
+          },
+          {
+            "name": "temperature",
+            "type": "number",
+            "title": { "en": "Temperature (°C)" },
+            "placeholder": { "en": "15" }
+          }
+        ],
+        "tokens": [
+          {
+            "name": "temperature",
+            "type": "number",
+            "title": { "en": "Root Zone Temp (°C)" },
+            "example": 14.5
+          }
+        ]
+      },
+      {
+        "id": "soil_temp_below",
+        "title": {
+          "en": "Root zone temperature drops below"
+        },
+        "titleFormatted": {
+          "en": "Root zone temperature drops below [[temperature]] °C"
+        },
+        "hint": {
+          "en": "Fires once when root zone temperature crosses below the set threshold."
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=lawn_soil_optimizer"
+          },
+          {
+            "name": "temperature",
+            "type": "number",
+            "title": { "en": "Temperature (°C)" },
+            "placeholder": { "en": "5" }
+          }
+        ],
+        "tokens": [
+          {
+            "name": "temperature",
+            "type": "number",
+            "title": { "en": "Root Zone Temp (°C)" },
+            "example": 4.2
+          }
+        ]
+      },
+      {
+        "id": "growth_score_above",
+        "title": {
+          "en": "Growth score rises above"
+        },
+        "titleFormatted": {
+          "en": "Growth score rises above [[score]]"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=lawn_soil_optimizer"
+          },
+          {
+            "name": "score",
+            "type": "number",
+            "title": { "en": "Score (0–100)" },
+            "placeholder": { "en": "50" }
+          }
+        ],
+        "tokens": [
+          {
+            "name": "score",
+            "type": "number",
+            "title": { "en": "Growth Score" },
+            "example": 65
+          }
+        ]
+      },
+      {
+        "id": "mowing_recommended_changed",
+        "title": {
+          "en": "Mowing recommendation changed"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=lawn_soil_optimizer"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "recommended",
+            "type": "boolean",
+            "title": { "en": "Mowing Recommended" },
+            "example": true
+          }
+        ]
+      },
+      {
+        "id": "watering_recommended_changed",
+        "title": {
+          "en": "Watering recommendation changed"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=lawn_soil_optimizer"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "recommended",
+            "type": "boolean",
+            "title": { "en": "Watering Recommended" },
+            "example": true
+          }
+        ]
+      },
+      {
+        "id": "fertilizing_recommended_changed",
+        "title": {
+          "en": "Fertilizing recommendation changed"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=lawn_soil_optimizer"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "recommended",
+            "type": "boolean",
+            "title": { "en": "Fertilizing Recommended" },
+            "example": false
+          }
+        ]
+      },
+      {
+        "id": "frost_risk_started",
+        "title": {
+          "en": "Frost risk detected"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=lawn_soil_optimizer"
+          }
+        ]
+      },
+      {
+        "id": "heat_stress_started",
+        "title": {
+          "en": "Heat stress risk detected"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=lawn_soil_optimizer"
+          }
+        ]
+      },
+      {
+        "id": "lawn_status_changed",
+        "title": {
+          "en": "Lawn status text changed"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=lawn_soil_optimizer"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "status",
+            "type": "string",
+            "title": { "en": "Status Text" },
+            "example": "Good growth conditions"
+          }
+        ]
+      }
+    ],
+
+    "conditions": [
+      {
+        "id": "soil_temp_is_above",
+        "title": {
+          "en": "Root zone temp !{{is|is not}} above"
+        },
+        "titleFormatted": {
+          "en": "Root zone temp !{{is|is not}} above [[temperature]] °C"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=lawn_soil_optimizer"
+          },
+          {
+            "name": "temperature",
+            "type": "number",
+            "title": { "en": "Temperature (°C)" },
+            "placeholder": { "en": "10" }
+          }
+        ]
+      },
+      {
+        "id": "soil_temp_is_below",
+        "title": {
+          "en": "Root zone temp !{{is|is not}} below"
+        },
+        "titleFormatted": {
+          "en": "Root zone temp !{{is|is not}} below [[temperature]] °C"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=lawn_soil_optimizer"
+          },
+          {
+            "name": "temperature",
+            "type": "number",
+            "title": { "en": "Temperature (°C)" },
+            "placeholder": { "en": "5" }
+          }
+        ]
+      },
+      {
+        "id": "growth_score_is_above",
+        "title": {
+          "en": "Growth score !{{is|is not}} above"
+        },
+        "titleFormatted": {
+          "en": "Growth score !{{is|is not}} above [[score]]"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=lawn_soil_optimizer"
+          },
+          {
+            "name": "score",
+            "type": "number",
+            "title": { "en": "Score (0–100)" },
+            "placeholder": { "en": "50" }
+          }
+        ]
+      },
+      {
+        "id": "mowing_is_recommended",
+        "title": {
+          "en": "Mowing !{{is|is not}} recommended"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=lawn_soil_optimizer"
+          }
+        ]
+      },
+      {
+        "id": "watering_is_recommended",
+        "title": {
+          "en": "Watering !{{is|is not}} recommended"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=lawn_soil_optimizer"
+          }
+        ]
+      },
+      {
+        "id": "fertilizing_is_recommended",
+        "title": {
+          "en": "Fertilizing !{{is|is not}} recommended"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=lawn_soil_optimizer"
+          }
+        ]
+      },
+      {
+        "id": "frost_risk_is_active",
+        "title": {
+          "en": "Frost risk !{{is|is not}} active"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=lawn_soil_optimizer"
+          }
+        ]
+      },
+      {
+        "id": "heat_stress_is_active",
+        "title": {
+          "en": "Heat stress risk !{{is|is not}} active"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=lawn_soil_optimizer"
+          }
+        ]
+      }
+    ],
+
+    "actions": [
+      {
+        "id": "refresh_now",
+        "title": {
+          "en": "Refresh weather data now"
+        },
+        "hint": {
+          "en": "Forces an immediate weather fetch and recalculates all lawn values."
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=lawn_soil_optimizer"
+          }
+        ]
+      },
+      {
+        "id": "set_lawn_profile",
+        "title": {
+          "en": "Set lawn profile"
+        },
+        "titleFormatted": {
+          "en": "Set lawn profile – grass: [[grass_type]], soil: [[soil_type]]"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=lawn_soil_optimizer"
+          },
+          {
+            "name": "grass_type",
+            "type": "dropdown",
+            "title": { "en": "Grass Type" },
+            "values": [
+              { "id": "cool_season", "label": { "en": "Cool Season" } },
+              { "id": "warm_season", "label": { "en": "Warm Season" } },
+              { "id": "mixed",       "label": { "en": "Mixed" } }
+            ]
+          },
+          {
+            "name": "soil_type",
+            "type": "dropdown",
+            "title": { "en": "Soil Type" },
+            "values": [
+              { "id": "sand", "label": { "en": "Sandy" } },
+              { "id": "loam", "label": { "en": "Loam" } },
+              { "id": "clay", "label": { "en": "Clay" } }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "send_lawn_advice_notification",
+        "title": {
+          "en": "Send lawn advice notification"
+        },
+        "hint": {
+          "en": "Sends a Homey notification with the current lawn status and recommendations."
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=lawn_soil_optimizer"
+          }
+        ]
+      },
+      {
+        "id": "reset_model_memory",
+        "title": {
+          "en": "Reset soil model memory"
+        },
+        "hint": {
+          "en": "Clears the stored root zone temperature used for the weighted soil model. Useful after extreme weather or sensor replacement."
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=lawn_soil_optimizer"
+          }
+        ]
+      }
+    ]
+  }
+}

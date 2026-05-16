@@ -1,0 +1,22 @@
+{
+  "name": "com.bureus.lawnoptimizer",
+  "version": "1.0.0",
+  "description": "Lawn Soil Optimizer – estimates and tracks soil temperature for lawn optimization using Open-Meteo weather data.",
+  "main": "app.js",
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "scripts": {
+    "start": "homey app run"
+  },
+  "keywords": [
+    "homey",
+    "lawn",
+    "soil",
+    "temperature",
+    "garden",
+    "open-meteo"
+  ],
+  "author": "Bure Råman Vinnå <bure.raman.vinna@gmail.com>",
+  "license": "MIT"
+}
