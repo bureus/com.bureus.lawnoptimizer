@@ -1,0 +1,59 @@
+{
+  "pair": {
+    "start": {
+      "title": "Stel je gazon in",
+      "subtitle": "Vertel ons over je gazon zodat we de bodemomstandigheden nauwkeurig kunnen inschatten."
+    }
+  },
+  "settings": {
+    "location": "Locatie",
+    "latitude": "Breedtegraad",
+    "longitude": "Lengtegraad",
+    "lawn_profile": "Gazons profiel",
+    "lawn_name": "Naam van het gazon",
+    "grass_type": "Grastype",
+    "cool_season": "Koel seizoen",
+    "warm_season": "Warm seizoen",
+    "mixed": "Gemengd",
+    "soil_type": "Bodemtype",
+    "sand": "Zandig",
+    "loam": "Leem",
+    "clay": "Klei",
+    "shade_level": "Schaduniveau",
+    "full_sun": "Volle zon",
+    "partial_shade": "Gedeeltelijke schaduw",
+    "shade": "Volledige schaduw",
+    "root_depth_cm": "Worteldiepte (cm)",
+    "update_interval_minutes": "Update-interval (minuten)",
+    "enable_notifications": "Homey-meldingen inschakelen",
+    "thresholds": "Drempelwaarden",
+    "preferred_mowing_min_temp": "Min. temperatuur voor maaien (°C)",
+    "preferred_fertilizing_min_temp": "Min. temperatuur voor bemesting (°C)",
+    "watering_threshold_mm_24h": "Gietdrempel – max. neerslag 24 u (mm)"
+  },
+  "capabilities": {
+    "measure_temperature": {
+      "soil_surface": "Bodemoppervlaktetemperatuur",
+      "soil_6cm": "Bodemtemperatuur (6 cm)",
+      "root_zone": "Wortelzonetemperatuur",
+      "air": "Luchttemperatuur"
+    },
+    "measure_humidity": {
+      "soil": "Bodemvochtigheid"
+    },
+    "measure_rain": "Neerslag (24 u)",
+    "lawn_growth_score": "Groeiscore",
+    "mowing_recommended": "Maaien aanbevolen",
+    "watering_recommended": "Gieten aanbevolen",
+    "fertilizing_recommended": "Bemesting aanbevolen",
+    "frost_risk": "Vorstkans",
+    "heat_stress_risk": "Hittestress risico",
+    "last_updated": "Laatst bijgewerkt"
+  },
+  "errors": {
+    "invalid_latitude": "Ongeldige breedtegraad. Moet tussen -90 en 90 liggen.",
+    "invalid_longitude": "Ongeldige lengtegraad. Moet tussen -180 en 180 liggen.",
+    "no_location": "Geen locatie ingesteld. Configureer breedtegraad en lengtegraad in de apparaatinstellingen.",
+    "fetch_failed": "Ophalen van weerdata mislukt. Wordt opnieuw geprobeerd bij volgende peiling."
+  }
+}

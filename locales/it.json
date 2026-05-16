@@ -1,0 +1,59 @@
+{
+  "pair": {
+    "start": {
+      "title": "Configura il tuo prato",
+      "subtitle": "Raccontaci del tuo prato in modo da poter stimare accuratamente le condizioni del suolo."
+    }
+  },
+  "settings": {
+    "location": "Posizione",
+    "latitude": "Latitudine",
+    "longitude": "Longitudine",
+    "lawn_profile": "Profilo del prato",
+    "lawn_name": "Nome del prato",
+    "grass_type": "Tipo di erba",
+    "cool_season": "Stagione fresca",
+    "warm_season": "Stagione calda",
+    "mixed": "Misto",
+    "soil_type": "Tipo di suolo",
+    "sand": "Sabbioso",
+    "loam": "Limoso",
+    "clay": "Argilloso",
+    "shade_level": "Livello di ombra",
+    "full_sun": "Pieno sole",
+    "partial_shade": "Mezza ombra",
+    "shade": "Ombra totale",
+    "root_depth_cm": "Profondità radici (cm)",
+    "update_interval_minutes": "Intervallo di aggiornamento (minuti)",
+    "enable_notifications": "Abilita notifiche Homey",
+    "thresholds": "Soglie",
+    "preferred_mowing_min_temp": "Temp. min. per tagliare (°C)",
+    "preferred_fertilizing_min_temp": "Temp. min. per fertilizzare (°C)",
+    "watering_threshold_mm_24h": "Soglia irrigazione – Pioggia max. 24 h (mm)"
+  },
+  "capabilities": {
+    "measure_temperature": {
+      "soil_surface": "Temp. superficie suolo",
+      "soil_6cm": "Temp. suolo (6 cm)",
+      "root_zone": "Temp. zona radicale",
+      "air": "Temperatura dell'aria"
+    },
+    "measure_humidity": {
+      "soil": "Umidità del suolo"
+    },
+    "measure_rain": "Pioggia (24 h)",
+    "lawn_growth_score": "Punteggio crescita",
+    "mowing_recommended": "Taglio consigliato",
+    "watering_recommended": "Irrigazione consigliata",
+    "fertilizing_recommended": "Fertilizzazione consigliata",
+    "frost_risk": "Rischio gelo",
+    "heat_stress_risk": "Rischio stress da caldo",
+    "last_updated": "Ultimo aggiornamento"
+  },
+  "errors": {
+    "invalid_latitude": "Latitudine non valida. Deve essere compresa tra -90 e 90.",
+    "invalid_longitude": "Longitudine non valida. Deve essere compresa tra -180 e 180.",
+    "no_location": "Nessuna posizione impostata. Configura latitudine e longitudine nelle impostazioni del dispositivo.",
+    "fetch_failed": "Impossibile recuperare i dati meteo. Verrà riprovato al prossimo ciclo."
+  }
+}

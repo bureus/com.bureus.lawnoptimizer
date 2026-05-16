@@ -70,6 +70,9 @@ class LawnSoilOptimizerDriver extends Homey.Driver {
           watering_threshold_mm_24h:      3,
         },
       };
+
+      // Must return a value so the HTML callback fires
+      return true;
     });
 
     // Called by the built-in add_device template to get the device list

@@ -1,0 +1,59 @@
+{
+  "pair": {
+    "start": {
+      "title": "Skonfiguruj swój trawnik",
+      "subtitle": "Opowiedz nam o swoim trawniku, abyśmy mogli dokładnie oszacować warunki glebowe."
+    }
+  },
+  "settings": {
+    "location": "Lokalizacja",
+    "latitude": "Szerokość geograficzna",
+    "longitude": "Długość geograficzna",
+    "lawn_profile": "Profil trawnika",
+    "lawn_name": "Nazwa trawnika",
+    "grass_type": "Rodzaj trawy",
+    "cool_season": "Chłodny sezon",
+    "warm_season": "Ciepły sezon",
+    "mixed": "Mieszany",
+    "soil_type": "Rodzaj gleby",
+    "sand": "Piaszczysty",
+    "loam": "Gliniasto-piaszczysty",
+    "clay": "Gliniany",
+    "shade_level": "Poziom zacienienia",
+    "full_sun": "Pełne słońce",
+    "partial_shade": "Częściowy cień",
+    "shade": "Pełny cień",
+    "root_depth_cm": "Głębokość korzeni (cm)",
+    "update_interval_minutes": "Interwał aktualizacji (minuty)",
+    "enable_notifications": "Włącz powiadomienia Homey",
+    "thresholds": "Progi",
+    "preferred_mowing_min_temp": "Min. temp. do koszenia (°C)",
+    "preferred_fertilizing_min_temp": "Min. temp. do nawożenia (°C)",
+    "watering_threshold_mm_24h": "Próg podlewania – Maks. deszcz 24 h (mm)"
+  },
+  "capabilities": {
+    "measure_temperature": {
+      "soil_surface": "Temp. pow. gleby",
+      "soil_6cm": "Temperatura gleby (6 cm)",
+      "root_zone": "Temp. strefy korzeniowej",
+      "air": "Temperatura powietrza"
+    },
+    "measure_humidity": {
+      "soil": "Wilgotność gleby"
+    },
+    "measure_rain": "Deszcz (24 h)",
+    "lawn_growth_score": "Wynik wzrostu",
+    "mowing_recommended": "Koszenie zalecane",
+    "watering_recommended": "Podlewanie zalecane",
+    "fertilizing_recommended": "Nawożenie zalecane",
+    "frost_risk": "Ryzyko mrozu",
+    "heat_stress_risk": "Ryzyko stresu termicznego",
+    "last_updated": "Ostatnia aktualizacja"
+  },
+  "errors": {
+    "invalid_latitude": "Nieprawidłowa szerokość geograficzna. Musi wynosić od -90 do 90.",
+    "invalid_longitude": "Nieprawidłowa długość geograficzna. Musi wynosić od -180 do 180.",
+    "no_location": "Nie ustawiono lokalizacji. Skonfiguruj szerokość i długość geograficzną w ustawieniach urządzenia.",
+    "fetch_failed": "Nie udało się pobrać danych pogodowych. Ponowna próba przy następnym odpytaniu."
+  }
+}

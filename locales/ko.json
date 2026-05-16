@@ -1,0 +1,59 @@
+{
+  "pair": {
+    "start": {
+      "title": "잔디 설정",
+      "subtitle": "잔디에 대해 알려주시면 토양 상태를 정확하게 추정할 수 있습니다."
+    }
+  },
+  "settings": {
+    "location": "위치",
+    "latitude": "위도",
+    "longitude": "경도",
+    "lawn_profile": "잔디 프로필",
+    "lawn_name": "잔디 이름",
+    "grass_type": "잔디 종류",
+    "cool_season": "한지형",
+    "warm_season": "난지형",
+    "mixed": "혼합형",
+    "soil_type": "토양 유형",
+    "sand": "사질토",
+    "loam": "양토",
+    "clay": "점토",
+    "shade_level": "그늘 수준",
+    "full_sun": "완전 양지",
+    "partial_shade": "반그늘",
+    "shade": "완전 음지",
+    "root_depth_cm": "뿌리 깊이 (cm)",
+    "update_interval_minutes": "업데이트 간격 (분)",
+    "enable_notifications": "Homey 알림 활성화",
+    "thresholds": "임계값",
+    "preferred_mowing_min_temp": "잔디깎기 최소 온도 (°C)",
+    "preferred_fertilizing_min_temp": "시비 최소 온도 (°C)",
+    "watering_threshold_mm_24h": "관수 임계값 – 최대 강수량 24h (mm)"
+  },
+  "capabilities": {
+    "measure_temperature": {
+      "soil_surface": "토양 표면 온도",
+      "soil_6cm": "토양 온도 (6 cm)",
+      "root_zone": "근권 온도",
+      "air": "기온"
+    },
+    "measure_humidity": {
+      "soil": "토양 수분"
+    },
+    "measure_rain": "강수량 (24h)",
+    "lawn_growth_score": "성장 점수",
+    "mowing_recommended": "잔디깎기 권장",
+    "watering_recommended": "관수 권장",
+    "fertilizing_recommended": "시비 권장",
+    "frost_risk": "서리 위험",
+    "heat_stress_risk": "열 스트레스 위험",
+    "last_updated": "마지막 업데이트"
+  },
+  "errors": {
+    "invalid_latitude": "잘못된 위도입니다. -90에서 90 사이여야 합니다.",
+    "invalid_longitude": "잘못된 경도입니다. -180에서 180 사이여야 합니다.",
+    "no_location": "위치가 설정되지 않았습니다. 기기 설정에서 위도와 경도를 구성해 주세요.",
+    "fetch_failed": "날씨 데이터를 가져오지 못했습니다. 다음 폴링 시 다시 시도합니다."
+  }
+}

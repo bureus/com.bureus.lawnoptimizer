@@ -1,0 +1,59 @@
+{
+  "pair": {
+    "start": {
+      "title": "Konfigurer plenen din",
+      "subtitle": "Fortell oss om plenen din slik at vi kan anslå jordforholdene nøyaktig."
+    }
+  },
+  "settings": {
+    "location": "Sted",
+    "latitude": "Breddegrad",
+    "longitude": "Lengdegrad",
+    "lawn_profile": "Plensprofil",
+    "lawn_name": "Plenens navn",
+    "grass_type": "Gresstype",
+    "cool_season": "Kald sesong",
+    "warm_season": "Varm sesong",
+    "mixed": "Blandet",
+    "soil_type": "Jordtype",
+    "sand": "Sandig",
+    "loam": "Moldaktig",
+    "clay": "Leire",
+    "shade_level": "Skyggenivaå",
+    "full_sun": "Full sol",
+    "partial_shade": "Halvskygge",
+    "shade": "Full skygge",
+    "root_depth_cm": "Rotdybde (cm)",
+    "update_interval_minutes": "Oppdateringsintervall (minutter)",
+    "enable_notifications": "Aktiver Homey-varsler",
+    "thresholds": "Terskelverdier",
+    "preferred_mowing_min_temp": "Min. temp. for klipping (°C)",
+    "preferred_fertilizing_min_temp": "Min. temp. for gjødsling (°C)",
+    "watering_threshold_mm_24h": "Vanningsterskel – Maks. regn 24 t (mm)"
+  },
+  "capabilities": {
+    "measure_temperature": {
+      "soil_surface": "Jordoverflatetemperatur",
+      "soil_6cm": "Jordtemperatur (6 cm)",
+      "root_zone": "Rotsonetemperatur",
+      "air": "Lufttemperatur"
+    },
+    "measure_humidity": {
+      "soil": "Jordfuktighet"
+    },
+    "measure_rain": "Regn (24 t)",
+    "lawn_growth_score": "Vekstpoeng",
+    "mowing_recommended": "Klipping anbefales",
+    "watering_recommended": "Vanning anbefales",
+    "fertilizing_recommended": "Gjødsling anbefales",
+    "frost_risk": "Frostrisiko",
+    "heat_stress_risk": "Varmestresstrisiko",
+    "last_updated": "Sist oppdatert"
+  },
+  "errors": {
+    "invalid_latitude": "Ugyldig breddegrad. Må være mellom -90 og 90.",
+    "invalid_longitude": "Ugyldig lengdegrad. Må være mellom -180 og 180.",
+    "no_location": "Ingen plassering angitt. Konfigurer bredde- og lengdegrad i enhetsinnstillingene.",
+    "fetch_failed": "Kunne ikke hente værvarsler. Prøver igjen ved neste avlesning."
+  }
+}

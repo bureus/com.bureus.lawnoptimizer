@@ -5,10 +5,32 @@
   "sdk": 3,
   "platforms": ["local"],
   "name": {
-    "en": "Lawn Soil Optimizer"
+    "en": "Lawn Soil Optimizer",
+    "nl": "Gazon Bodem Optimizer",
+    "de": "Rasen-Boden-Optimierer",
+    "fr": "Optimiseur de Sol de Pelouse",
+    "es": "Optimizador de Suelo de Césped",
+    "it": "Ottimizzatore del Suolo del Prato",
+    "sv": "Gräsmatta Jordoptimering",
+    "no": "Gressplen Jordoptimalisering",
+    "da": "Plæne Jordoptimering",
+    "ru": "Оптимизатор почвы газона",
+    "pl": "Optymalizator Gleby Trawnika",
+    "ko": "잔디 토양 최적화"
   },
   "description": {
-    "en": "Estimates and tracks soil temperature for lawn optimization using Open-Meteo weather data."
+    "en": "Estimates and tracks soil temperature for lawn optimization using Open-Meteo weather data.",
+    "nl": "Schat en volgt de bodemtemperatuur voor gazonoptimalisering met Open-Meteo weerdata.",
+    "de": "Schätzt und verfolgt die Bodentemperatur zur Rasenoptimierung mithilfe von Open-Meteo-Wetterdaten.",
+    "fr": "Estime et suit la température du sol pour optimiser votre pelouse grâce aux données météo Open-Meteo.",
+    "es": "Estima y rastrea la temperatura del suelo para optimizar el césped usando datos meteorológicos de Open-Meteo.",
+    "it": "Stima e tiene traccia della temperatura del suolo per ottimizzare il prato con i dati meteo di Open-Meteo.",
+    "sv": "Uppskattar och spårar jordtemperaturen för gräsmattaoptimering med väderdata från Open-Meteo.",
+    "no": "Estimerer og sporer jordtemperaturen for gressplenoptimalisering med Open-Meteo-værvarsler.",
+    "da": "Estimerer og sporer jordtemperaturen til plæneoptimering ved hjælp af Open-Meteo vejrdata.",
+    "ru": "Оценивает и отслеживает температуру почвы для оптимизации газона с использованием данных Open-Meteo.",
+    "pl": "Szacuje i śledzi temperaturę gleby w celu optymalizacji trawnika z danymi pogodowymi Open-Meteo.",
+    "ko": "Open-Meteo 날씨 데이터를 활용하여 잔디 최적화를 위한 토양 온도를 추정하고 추적합니다."
   },
   "tags": {
     "en": ["lawn", "garden", "soil", "temperature", "mowing", "watering", "fertilizing"]
@@ -31,11 +53,20 @@
     "lawn_growth_score": {
       "type": "number",
       "title": {
-        "en": "Growth Score"
+        "en": "Growth Score",
+        "nl": "Groeiscore",
+        "de": "Wachstumswert",
+        "fr": "Score de croissance",
+        "es": "Puntuación de crecimiento",
+        "it": "Punteggio crescita",
+        "sv": "Tillväxtpoäng",
+        "no": "Vekstpoeng",
+        "da": "Vækstpoint",
+        "ru": "Оценка роста",
+        "pl": "Wynik wzrostu",
+        "ko": "성장 점수"
       },
-      "units": {
-        "en": "pts"
-      },
+      "units": { "en": "pts" },
       "min": 0,
       "max": 100,
       "decimals": 0,
@@ -47,7 +78,18 @@
     "mowing_recommended": {
       "type": "boolean",
       "title": {
-        "en": "Mowing Recommended"
+        "en": "Mowing Recommended",
+        "nl": "Maaien aanbevolen",
+        "de": "Mähen empfohlen",
+        "fr": "Tonte recommandée",
+        "es": "Corte recomendado",
+        "it": "Taglio consigliato",
+        "sv": "Klippning rekommenderas",
+        "no": "Klipping anbefales",
+        "da": "Slåning anbefales",
+        "ru": "Скашивание рекомендуется",
+        "pl": "Koszenie zalecane",
+        "ko": "잔디깎기 권장"
       },
       "insights": false,
       "getable": true,
@@ -57,7 +99,18 @@
     "watering_recommended": {
       "type": "boolean",
       "title": {
-        "en": "Watering Recommended"
+        "en": "Watering Recommended",
+        "nl": "Gieten aanbevolen",
+        "de": "Bewässerung empfohlen",
+        "fr": "Arrosage recommandé",
+        "es": "Riego recomendado",
+        "it": "Irrigazione consigliata",
+        "sv": "Bevattning rekommenderas",
+        "no": "Vanning anbefales",
+        "da": "Vanding anbefales",
+        "ru": "Полив рекомендуется",
+        "pl": "Podlewanie zalecane",
+        "ko": "관수 권장"
       },
       "insights": false,
       "getable": true,
@@ -67,7 +120,18 @@
     "fertilizing_recommended": {
       "type": "boolean",
       "title": {
-        "en": "Fertilizing Recommended"
+        "en": "Fertilizing Recommended",
+        "nl": "Bemesting aanbevolen",
+        "de": "Düngung empfohlen",
+        "fr": "Fertilisation recommandée",
+        "es": "Fertilización recomendada",
+        "it": "Fertilizzazione consigliata",
+        "sv": "Gödsling rekommenderas",
+        "no": "Gjødsling anbefales",
+        "da": "Gødskning anbefales",
+        "ru": "Удобрение рекомендуется",
+        "pl": "Nawożenie zalecane",
+        "ko": "시비 권장"
       },
       "insights": false,
       "getable": true,
@@ -77,7 +141,18 @@
     "frost_risk": {
       "type": "boolean",
       "title": {
-        "en": "Frost Risk"
+        "en": "Frost Risk",
+        "nl": "Vorstkans",
+        "de": "Frostgefahr",
+        "fr": "Risque de gel",
+        "es": "Riesgo de heladas",
+        "it": "Rischio gelo",
+        "sv": "Frostrisk",
+        "no": "Frostrisiko",
+        "da": "Frostrisiko",
+        "ru": "Риск заморозков",
+        "pl": "Ryzyko mrozu",
+        "ko": "서리 위험"
       },
       "insights": false,
       "getable": true,
@@ -87,7 +162,18 @@
     "heat_stress_risk": {
       "type": "boolean",
       "title": {
-        "en": "Heat Stress Risk"
+        "en": "Heat Stress Risk",
+        "nl": "Hittestress risico",
+        "de": "Hitzestress-Risiko",
+        "fr": "Risque de stress thermique",
+        "es": "Riesgo de estrés por calor",
+        "it": "Rischio stress da caldo",
+        "sv": "Värmestressrisk",
+        "no": "Varmestresstrisiko",
+        "da": "Varmestresstrisiko",
+        "ru": "Риск теплового стресса",
+        "pl": "Ryzyko stresu termicznego",
+        "ko": "열 스트레스 위험"
       },
       "insights": false,
       "getable": true,
@@ -97,7 +183,18 @@
     "last_updated": {
       "type": "string",
       "title": {
-        "en": "Last Updated"
+        "en": "Last Updated",
+        "nl": "Laatst bijgewerkt",
+        "de": "Zuletzt aktualisiert",
+        "fr": "Dernière mise à jour",
+        "es": "Última actualización",
+        "it": "Ultimo aggiornamento",
+        "sv": "Senast uppdaterad",
+        "no": "Sist oppdatert",
+        "da": "Sidst opdateret",
+        "ru": "Последнее обновление",
+        "pl": "Ostatnia aktualizacja",
+        "ko": "마지막 업데이트"
       },
       "insights": false,
       "getable": true,
@@ -110,7 +207,18 @@
     {
       "id": "lawn_soil_optimizer",
       "name": {
-        "en": "Lawn Soil Optimizer"
+        "en": "Lawn Soil Optimizer",
+        "nl": "Gazon Bodem Optimizer",
+        "de": "Rasen-Boden-Optimierer",
+        "fr": "Optimiseur de Sol de Pelouse",
+        "es": "Optimizador de Suelo de Césped",
+        "it": "Ottimizzatore del Suolo del Prato",
+        "sv": "Gräsmatta Jordoptimering",
+        "no": "Gressplen Jordoptimalisering",
+        "da": "Plæne Jordoptimering",
+        "ru": "Оптимизатор почвы газона",
+        "pl": "Optymalizator Gleby Trawnika",
+        "ko": "잔디 토양 최적화"
       },
       "class": "sensor",
       "capabilities": [
@@ -131,27 +239,82 @@
       "capabilitiesOptions": {
         "measure_temperature.soil_surface": {
           "title": {
-            "en": "Soil Surface Temp"
+            "en": "Soil Surface Temp",
+            "nl": "Bodemoppervlaktetemperatuur",
+            "de": "Bodenoberflächentemp.",
+            "fr": "Temp. surface du sol",
+            "es": "Temp. superficie del suelo",
+            "it": "Temp. superficie suolo",
+            "sv": "Markytetemperatur",
+            "no": "Jordoverflatetemperatur",
+            "da": "Jordoverfladetemperatur",
+            "ru": "Темп. поверхности почвы",
+            "pl": "Temp. pow. gleby",
+            "ko": "토양 표면 온도"
           }
         },
         "measure_temperature.soil_6cm": {
           "title": {
-            "en": "Soil Temp (6 cm)"
+            "en": "Soil Temp (6 cm)",
+            "nl": "Bodemtemperatuur (6 cm)",
+            "de": "Bodentemperatur (6 cm)",
+            "fr": "Temp. sol (6 cm)",
+            "es": "Temp. del suelo (6 cm)",
+            "it": "Temp. suolo (6 cm)",
+            "sv": "Jordtemperatur (6 cm)",
+            "no": "Jordtemperatur (6 cm)",
+            "da": "Jordtemperatur (6 cm)",
+            "ru": "Темп. почвы (6 см)",
+            "pl": "Temperatura gleby (6 cm)",
+            "ko": "토양 온도 (6 cm)"
           }
         },
         "measure_temperature.root_zone": {
           "title": {
-            "en": "Root Zone Temp"
+            "en": "Root Zone Temp",
+            "nl": "Wortelzonetemperatuur",
+            "de": "Wurzelzonentemperatur",
+            "fr": "Temp. zone racinaire",
+            "es": "Temp. zona radicular",
+            "it": "Temp. zona radicale",
+            "sv": "Rotzonstemperatur",
+            "no": "Rotsonetemperatur",
+            "da": "Rodzonetemperatur",
+            "ru": "Темп. корневой зоны",
+            "pl": "Temp. strefy korzeniowej",
+            "ko": "근권 온도"
           }
         },
         "measure_temperature.air": {
           "title": {
-            "en": "Air Temperature"
+            "en": "Air Temperature",
+            "nl": "Luchttemperatuur",
+            "de": "Lufttemperatur",
+            "fr": "Température de l'air",
+            "es": "Temperatura del aire",
+            "it": "Temperatura dell'aria",
+            "sv": "Lufttemperatur",
+            "no": "Lufttemperatur",
+            "da": "Lufttemperatur",
+            "ru": "Температура воздуха",
+            "pl": "Temperatura powietrza",
+            "ko": "기온"
           }
         },
         "measure_humidity.soil": {
           "title": {
-            "en": "Soil Moisture"
+            "en": "Soil Moisture",
+            "nl": "Bodemvochtigheid",
+            "de": "Bodenfeuchtigkeit",
+            "fr": "Humidité du sol",
+            "es": "Humedad del suelo",
+            "it": "Umidità del suolo",
+            "sv": "Jordfuktighet",
+            "no": "Jordfuktighet",
+            "da": "Jordfugtighed",
+            "ru": "Влажность почвы",
+            "pl": "Wilgotność gleby",
+            "ko": "토양 수분"
           }
         }
       },
@@ -161,25 +324,65 @@
           "id": "start"
         },
         {
-          "id": "add_device",
-          "template": "add_device"
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
         }
       ],
       "settings": [
         {
           "type": "group",
           "label": {
-            "en": "Location"
+            "en": "Location",
+            "nl": "Locatie",
+            "de": "Standort",
+            "fr": "Emplacement",
+            "es": "Ubicación",
+            "it": "Posizione",
+            "sv": "Plats",
+            "no": "Sted",
+            "da": "Placering",
+            "ru": "Местоположение",
+            "pl": "Lokalizacja",
+            "ko": "위치"
           },
           "children": [
             {
               "id": "latitude",
               "type": "number",
               "label": {
-                "en": "Latitude"
+                "en": "Latitude",
+                "nl": "Breedtegraad",
+                "de": "Breitengrad",
+                "fr": "Latitude",
+                "es": "Latitud",
+                "it": "Latitudine",
+                "sv": "Latitud",
+                "no": "Breddegrad",
+                "da": "Breddegrad",
+                "ru": "Широта",
+                "pl": "Szerokość geograficzna",
+                "ko": "위도"
               },
               "hint": {
-                "en": "Decimal degrees (e.g. 59.3293)"
+                "en": "Decimal degrees (e.g. 59.3293)",
+                "nl": "Decimale graden (bijv. 59.3293)",
+                "de": "Dezimalgrad (z. B. 59.3293)",
+                "fr": "Degrés décimaux (ex. 59.3293)",
+                "es": "Grados decimales (p. ej. 59.3293)",
+                "it": "Gradi decimali (es. 59.3293)",
+                "sv": "Decimalgrader (t.ex. 59.3293)",
+                "no": "Desimalgrader (f.eks. 59.3293)",
+                "da": "Decimalgrader (f.eks. 59.3293)",
+                "ru": "Десятичные градусы (напр. 59.3293)",
+                "pl": "Stopnie dziesiętne (np. 59.3293)",
+                "ko": "십진수 도 (예: 59.3293)"
               },
               "value": 0
             },
@@ -187,10 +390,32 @@
               "id": "longitude",
               "type": "number",
               "label": {
-                "en": "Longitude"
+                "en": "Longitude",
+                "nl": "Lengtegraad",
+                "de": "Längengrad",
+                "fr": "Longitude",
+                "es": "Longitud",
+                "it": "Longitudine",
+                "sv": "Longitud",
+                "no": "Lengdegrad",
+                "da": "Længdegrad",
+                "ru": "Долгота",
+                "pl": "Długość geograficzna",
+                "ko": "경도"
               },
               "hint": {
-                "en": "Decimal degrees (e.g. 18.0686)"
+                "en": "Decimal degrees (e.g. 18.0686)",
+                "nl": "Decimale graden (bijv. 18.0686)",
+                "de": "Dezimalgrad (z. B. 18.0686)",
+                "fr": "Degrés décimaux (ex. 18.0686)",
+                "es": "Grados decimales (p. ej. 18.0686)",
+                "it": "Gradi decimali (es. 18.0686)",
+                "sv": "Decimalgrader (t.ex. 18.0686)",
+                "no": "Desimalgrader (f.eks. 18.0686)",
+                "da": "Decimalgrader (f.eks. 18.0686)",
+                "ru": "Десятичные градусы (напр. 18.0686)",
+                "pl": "Stopnie dziesiętne (np. 18.0686)",
+                "ko": "십진수 도 (예: 18.0686)"
               },
               "value": 0
             }
@@ -199,14 +424,36 @@
         {
           "type": "group",
           "label": {
-            "en": "Lawn Profile"
+            "en": "Lawn Profile",
+            "nl": "Gazons profiel",
+            "de": "Rasenprofil",
+            "fr": "Profil de la pelouse",
+            "es": "Perfil del césped",
+            "it": "Profilo del prato",
+            "sv": "Gräsmattsprofil",
+            "no": "Plensprofil",
+            "da": "Plæneprofil",
+            "ru": "Профиль газона",
+            "pl": "Profil trawnika",
+            "ko": "잔디 프로필"
           },
           "children": [
             {
               "id": "lawn_name",
               "type": "text",
               "label": {
-                "en": "Lawn Name"
+                "en": "Lawn Name",
+                "nl": "Naam van het gazon",
+                "de": "Rasenname",
+                "fr": "Nom de la pelouse",
+                "es": "Nombre del césped",
+                "it": "Nome del prato",
+                "sv": "Gräsmattans namn",
+                "no": "Plenens navn",
+                "da": "Plænens navn",
+                "ru": "Название газона",
+                "pl": "Nazwa trawnika",
+                "ko": "잔디 이름"
               },
               "value": "My Lawn"
             },
@@ -214,46 +461,162 @@
               "id": "grass_type",
               "type": "dropdown",
               "label": {
-                "en": "Grass Type"
+                "en": "Grass Type",
+                "nl": "Grastype",
+                "de": "Grastyp",
+                "fr": "Type de gazon",
+                "es": "Tipo de hierba",
+                "it": "Tipo di erba",
+                "sv": "Grästyp",
+                "no": "Gresstype",
+                "da": "Græstype",
+                "ru": "Тип травы",
+                "pl": "Rodzaj trawy",
+                "ko": "잔디 종류"
               },
               "value": "cool_season",
               "values": [
-                { "id": "cool_season", "label": { "en": "Cool Season" } },
-                { "id": "warm_season", "label": { "en": "Warm Season" } },
-                { "id": "mixed",       "label": { "en": "Mixed" } }
+                {
+                  "id": "cool_season",
+                  "label": {
+                    "en": "Cool Season", "nl": "Koel seizoen", "de": "Kühle Jahreszeit",
+                    "fr": "Saison fraîche", "es": "Temporada fría", "it": "Stagione fresca",
+                    "sv": "Kallsäsong", "no": "Kald sesong", "da": "Kold sæson",
+                    "ru": "Холодный сезон", "pl": "Chłodny sezon", "ko": "한지형"
+                  }
+                },
+                {
+                  "id": "warm_season",
+                  "label": {
+                    "en": "Warm Season", "nl": "Warm seizoen", "de": "Warme Jahreszeit",
+                    "fr": "Saison chaude", "es": "Temporada cálida", "it": "Stagione calda",
+                    "sv": "Varmsäsong", "no": "Varm sesong", "da": "Varm sæson",
+                    "ru": "Тёплый сезон", "pl": "Ciepły sezon", "ko": "난지형"
+                  }
+                },
+                {
+                  "id": "mixed",
+                  "label": {
+                    "en": "Mixed", "nl": "Gemengd", "de": "Gemischt",
+                    "fr": "Mixte", "es": "Mixto", "it": "Misto",
+                    "sv": "Blandat", "no": "Blandet", "da": "Blandet",
+                    "ru": "Смешанный", "pl": "Mieszany", "ko": "혼합형"
+                  }
+                }
               ]
             },
             {
               "id": "soil_type",
               "type": "dropdown",
               "label": {
-                "en": "Soil Type"
+                "en": "Soil Type",
+                "nl": "Bodemtype",
+                "de": "Bodentyp",
+                "fr": "Type de sol",
+                "es": "Tipo de suelo",
+                "it": "Tipo di suolo",
+                "sv": "Jordtyp",
+                "no": "Jordtype",
+                "da": "Jordtype",
+                "ru": "Тип почвы",
+                "pl": "Rodzaj gleby",
+                "ko": "토양 유형"
               },
               "value": "loam",
               "values": [
-                { "id": "sand", "label": { "en": "Sandy" } },
-                { "id": "loam", "label": { "en": "Loam" } },
-                { "id": "clay", "label": { "en": "Clay" } }
+                {
+                  "id": "sand",
+                  "label": {
+                    "en": "Sandy", "nl": "Zandig", "de": "Sandig",
+                    "fr": "Sableux", "es": "Arenoso", "it": "Sabbioso",
+                    "sv": "Sandig", "no": "Sandig", "da": "Sandet",
+                    "ru": "Песчаный", "pl": "Piaszczysty", "ko": "사질토"
+                  }
+                },
+                {
+                  "id": "loam",
+                  "label": {
+                    "en": "Loam", "nl": "Leem", "de": "Lehm",
+                    "fr": "Limoneux", "es": "Franco", "it": "Limoso",
+                    "sv": "Lerjord", "no": "Moldaktig", "da": "Lerjord",
+                    "ru": "Суглинок", "pl": "Gliniasto-piaszczysty", "ko": "양토"
+                  }
+                },
+                {
+                  "id": "clay",
+                  "label": {
+                    "en": "Clay", "nl": "Klei", "de": "Ton",
+                    "fr": "Argileux", "es": "Arcilloso", "it": "Argilloso",
+                    "sv": "Lera", "no": "Leire", "da": "Ler",
+                    "ru": "Глина", "pl": "Gliniany", "ko": "점토"
+                  }
+                }
               ]
             },
             {
               "id": "shade_level",
               "type": "dropdown",
               "label": {
-                "en": "Shade Level"
+                "en": "Shade Level",
+                "nl": "Schaduniveau",
+                "de": "Schattenniveau",
+                "fr": "Niveau d'ombre",
+                "es": "Nivel de sombra",
+                "it": "Livello di ombra",
+                "sv": "Skuggningsnivå",
+                "no": "Skyggenivaå",
+                "da": "Skyggenigveau",
+                "ru": "Уровень затенения",
+                "pl": "Poziom zacienienia",
+                "ko": "그늘 수준"
               },
               "value": "full_sun",
               "values": [
-                { "id": "full_sun",      "label": { "en": "Full Sun" } },
-                { "id": "partial_shade", "label": { "en": "Partial Shade" } },
-                { "id": "shade",         "label": { "en": "Full Shade" } }
+                {
+                  "id": "full_sun",
+                  "label": {
+                    "en": "Full Sun", "nl": "Volle zon", "de": "Volle Sonne",
+                    "fr": "Plein soleil", "es": "Pleno sol", "it": "Pieno sole",
+                    "sv": "Fullt solsken", "no": "Full sol", "da": "Fuld sol",
+                    "ru": "Полное солнце", "pl": "Pełne słońce", "ko": "완전 양지"
+                  }
+                },
+                {
+                  "id": "partial_shade",
+                  "label": {
+                    "en": "Partial Shade", "nl": "Gedeeltelijke schaduw", "de": "Halbschatten",
+                    "fr": "Mi-ombre", "es": "Semisombra", "it": "Mezza ombra",
+                    "sv": "Halvskugga", "no": "Halvskygge", "da": "Halvskygge",
+                    "ru": "Полутень", "pl": "Częściowy cień", "ko": "반그늘"
+                  }
+                },
+                {
+                  "id": "shade",
+                  "label": {
+                    "en": "Full Shade", "nl": "Volledige schaduw", "de": "Voller Schatten",
+                    "fr": "Ombre complète", "es": "Sombra total", "it": "Ombra totale",
+                    "sv": "Fullständig skugga", "no": "Full skygge", "da": "Fuld skygge",
+                    "ru": "Полная тень", "pl": "Pełny cień", "ko": "완전 음지"
+                  }
+                }
               ]
             },
             {
               "id": "root_depth_cm",
               "type": "number",
               "label": {
-                "en": "Root Depth (cm)"
+                "en": "Root Depth (cm)",
+                "nl": "Worteldiepte (cm)",
+                "de": "Wurzeltiefe (cm)",
+                "fr": "Profondeur des racines (cm)",
+                "es": "Profundidad de raíces (cm)",
+                "it": "Profondità radici (cm)",
+                "sv": "Rotdjup (cm)",
+                "no": "Rotdybde (cm)",
+                "da": "Roddybde (cm)",
+                "ru": "Глубина корней (см)",
+                "pl": "Głębokość korzeni (cm)",
+                "ko": "뿌리 깊이 (cm)"
               },
               "value": 6,
               "min": 1,
@@ -264,14 +627,36 @@
         {
           "type": "group",
           "label": {
-            "en": "Thresholds"
+            "en": "Thresholds",
+            "nl": "Drempelwaarden",
+            "de": "Schwellenwerte",
+            "fr": "Seuils",
+            "es": "Umbrales",
+            "it": "Soglie",
+            "sv": "Tröskelvärden",
+            "no": "Terskelverdier",
+            "da": "Tærskelværdier",
+            "ru": "Пороговые значения",
+            "pl": "Progi",
+            "ko": "임계값"
           },
           "children": [
             {
               "id": "preferred_mowing_min_temp",
               "type": "number",
               "label": {
-                "en": "Min. Temp for Mowing (°C)"
+                "en": "Min. Temp for Mowing (°C)",
+                "nl": "Min. temperatuur voor maaien (°C)",
+                "de": "Min. Temperatur zum Mähen (°C)",
+                "fr": "Temp. min. pour tondre (°C)",
+                "es": "Temp. mín. para cortar (°C)",
+                "it": "Temp. min. per tagliare (°C)",
+                "sv": "Min. temp. för klippning (°C)",
+                "no": "Min. temp. for klipping (°C)",
+                "da": "Min. temp. til slåning (°C)",
+                "ru": "Мин. темп. для скашивания (°C)",
+                "pl": "Min. temp. do koszenia (°C)",
+                "ko": "잔디깎기 최소 온도 (°C)"
               },
               "value": 8
             },
@@ -279,7 +664,18 @@
               "id": "preferred_fertilizing_min_temp",
               "type": "number",
               "label": {
-                "en": "Min. Temp for Fertilizing (°C)"
+                "en": "Min. Temp for Fertilizing (°C)",
+                "nl": "Min. temperatuur voor bemesting (°C)",
+                "de": "Min. Temperatur zum Düngen (°C)",
+                "fr": "Temp. min. pour fertiliser (°C)",
+                "es": "Temp. mín. para fertilizar (°C)",
+                "it": "Temp. min. per fertilizzare (°C)",
+                "sv": "Min. temp. för gödsling (°C)",
+                "no": "Min. temp. for gjødsling (°C)",
+                "da": "Min. temp. til gødskning (°C)",
+                "ru": "Мин. темп. для удобрения (°C)",
+                "pl": "Min. temp. do nawożenia (°C)",
+                "ko": "시비 최소 온도 (°C)"
               },
               "value": 10
             },
@@ -287,7 +683,18 @@
               "id": "watering_threshold_mm_24h",
               "type": "number",
               "label": {
-                "en": "Watering Threshold – Max Rain 24 h (mm)"
+                "en": "Watering Threshold – Max Rain 24 h (mm)",
+                "nl": "Gietdrempel – max. neerslag 24 u (mm)",
+                "de": "Bewässerungsschwelle – Max. Regen 24 h (mm)",
+                "fr": "Seuil d'arrosage – Pluie max. 24 h (mm)",
+                "es": "Umbral de riego – Lluvia máx. 24 h (mm)",
+                "it": "Soglia irrigazione – Pioggia max. 24 h (mm)",
+                "sv": "Bevattningströskel – Max. regn 24 h (mm)",
+                "no": "Vanningsterskel – Maks. regn 24 t (mm)",
+                "da": "Vandingstærskel – Maks. regn 24 t (mm)",
+                "ru": "Порог полива – Макс. осадки 24 ч (мм)",
+                "pl": "Próg podlewania – Maks. deszcz 24 h (mm)",
+                "ko": "관수 임계값 – 최대 강수량 24h (mm)"
               },
               "value": 3
             }
@@ -296,14 +703,36 @@
         {
           "type": "group",
           "label": {
-            "en": "Update & Notifications"
+            "en": "Update & Notifications",
+            "nl": "Update en meldingen",
+            "de": "Aktualisierung & Benachrichtigungen",
+            "fr": "Mise à jour et notifications",
+            "es": "Actualización y notificaciones",
+            "it": "Aggiornamento e notifiche",
+            "sv": "Uppdatering och aviseringar",
+            "no": "Oppdatering og varsler",
+            "da": "Opdatering og notifikationer",
+            "ru": "Обновление и уведомления",
+            "pl": "Aktualizacja i powiadomienia",
+            "ko": "업데이트 및 알림"
           },
           "children": [
             {
               "id": "update_interval_minutes",
               "type": "number",
               "label": {
-                "en": "Update Interval (minutes)"
+                "en": "Update Interval (minutes)",
+                "nl": "Update-interval (minuten)",
+                "de": "Aktualisierungsintervall (Minuten)",
+                "fr": "Intervalle de mise à jour (minutes)",
+                "es": "Intervalo de actualización (minutos)",
+                "it": "Intervallo di aggiornamento (minuti)",
+                "sv": "Uppdateringsintervall (minuter)",
+                "no": "Oppdateringsintervall (minutter)",
+                "da": "Opdateringsinterval (minutter)",
+                "ru": "Интервал обновления (минуты)",
+                "pl": "Interwał aktualizacji (minuty)",
+                "ko": "업데이트 간격 (분)"
               },
               "value": 60,
               "min": 15,
@@ -313,7 +742,18 @@
               "id": "enable_notifications",
               "type": "checkbox",
               "label": {
-                "en": "Enable Homey Notifications"
+                "en": "Enable Homey Notifications",
+                "nl": "Homey-meldingen inschakelen",
+                "de": "Homey-Benachrichtigungen aktivieren",
+                "fr": "Activer les notifications Homey",
+                "es": "Activar notificaciones de Homey",
+                "it": "Abilita notifiche Homey",
+                "sv": "Aktivera Homey-aviseringar",
+                "no": "Aktiver Homey-varsler",
+                "da": "Aktivér Homey-notifikationer",
+                "ru": "Включить уведомления Homey",
+                "pl": "Włącz powiadomienia Homey",
+                "ko": "Homey 알림 활성화"
               },
               "value": false
             }
@@ -328,13 +768,46 @@
       {
         "id": "soil_temp_above",
         "title": {
-          "en": "Root zone temperature rises above"
+          "en": "Root zone temperature rises above",
+          "nl": "Wortelzonetemperatuur stijgt boven",
+          "de": "Wurzelzonentemperatur steigt über",
+          "fr": "La température de la zone racinaire dépasse",
+          "es": "La temperatura de la zona radicular sube por encima de",
+          "it": "La temperatura della zona radicale supera",
+          "sv": "Rotzonstemperaturen stiger över",
+          "no": "Rotsonetemperaturen stiger over",
+          "da": "Rodzonetemperaturen stiger over",
+          "ru": "Температура корневой зоны поднимается выше",
+          "pl": "Temperatura strefy korzeniowej wzrasta powyżej",
+          "ko": "근권 온도가 다음 이상으로 상승"
         },
         "titleFormatted": {
-          "en": "Root zone temperature rises above [[temperature]] °C"
+          "en": "Root zone temperature rises above [[temperature]] °C",
+          "nl": "Wortelzonetemperatuur stijgt boven [[temperature]] °C",
+          "de": "Wurzelzonentemperatur steigt über [[temperature]] °C",
+          "fr": "La température de la zone racinaire dépasse [[temperature]] °C",
+          "es": "La temperatura de la zona radicular sube por encima de [[temperature]] °C",
+          "it": "La temperatura della zona radicale supera [[temperature]] °C",
+          "sv": "Rotzonstemperaturen stiger över [[temperature]] °C",
+          "no": "Rotsonetemperaturen stiger over [[temperature]] °C",
+          "da": "Rodzonetemperaturen stiger over [[temperature]] °C",
+          "ru": "Температура корневой зоны поднимается выше [[temperature]] °C",
+          "pl": "Temperatura strefy korzeniowej wzrasta powyżej [[temperature]] °C",
+          "ko": "근권 온도가 [[temperature]] °C 이상으로 상승"
         },
         "hint": {
-          "en": "Fires once when root zone temperature crosses above the set threshold."
+          "en": "Fires once when root zone temperature crosses above the set threshold.",
+          "nl": "Activeert eenmalig wanneer de wortelzonetemperatuur de ingestelde drempel overschrijdt.",
+          "de": "Wird einmal ausgelöst, wenn die Wurzelzonentemperatur den eingestellten Schwellenwert überschreitet.",
+          "fr": "Se déclenche une fois lorsque la température de la zone racinaire dépasse le seuil défini.",
+          "es": "Se activa una vez cuando la temperatura de la zona radicular supera el umbral establecido.",
+          "it": "Si attiva una volta quando la temperatura della zona radicale supera la soglia impostata.",
+          "sv": "Utlöses en gång när rotzonstemperaturen överstiger det inställda tröskelvärdet.",
+          "no": "Utløses én gang når rotsonetemperaturen overstiger den angitte terskelen.",
+          "da": "Udløses én gang, når rodzonetemperaturen overstiger den angivne tærskel.",
+          "ru": "Срабатывает один раз, когда температура корневой зоны превышает заданный порог.",
+          "pl": "Wyzwala się raz, gdy temperatura strefy korzeniowej przekroczy ustawiony próg.",
+          "ko": "근권 온도가 설정된 임계값을 초과할 때 한 번 실행됩니다."
         },
         "args": [
           {
@@ -345,7 +818,12 @@
           {
             "name": "temperature",
             "type": "number",
-            "title": { "en": "Temperature (°C)" },
+            "title": {
+              "en": "Temperature (°C)", "nl": "Temperatuur (°C)", "de": "Temperatur (°C)",
+              "fr": "Température (°C)", "es": "Temperatura (°C)", "it": "Temperatura (°C)",
+              "sv": "Temperatur (°C)", "no": "Temperatur (°C)", "da": "Temperatur (°C)",
+              "ru": "Температура (°C)", "pl": "Temperatura (°C)", "ko": "온도 (°C)"
+            },
             "placeholder": { "en": "15" }
           }
         ],
@@ -353,7 +831,12 @@
           {
             "name": "temperature",
             "type": "number",
-            "title": { "en": "Root Zone Temp (°C)" },
+            "title": {
+              "en": "Root Zone Temp (°C)", "nl": "Wortelzonetemperatuur (°C)", "de": "Wurzelzonentemperatur (°C)",
+              "fr": "Temp. zone racinaire (°C)", "es": "Temp. zona radicular (°C)", "it": "Temp. zona radicale (°C)",
+              "sv": "Rotzonstemperatur (°C)", "no": "Rotsonetemperatur (°C)", "da": "Rodzonetemperatur (°C)",
+              "ru": "Темп. корневой зоны (°C)", "pl": "Temp. strefy korzeniowej (°C)", "ko": "근권 온도 (°C)"
+            },
             "example": 14.5
           }
         ]
@@ -361,13 +844,46 @@
       {
         "id": "soil_temp_below",
         "title": {
-          "en": "Root zone temperature drops below"
+          "en": "Root zone temperature drops below",
+          "nl": "Wortelzonetemperatuur daalt onder",
+          "de": "Wurzelzonentemperatur fällt unter",
+          "fr": "La température de la zone racinaire descend sous",
+          "es": "La temperatura de la zona radicular baja de",
+          "it": "La temperatura della zona radicale scende sotto",
+          "sv": "Rotzonstemperaturen sjunker under",
+          "no": "Rotsonetemperaturen synker under",
+          "da": "Rodzonetemperaturen falder under",
+          "ru": "Температура корневой зоны опускается ниже",
+          "pl": "Temperatura strefy korzeniowej spada poniżej",
+          "ko": "근권 온도가 다음 미만으로 하락"
         },
         "titleFormatted": {
-          "en": "Root zone temperature drops below [[temperature]] °C"
+          "en": "Root zone temperature drops below [[temperature]] °C",
+          "nl": "Wortelzonetemperatuur daalt onder [[temperature]] °C",
+          "de": "Wurzelzonentemperatur fällt unter [[temperature]] °C",
+          "fr": "La température de la zone racinaire descend sous [[temperature]] °C",
+          "es": "La temperatura de la zona radicular baja de [[temperature]] °C",
+          "it": "La temperatura della zona radicale scende sotto [[temperature]] °C",
+          "sv": "Rotzonstemperaturen sjunker under [[temperature]] °C",
+          "no": "Rotsonetemperaturen synker under [[temperature]] °C",
+          "da": "Rodzonetemperaturen falder under [[temperature]] °C",
+          "ru": "Температура корневой зоны опускается ниже [[temperature]] °C",
+          "pl": "Temperatura strefy korzeniowej spada poniżej [[temperature]] °C",
+          "ko": "근권 온도가 [[temperature]] °C 미만으로 하락"
         },
         "hint": {
-          "en": "Fires once when root zone temperature crosses below the set threshold."
+          "en": "Fires once when root zone temperature crosses below the set threshold.",
+          "nl": "Activeert eenmalig wanneer de wortelzonetemperatuur onder de ingestelde drempel daalt.",
+          "de": "Wird einmal ausgelöst, wenn die Wurzelzonentemperatur unter den Schwellenwert fällt.",
+          "fr": "Se déclenche une fois lorsque la température descend sous le seuil défini.",
+          "es": "Se activa una vez cuando la temperatura baja del umbral establecido.",
+          "it": "Si attiva una volta quando la temperatura scende sotto la soglia impostata.",
+          "sv": "Utlöses en gång när temperaturen sjunker under tröskelvärdet.",
+          "no": "Utløses én gang når temperaturen synker under den angitte terskelen.",
+          "da": "Udløses én gang, når temperaturen falder under den angivne tærskel.",
+          "ru": "Срабатывает один раз, когда температура опускается ниже заданного порога.",
+          "pl": "Wyzwala się raz, gdy temperatura spada poniżej ustawionego progu.",
+          "ko": "근권 온도가 설정된 임계값 미만으로 떨어질 때 한 번 실행됩니다."
         },
         "args": [
           {
@@ -378,7 +894,12 @@
           {
             "name": "temperature",
             "type": "number",
-            "title": { "en": "Temperature (°C)" },
+            "title": {
+              "en": "Temperature (°C)", "nl": "Temperatuur (°C)", "de": "Temperatur (°C)",
+              "fr": "Température (°C)", "es": "Temperatura (°C)", "it": "Temperatura (°C)",
+              "sv": "Temperatur (°C)", "no": "Temperatur (°C)", "da": "Temperatur (°C)",
+              "ru": "Температура (°C)", "pl": "Temperatura (°C)", "ko": "온도 (°C)"
+            },
             "placeholder": { "en": "5" }
           }
         ],
@@ -386,7 +907,12 @@
           {
             "name": "temperature",
             "type": "number",
-            "title": { "en": "Root Zone Temp (°C)" },
+            "title": {
+              "en": "Root Zone Temp (°C)", "nl": "Wortelzonetemperatuur (°C)", "de": "Wurzelzonentemperatur (°C)",
+              "fr": "Temp. zone racinaire (°C)", "es": "Temp. zona radicular (°C)", "it": "Temp. zona radicale (°C)",
+              "sv": "Rotzonstemperatur (°C)", "no": "Rotsonetemperatur (°C)", "da": "Rodzonetemperatur (°C)",
+              "ru": "Темп. корневой зоны (°C)", "pl": "Temp. strefy korzeniowej (°C)", "ko": "근권 온도 (°C)"
+            },
             "example": 4.2
           }
         ]
@@ -394,10 +920,32 @@
       {
         "id": "growth_score_above",
         "title": {
-          "en": "Growth score rises above"
+          "en": "Growth score rises above",
+          "nl": "Groeiscore stijgt boven",
+          "de": "Wachstumswert steigt über",
+          "fr": "Le score de croissance dépasse",
+          "es": "La puntuación de crecimiento supera",
+          "it": "Il punteggio di crescita supera",
+          "sv": "Tillväxtpoängen stiger över",
+          "no": "Vekstpoengene stiger over",
+          "da": "Vækstpoint stiger over",
+          "ru": "Оценка роста поднимается выше",
+          "pl": "Wynik wzrostu wzrasta powyżej",
+          "ko": "성장 점수가 다음을 초과"
         },
         "titleFormatted": {
-          "en": "Growth score rises above [[score]]"
+          "en": "Growth score rises above [[score]]",
+          "nl": "Groeiscore stijgt boven [[score]]",
+          "de": "Wachstumswert steigt über [[score]]",
+          "fr": "Le score de croissance dépasse [[score]]",
+          "es": "La puntuación de crecimiento supera [[score]]",
+          "it": "Il punteggio di crescita supera [[score]]",
+          "sv": "Tillväxtpoängen stiger över [[score]]",
+          "no": "Vekstpoengene stiger over [[score]]",
+          "da": "Vækstpoint stiger over [[score]]",
+          "ru": "Оценка роста поднимается выше [[score]]",
+          "pl": "Wynik wzrostu wzrasta powyżej [[score]]",
+          "ko": "성장 점수가 [[score]]을(를) 초과"
         },
         "args": [
           {
@@ -408,7 +956,12 @@
           {
             "name": "score",
             "type": "number",
-            "title": { "en": "Score (0–100)" },
+            "title": {
+              "en": "Score (0–100)", "nl": "Score (0–100)", "de": "Wert (0–100)",
+              "fr": "Score (0–100)", "es": "Puntuación (0–100)", "it": "Punteggio (0–100)",
+              "sv": "Poäng (0–100)", "no": "Poeng (0–100)", "da": "Point (0–100)",
+              "ru": "Оценка (0–100)", "pl": "Wynik (0–100)", "ko": "점수 (0–100)"
+            },
             "placeholder": { "en": "50" }
           }
         ],
@@ -416,7 +969,12 @@
           {
             "name": "score",
             "type": "number",
-            "title": { "en": "Growth Score" },
+            "title": {
+              "en": "Growth Score", "nl": "Groeiscore", "de": "Wachstumswert",
+              "fr": "Score de croissance", "es": "Puntuación de crecimiento", "it": "Punteggio crescita",
+              "sv": "Tillväxtpoäng", "no": "Vekstpoeng", "da": "Vækstpoint",
+              "ru": "Оценка роста", "pl": "Wynik wzrostu", "ko": "성장 점수"
+            },
             "example": 65
           }
         ]
@@ -424,20 +982,32 @@
       {
         "id": "mowing_recommended_changed",
         "title": {
-          "en": "Mowing recommendation changed"
+          "en": "Mowing recommendation changed",
+          "nl": "Maaiaanbeveling gewijzigd",
+          "de": "Mähempfehlung geändert",
+          "fr": "Recommandation de tonte modifiée",
+          "es": "Recomendación de corte cambiada",
+          "it": "Raccomandazione di taglio cambiata",
+          "sv": "Klippningsrekommendation ändrad",
+          "no": "Klippingsanbefaling endret",
+          "da": "Slåningsanbefaling ændret",
+          "ru": "Рекомендация по скашиванию изменилась",
+          "pl": "Zalecenie koszenia zmieniło się",
+          "ko": "잔디깎기 권장 사항 변경"
         },
         "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=lawn_soil_optimizer"
-          }
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }
         ],
         "tokens": [
           {
             "name": "recommended",
             "type": "boolean",
-            "title": { "en": "Mowing Recommended" },
+            "title": {
+              "en": "Mowing Recommended", "nl": "Maaien aanbevolen", "de": "Mähen empfohlen",
+              "fr": "Tonte recommandée", "es": "Corte recomendado", "it": "Taglio consigliato",
+              "sv": "Klippning rekommenderas", "no": "Klipping anbefales", "da": "Slåning anbefales",
+              "ru": "Скашивание рекомендуется", "pl": "Koszenie zalecane", "ko": "잔디깎기 권장"
+            },
             "example": true
           }
         ]
@@ -445,20 +1015,32 @@
       {
         "id": "watering_recommended_changed",
         "title": {
-          "en": "Watering recommendation changed"
+          "en": "Watering recommendation changed",
+          "nl": "Gietaanbeveling gewijzigd",
+          "de": "Bewässerungsempfehlung geändert",
+          "fr": "Recommandation d'arrosage modifiée",
+          "es": "Recomendación de riego cambiada",
+          "it": "Raccomandazione di irrigazione cambiata",
+          "sv": "Bevattningsrekommendation ändrad",
+          "no": "Vanningsanbefaling endret",
+          "da": "Vandingsanbefaling ændret",
+          "ru": "Рекомендация по поливу изменилась",
+          "pl": "Zalecenie podlewania zmieniło się",
+          "ko": "관수 권장 사항 변경"
         },
         "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=lawn_soil_optimizer"
-          }
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }
         ],
         "tokens": [
           {
             "name": "recommended",
             "type": "boolean",
-            "title": { "en": "Watering Recommended" },
+            "title": {
+              "en": "Watering Recommended", "nl": "Gieten aanbevolen", "de": "Bewässerung empfohlen",
+              "fr": "Arrosage recommandé", "es": "Riego recomendado", "it": "Irrigazione consigliata",
+              "sv": "Bevattning rekommenderas", "no": "Vanning anbefales", "da": "Vanding anbefales",
+              "ru": "Полив рекомендуется", "pl": "Podlewanie zalecane", "ko": "관수 권장"
+            },
             "example": true
           }
         ]
@@ -466,20 +1048,32 @@
       {
         "id": "fertilizing_recommended_changed",
         "title": {
-          "en": "Fertilizing recommendation changed"
+          "en": "Fertilizing recommendation changed",
+          "nl": "Bemestingsaanbeveling gewijzigd",
+          "de": "Düngungsempfehlung geändert",
+          "fr": "Recommandation de fertilisation modifiée",
+          "es": "Recomendación de fertilización cambiada",
+          "it": "Raccomandazione di fertilizzazione cambiata",
+          "sv": "Gödslingsrekommendation ändrad",
+          "no": "Gjødslingsanbefaling endret",
+          "da": "Gødskningsanbefaling ændret",
+          "ru": "Рекомендация по удобрению изменилась",
+          "pl": "Zalecenie nawożenia zmieniło się",
+          "ko": "시비 권장 사항 변경"
         },
         "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=lawn_soil_optimizer"
-          }
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }
         ],
         "tokens": [
           {
             "name": "recommended",
             "type": "boolean",
-            "title": { "en": "Fertilizing Recommended" },
+            "title": {
+              "en": "Fertilizing Recommended", "nl": "Bemesting aanbevolen", "de": "Düngung empfohlen",
+              "fr": "Fertilisation recommandée", "es": "Fertilización recomendada", "it": "Fertilizzazione consigliata",
+              "sv": "Gödsling rekommenderas", "no": "Gjødsling anbefales", "da": "Gødskning anbefales",
+              "ru": "Удобрение рекомендуется", "pl": "Nawożenie zalecane", "ko": "시비 권장"
+            },
             "example": false
           }
         ]
@@ -487,46 +1081,72 @@
       {
         "id": "frost_risk_started",
         "title": {
-          "en": "Frost risk detected"
+          "en": "Frost risk detected",
+          "nl": "Vorstrisico gedetecteerd",
+          "de": "Frostgefahr erkannt",
+          "fr": "Risque de gel détecté",
+          "es": "Riesgo de heladas detectado",
+          "it": "Rischio gelo rilevato",
+          "sv": "Frostrisk detekterad",
+          "no": "Frostrisiko oppdaget",
+          "da": "Frostrisiko registreret",
+          "ru": "Обнаружен риск заморозков",
+          "pl": "Wykryto ryzyko mrozu",
+          "ko": "서리 위험 감지됨"
         },
         "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=lawn_soil_optimizer"
-          }
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }
         ]
       },
       {
         "id": "heat_stress_started",
         "title": {
-          "en": "Heat stress risk detected"
+          "en": "Heat stress risk detected",
+          "nl": "Hittestress risico gedetecteerd",
+          "de": "Hitzestress-Risiko erkannt",
+          "fr": "Risque de stress thermique détecté",
+          "es": "Riesgo de estrés por calor detectado",
+          "it": "Rischio stress da caldo rilevato",
+          "sv": "Värmestressrisk detekterad",
+          "no": "Varmestresstrisiko oppdaget",
+          "da": "Varmestresstrisiko registreret",
+          "ru": "Обнаружен риск теплового стресса",
+          "pl": "Wykryto ryzyko stresu termicznego",
+          "ko": "열 스트레스 위험 감지됨"
         },
         "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=lawn_soil_optimizer"
-          }
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }
         ]
       },
       {
         "id": "lawn_status_changed",
         "title": {
-          "en": "Lawn status text changed"
+          "en": "Lawn status text changed",
+          "nl": "Gazonstatustekst gewijzigd",
+          "de": "Rasenstatustext geändert",
+          "fr": "Texte d'état de la pelouse modifié",
+          "es": "Texto de estado del césped cambiado",
+          "it": "Testo stato prato cambiato",
+          "sv": "Gräsmattans statustext ändrad",
+          "no": "Plenens statustekst endret",
+          "da": "Plænens statustekst ændret",
+          "ru": "Текст состояния газона изменился",
+          "pl": "Tekst statusu trawnika zmienił się",
+          "ko": "잔디 상태 텍스트 변경됨"
         },
         "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=lawn_soil_optimizer"
-          }
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }
         ],
         "tokens": [
           {
             "name": "status",
             "type": "string",
-            "title": { "en": "Status Text" },
+            "title": {
+              "en": "Status Text", "nl": "Statustekst", "de": "Statustext",
+              "fr": "Texte d'état", "es": "Texto de estado", "it": "Testo stato",
+              "sv": "Statustext", "no": "Statustekst", "da": "Statustekst",
+              "ru": "Текст состояния", "pl": "Tekst statusu", "ko": "상태 텍스트"
+            },
             "example": "Good growth conditions"
           }
         ]
@@ -537,21 +1157,44 @@
       {
         "id": "soil_temp_is_above",
         "title": {
-          "en": "Root zone temp !{{is|is not}} above"
+          "en": "Root zone temp !{{is|is not}} above",
+          "nl": "Wortelzonetemperatuur !{{is|is niet}} boven",
+          "de": "Wurzelzonentemperatur !{{ist|ist nicht}} über",
+          "fr": "La temp. de la zone racinaire !{{est|n'est pas}} au-dessus de",
+          "es": "La temp. de la zona radicular !{{es|no es}} superior a",
+          "it": "La temp. della zona radicale !{{è|non è}} sopra",
+          "sv": "Rotzonstemperaturen !{{är|är inte}} över",
+          "no": "Rotsonetemperaturen !{{er|er ikke}} over",
+          "da": "Rodzonetemperaturen !{{er|er ikke}} over",
+          "ru": "Температура корневой зоны !{{выше|не выше}}",
+          "pl": "Temperatura strefy korzeniowej !{{jest|nie jest}} powyżej",
+          "ko": "근권 온도 !{{이상|미만}"
         },
         "titleFormatted": {
-          "en": "Root zone temp !{{is|is not}} above [[temperature]] °C"
+          "en": "Root zone temp !{{is|is not}} above [[temperature]] °C",
+          "nl": "Wortelzonetemperatuur !{{is|is niet}} boven [[temperature]] °C",
+          "de": "Wurzelzonentemperatur !{{ist|ist nicht}} über [[temperature]] °C",
+          "fr": "Temp. zone racinaire !{{est|n'est pas}} au-dessus de [[temperature]] °C",
+          "es": "Temp. zona radicular !{{es|no es}} superior a [[temperature]] °C",
+          "it": "Temp. zona radicale !{{è|non è}} sopra [[temperature]] °C",
+          "sv": "Rotzonstemperatur !{{är|är inte}} över [[temperature]] °C",
+          "no": "Rotsonetemperatur !{{er|er ikke}} over [[temperature]] °C",
+          "da": "Rodzonetemperatur !{{er|er ikke}} over [[temperature]] °C",
+          "ru": "Темп. корневой зоны !{{выше|не выше}} [[temperature]] °C",
+          "pl": "Temp. strefy korzeniowej !{{jest|nie jest}} powyżej [[temperature]] °C",
+          "ko": "근권 온도 !{{이상|미만} [[temperature]] °C"
         },
         "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=lawn_soil_optimizer"
-          },
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" },
           {
             "name": "temperature",
             "type": "number",
-            "title": { "en": "Temperature (°C)" },
+            "title": {
+              "en": "Temperature (°C)", "nl": "Temperatuur (°C)", "de": "Temperatur (°C)",
+              "fr": "Température (°C)", "es": "Temperatura (°C)", "it": "Temperatura (°C)",
+              "sv": "Temperatur (°C)", "no": "Temperatur (°C)", "da": "Temperatur (°C)",
+              "ru": "Температура (°C)", "pl": "Temperatura (°C)", "ko": "온도 (°C)"
+            },
             "placeholder": { "en": "10" }
           }
         ]
@@ -559,21 +1202,44 @@
       {
         "id": "soil_temp_is_below",
         "title": {
-          "en": "Root zone temp !{{is|is not}} below"
+          "en": "Root zone temp !{{is|is not}} below",
+          "nl": "Wortelzonetemperatuur !{{is|is niet}} onder",
+          "de": "Wurzelzonentemperatur !{{ist|ist nicht}} unter",
+          "fr": "La temp. de la zone racinaire !{{est|n'est pas}} en dessous de",
+          "es": "La temp. de la zona radicular !{{es|no es}} inferior a",
+          "it": "La temp. della zona radicale !{{è|non è}} sotto",
+          "sv": "Rotzonstemperaturen !{{är|är inte}} under",
+          "no": "Rotsonetemperaturen !{{er|er ikke}} under",
+          "da": "Rodzonetemperaturen !{{er|er ikke}} under",
+          "ru": "Температура корневой зоны !{{ниже|не ниже}}",
+          "pl": "Temperatura strefy korzeniowej !{{jest|nie jest}} poniżej",
+          "ko": "근권 온도 !{{미만|이상}"
         },
         "titleFormatted": {
-          "en": "Root zone temp !{{is|is not}} below [[temperature]] °C"
+          "en": "Root zone temp !{{is|is not}} below [[temperature]] °C",
+          "nl": "Wortelzonetemperatuur !{{is|is niet}} onder [[temperature]] °C",
+          "de": "Wurzelzonentemperatur !{{ist|ist nicht}} unter [[temperature]] °C",
+          "fr": "Temp. zone racinaire !{{est|n'est pas}} en dessous de [[temperature]] °C",
+          "es": "Temp. zona radicular !{{es|no es}} inferior a [[temperature]] °C",
+          "it": "Temp. zona radicale !{{è|non è}} sotto [[temperature]] °C",
+          "sv": "Rotzonstemperatur !{{är|är inte}} under [[temperature]] °C",
+          "no": "Rotsonetemperatur !{{er|er ikke}} under [[temperature]] °C",
+          "da": "Rodzonetemperatur !{{er|er ikke}} under [[temperature]] °C",
+          "ru": "Темп. корневой зоны !{{ниже|не ниже}} [[temperature]] °C",
+          "pl": "Temp. strefy korzeniowej !{{jest|nie jest}} poniżej [[temperature]] °C",
+          "ko": "근권 온도 !{{미만|이상} [[temperature]] °C"
         },
         "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=lawn_soil_optimizer"
-          },
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" },
           {
             "name": "temperature",
             "type": "number",
-            "title": { "en": "Temperature (°C)" },
+            "title": {
+              "en": "Temperature (°C)", "nl": "Temperatuur (°C)", "de": "Temperatur (°C)",
+              "fr": "Température (°C)", "es": "Temperatura (°C)", "it": "Temperatura (°C)",
+              "sv": "Temperatur (°C)", "no": "Temperatur (°C)", "da": "Temperatur (°C)",
+              "ru": "Температура (°C)", "pl": "Temperatura (°C)", "ko": "온도 (°C)"
+            },
             "placeholder": { "en": "5" }
           }
         ]
@@ -581,21 +1247,44 @@
       {
         "id": "growth_score_is_above",
         "title": {
-          "en": "Growth score !{{is|is not}} above"
+          "en": "Growth score !{{is|is not}} above",
+          "nl": "Groeiscore !{{is|is niet}} boven",
+          "de": "Wachstumswert !{{ist|ist nicht}} über",
+          "fr": "Score de croissance !{{est|n'est pas}} au-dessus de",
+          "es": "Puntuación de crecimiento !{{es|no es}} superior a",
+          "it": "Punteggio crescita !{{è|non è}} sopra",
+          "sv": "Tillväxtpoäng !{{är|är inte}} över",
+          "no": "Vekstpoeng !{{er|er ikke}} over",
+          "da": "Vækstpoint !{{er|er ikke}} over",
+          "ru": "Оценка роста !{{выше|не выше}}",
+          "pl": "Wynik wzrostu !{{jest|nie jest}} powyżej",
+          "ko": "성장 점수 !{{이상|미만}"
         },
         "titleFormatted": {
-          "en": "Growth score !{{is|is not}} above [[score]]"
+          "en": "Growth score !{{is|is not}} above [[score]]",
+          "nl": "Groeiscore !{{is|is niet}} boven [[score]]",
+          "de": "Wachstumswert !{{ist|ist nicht}} über [[score]]",
+          "fr": "Score de croissance !{{est|n'est pas}} au-dessus de [[score]]",
+          "es": "Puntuación de crecimiento !{{es|no es}} superior a [[score]]",
+          "it": "Punteggio crescita !{{è|non è}} sopra [[score]]",
+          "sv": "Tillväxtpoäng !{{är|är inte}} över [[score]]",
+          "no": "Vekstpoeng !{{er|er ikke}} over [[score]]",
+          "da": "Vækstpoint !{{er|er ikke}} over [[score]]",
+          "ru": "Оценка роста !{{выше|не выше}} [[score]]",
+          "pl": "Wynik wzrostu !{{jest|nie jest}} powyżej [[score]]",
+          "ko": "성장 점수 !{{이상|미만} [[score]]"
         },
         "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=lawn_soil_optimizer"
-          },
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" },
           {
             "name": "score",
             "type": "number",
-            "title": { "en": "Score (0–100)" },
+            "title": {
+              "en": "Score (0–100)", "nl": "Score (0–100)", "de": "Wert (0–100)",
+              "fr": "Score (0–100)", "es": "Puntuación (0–100)", "it": "Punteggio (0–100)",
+              "sv": "Poäng (0–100)", "no": "Poeng (0–100)", "da": "Point (0–100)",
+              "ru": "Оценка (0–100)", "pl": "Wynik (0–100)", "ko": "점수 (0–100)"
+            },
             "placeholder": { "en": "50" }
           }
         ]
@@ -603,66 +1292,101 @@
       {
         "id": "mowing_is_recommended",
         "title": {
-          "en": "Mowing !{{is|is not}} recommended"
+          "en": "Mowing !{{is|is not}} recommended",
+          "nl": "Maaien !{{is|is niet}} aanbevolen",
+          "de": "Mähen !{{ist|ist nicht}} empfohlen",
+          "fr": "La tonte !{{est|n'est pas}} recommandée",
+          "es": "El corte !{{está|no está}} recomendado",
+          "it": "Il taglio !{{è|non è}} consigliato",
+          "sv": "Klippning !{{rekommenderas|rekommenderas inte}}",
+          "no": "Klipping !{{anbefales|anbefales ikke}}",
+          "da": "Slåning !{{anbefales|anbefales ikke}}",
+          "ru": "Скашивание !{{рекомендуется|не рекомендуется}}",
+          "pl": "Koszenie !{{jest|nie jest}} zalecane",
+          "ko": "잔디깎기 !{{권장됨|권장 안 됨}"
         },
         "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=lawn_soil_optimizer"
-          }
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }
         ]
       },
       {
         "id": "watering_is_recommended",
         "title": {
-          "en": "Watering !{{is|is not}} recommended"
+          "en": "Watering !{{is|is not}} recommended",
+          "nl": "Gieten !{{is|is niet}} aanbevolen",
+          "de": "Bewässerung !{{ist|ist nicht}} empfohlen",
+          "fr": "L'arrosage !{{est|n'est pas}} recommandé",
+          "es": "El riego !{{está|no está}} recomendado",
+          "it": "L'irrigazione !{{è|non è}} consigliata",
+          "sv": "Bevattning !{{rekommenderas|rekommenderas inte}}",
+          "no": "Vanning !{{anbefales|anbefales ikke}}",
+          "da": "Vanding !{{anbefales|anbefales ikke}}",
+          "ru": "Полив !{{рекомендуется|не рекомендуется}}",
+          "pl": "Podlewanie !{{jest|nie jest}} zalecane",
+          "ko": "관수 !{{권장됨|권장 안 됨}"
         },
         "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=lawn_soil_optimizer"
-          }
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }
         ]
       },
       {
         "id": "fertilizing_is_recommended",
         "title": {
-          "en": "Fertilizing !{{is|is not}} recommended"
+          "en": "Fertilizing !{{is|is not}} recommended",
+          "nl": "Bemesting !{{is|is niet}} aanbevolen",
+          "de": "Düngung !{{ist|ist nicht}} empfohlen",
+          "fr": "La fertilisation !{{est|n'est pas}} recommandée",
+          "es": "La fertilización !{{está|no está}} recomendada",
+          "it": "La fertilizzazione !{{è|non è}} consigliata",
+          "sv": "Gödsling !{{rekommenderas|rekommenderas inte}}",
+          "no": "Gjødsling !{{anbefales|anbefales ikke}}",
+          "da": "Gødskning !{{anbefales|anbefales ikke}}",
+          "ru": "Удобрение !{{рекомендуется|не рекомендуется}}",
+          "pl": "Nawożenie !{{jest|nie jest}} zalecane",
+          "ko": "시비 !{{권장됨|권장 안 됨}"
         },
         "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=lawn_soil_optimizer"
-          }
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }
         ]
       },
       {
         "id": "frost_risk_is_active",
         "title": {
-          "en": "Frost risk !{{is|is not}} active"
+          "en": "Frost risk !{{is|is not}} active",
+          "nl": "Vorstrisico !{{is|is niet}} actief",
+          "de": "Frostgefahr !{{ist|ist nicht}} aktiv",
+          "fr": "Le risque de gel !{{est|n'est pas}} actif",
+          "es": "El riesgo de heladas !{{está|no está}} activo",
+          "it": "Il rischio gelo !{{è|non è}} attivo",
+          "sv": "Frostrisk !{{är|är inte}} aktiv",
+          "no": "Frostrisiko !{{er|er ikke}} aktiv",
+          "da": "Frostrisiko !{{er|er ikke}} aktiv",
+          "ru": "Риск заморозков !{{активен|не активен}}",
+          "pl": "Ryzyko mrozu !{{jest|nie jest}} aktywne",
+          "ko": "서리 위험 !{{활성|비활성}"
         },
         "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=lawn_soil_optimizer"
-          }
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }
         ]
       },
       {
         "id": "heat_stress_is_active",
         "title": {
-          "en": "Heat stress risk !{{is|is not}} active"
+          "en": "Heat stress risk !{{is|is not}} active",
+          "nl": "Hittestress risico !{{is|is niet}} actief",
+          "de": "Hitzestress-Risiko !{{ist|ist nicht}} aktiv",
+          "fr": "Le risque de stress thermique !{{est|n'est pas}} actif",
+          "es": "El riesgo de estrés por calor !{{está|no está}} activo",
+          "it": "Il rischio stress da caldo !{{è|non è}} attivo",
+          "sv": "Värmestressrisk !{{är|är inte}} aktiv",
+          "no": "Varmestresstrisiko !{{er|er ikke}} aktiv",
+          "da": "Varmestresstrisiko !{{er|er ikke}} aktiv",
+          "ru": "Риск теплового стресса !{{активен|не активен}}",
+          "pl": "Ryzyko stresu termicznego !{{jest|nie jest}} aktywne",
+          "ko": "열 스트레스 위험 !{{활성|비활성}"
         },
         "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=lawn_soil_optimizer"
-          }
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }
         ]
       }
     ],
@@ -671,51 +1395,97 @@
       {
         "id": "refresh_now",
         "title": {
-          "en": "Refresh weather data now"
+          "en": "Refresh weather data now",
+          "nl": "Weerdata nu vernieuwen",
+          "de": "Wetterdaten jetzt aktualisieren",
+          "fr": "Actualiser les données météo maintenant",
+          "es": "Actualizar datos meteorológicos ahora",
+          "it": "Aggiorna dati meteo ora",
+          "sv": "Uppdatera väderdata nu",
+          "no": "Oppdater værvarsler nå",
+          "da": "Opdater vejrdata nu",
+          "ru": "Обновить данные о погоде сейчас",
+          "pl": "Odśwież dane pogodowe teraz",
+          "ko": "날씨 데이터 지금 새로 고침"
         },
         "hint": {
-          "en": "Forces an immediate weather fetch and recalculates all lawn values."
+          "en": "Forces an immediate weather fetch and recalculates all lawn values.",
+          "nl": "Dwingt een onmiddellijke weerdata-ophaling en herberekening van alle gazonwaarden.",
+          "de": "Erzwingt einen sofortigen Wetterdatenabruf und neuberechnet alle Rasenwerte.",
+          "fr": "Force une récupération immédiate des données météo et recalcule toutes les valeurs.",
+          "es": "Fuerza una obtención inmediata de datos meteorológicos y recalcula todos los valores.",
+          "it": "Forza un recupero immediato dei dati meteo e ricalcola tutti i valori del prato.",
+          "sv": "Tvingar en omedelbar väderhämtning och beräknar om alla gräsmattevärden.",
+          "no": "Tvinger et umiddelbart værvarselhenting og omberegner alle plenverdier.",
+          "da": "Tvinger en øjeblikkelig vejrdatahentenng og genberegner alle plæneværdier.",
+          "ru": "Принудительно загружает данные о погоде и пересчитывает все показатели газона.",
+          "pl": "Wymusza natychmiastowe pobranie danych pogodowych i przeliczenie wszystkich wartości.",
+          "ko": "즉각적인 날씨 데이터 가져오기를 강제하고 모든 잔디 값을 재계산합니다."
         },
         "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=lawn_soil_optimizer"
-          }
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }
         ]
       },
       {
         "id": "set_lawn_profile",
         "title": {
-          "en": "Set lawn profile"
+          "en": "Set lawn profile",
+          "nl": "Gazons profiel instellen",
+          "de": "Rasenprofil festlegen",
+          "fr": "Définir le profil de la pelouse",
+          "es": "Establecer perfil del césped",
+          "it": "Imposta profilo del prato",
+          "sv": "Ange gräsmattsprofil",
+          "no": "Angi plensprofil",
+          "da": "Angiv plæneprofil",
+          "ru": "Установить профиль газона",
+          "pl": "Ustaw profil trawnika",
+          "ko": "잔디 프로필 설정"
         },
         "titleFormatted": {
-          "en": "Set lawn profile – grass: [[grass_type]], soil: [[soil_type]]"
+          "en": "Set lawn profile – grass: [[grass_type]], soil: [[soil_type]]",
+          "nl": "Gazons profiel instellen – gras: [[grass_type]], bodem: [[soil_type]]",
+          "de": "Rasenprofil – Gras: [[grass_type]], Boden: [[soil_type]]",
+          "fr": "Profil pelouse – gazon: [[grass_type]], sol: [[soil_type]]",
+          "es": "Perfil del césped – hierba: [[grass_type]], suelo: [[soil_type]]",
+          "it": "Profilo prato – erba: [[grass_type]], suolo: [[soil_type]]",
+          "sv": "Gräsmattsprofil – gräs: [[grass_type]], jord: [[soil_type]]",
+          "no": "Plensprofil – gress: [[grass_type]], jord: [[soil_type]]",
+          "da": "Plæneprofil – græs: [[grass_type]], jord: [[soil_type]]",
+          "ru": "Профиль газона – трава: [[grass_type]], почва: [[soil_type]]",
+          "pl": "Profil trawnika – trawa: [[grass_type]], gleba: [[soil_type]]",
+          "ko": "잔디 프로필 – 잔디: [[grass_type]], 토양: [[soil_type]]"
         },
         "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=lawn_soil_optimizer"
-          },
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" },
           {
             "name": "grass_type",
             "type": "dropdown",
-            "title": { "en": "Grass Type" },
+            "title": {
+              "en": "Grass Type", "nl": "Grastype", "de": "Grastyp",
+              "fr": "Type de gazon", "es": "Tipo de hierba", "it": "Tipo di erba",
+              "sv": "Grästyp", "no": "Gresstype", "da": "Græstype",
+              "ru": "Тип травы", "pl": "Rodzaj trawy", "ko": "잔디 종류"
+            },
             "values": [
-              { "id": "cool_season", "label": { "en": "Cool Season" } },
-              { "id": "warm_season", "label": { "en": "Warm Season" } },
-              { "id": "mixed",       "label": { "en": "Mixed" } }
+              { "id": "cool_season", "label": { "en": "Cool Season", "nl": "Koel seizoen", "de": "Kühle Jahreszeit", "fr": "Saison fraîche", "es": "Temporada fría", "it": "Stagione fresca", "sv": "Kallsäsong", "no": "Kald sesong", "da": "Kold sæson", "ru": "Холодный сезон", "pl": "Chłodny sezon", "ko": "한지형" } },
+              { "id": "warm_season", "label": { "en": "Warm Season", "nl": "Warm seizoen", "de": "Warme Jahreszeit", "fr": "Saison chaude", "es": "Temporada cálida", "it": "Stagione calda", "sv": "Varmsäsong", "no": "Varm sesong", "da": "Varm sæson", "ru": "Тёплый сезон", "pl": "Ciepły sezon", "ko": "난지형" } },
+              { "id": "mixed",       "label": { "en": "Mixed", "nl": "Gemengd", "de": "Gemischt", "fr": "Mixte", "es": "Mixto", "it": "Misto", "sv": "Blandat", "no": "Blandet", "da": "Blandet", "ru": "Смешанный", "pl": "Mieszany", "ko": "혼합형" } }
             ]
           },
           {
             "name": "soil_type",
             "type": "dropdown",
-            "title": { "en": "Soil Type" },
+            "title": {
+              "en": "Soil Type", "nl": "Bodemtype", "de": "Bodentyp",
+              "fr": "Type de sol", "es": "Tipo de suelo", "it": "Tipo di suolo",
+              "sv": "Jordtyp", "no": "Jordtype", "da": "Jordtype",
+              "ru": "Тип почвы", "pl": "Rodzaj gleby", "ko": "토양 유형"
+            },
             "values": [
-              { "id": "sand", "label": { "en": "Sandy" } },
-              { "id": "loam", "label": { "en": "Loam" } },
-              { "id": "clay", "label": { "en": "Clay" } }
+              { "id": "sand", "label": { "en": "Sandy", "nl": "Zandig", "de": "Sandig", "fr": "Sableux", "es": "Arenoso", "it": "Sabbioso", "sv": "Sandig", "no": "Sandig", "da": "Sandet", "ru": "Песчаный", "pl": "Piaszczysty", "ko": "사질토" } },
+              { "id": "loam", "label": { "en": "Loam",  "nl": "Leem",   "de": "Lehm",   "fr": "Limoneux", "es": "Franco", "it": "Limoso", "sv": "Lerjord", "no": "Moldaktig", "da": "Lerjord", "ru": "Суглинок", "pl": "Gliniasto-piaszczysty", "ko": "양토" } },
+              { "id": "clay", "label": { "en": "Clay",  "nl": "Klei",   "de": "Ton",    "fr": "Argileux", "es": "Arcilloso", "it": "Argilloso", "sv": "Lera", "no": "Leire", "da": "Ler", "ru": "Глина", "pl": "Gliniany", "ko": "점토" } }
             ]
           }
         ]
@@ -723,33 +1493,69 @@
       {
         "id": "send_lawn_advice_notification",
         "title": {
-          "en": "Send lawn advice notification"
+          "en": "Send lawn advice notification",
+          "nl": "Gazonstatus notificatie versturen",
+          "de": "Rasenberatungs-Benachrichtigung senden",
+          "fr": "Envoyer une notification de conseils pelouse",
+          "es": "Enviar notificación de consejos del césped",
+          "it": "Invia notifica consigli prato",
+          "sv": "Skicka gräsmattarådgivning",
+          "no": "Send plenrådgivningsvarsling",
+          "da": "Send plænerådgivningsnotifikation",
+          "ru": "Отправить уведомление с советами по газону",
+          "pl": "Wyślij powiadomienie z poradami dotyczącymi trawnika",
+          "ko": "잔디 조언 알림 보내기"
         },
         "hint": {
-          "en": "Sends a Homey notification with the current lawn status and recommendations."
+          "en": "Sends a Homey notification with the current lawn status and recommendations.",
+          "nl": "Stuurt een Homey-melding met de huidige gazonstatus en aanbevelingen.",
+          "de": "Sendet eine Homey-Benachrichtigung mit dem aktuellen Rasenstatus und Empfehlungen.",
+          "fr": "Envoie une notification Homey avec l'état actuel de la pelouse et les recommandations.",
+          "es": "Envía una notificación de Homey con el estado actual del césped y las recomendaciones.",
+          "it": "Invia una notifica Homey con lo stato attuale del prato e le raccomandazioni.",
+          "sv": "Skickar ett Homey-meddelande med aktuell gräsmattastatus och rekommendationer.",
+          "no": "Sender et Homey-varsel med gjeldende plenstatus og anbefalinger.",
+          "da": "Sender en Homey-notifikation med den aktuelle plænestatus og anbefalinger.",
+          "ru": "Отправляет уведомление Homey с текущим состоянием газона и рекомендациями.",
+          "pl": "Wysyła powiadomienie Homey z aktualnym statusem trawnika i zaleceniami.",
+          "ko": "현재 잔디 상태 및 권장 사항이 포함된 Homey 알림을 보냅니다."
         },
         "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=lawn_soil_optimizer"
-          }
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }
         ]
       },
       {
         "id": "reset_model_memory",
         "title": {
-          "en": "Reset soil model memory"
+          "en": "Reset soil model memory",
+          "nl": "Bodemmodel geheugen wissen",
+          "de": "Bodenmodell-Speicher zurücksetzen",
+          "fr": "Réinitialiser la mémoire du modèle de sol",
+          "es": "Restablecer la memoria del modelo de suelo",
+          "it": "Reimposta memoria modello suolo",
+          "sv": "Återställ jordmodellens minne",
+          "no": "Tilbakestill jordmodellens minne",
+          "da": "Nulstil jordmodellens hukommelse",
+          "ru": "Сбросить память модели почвы",
+          "pl": "Zresetuj pamięć modelu gleby",
+          "ko": "토양 모델 메모리 초기화"
         },
         "hint": {
-          "en": "Clears the stored root zone temperature used for the weighted soil model. Useful after extreme weather or sensor replacement."
+          "en": "Clears the stored root zone temperature used for the weighted soil model. Useful after extreme weather or sensor replacement.",
+          "nl": "Wist de opgeslagen wortelzonetemperatuur voor het gewogen bodemmodel. Nuttig na extreem weer.",
+          "de": "Löscht die gespeicherte Wurzelzonentemperatur für das gewichtete Bodenmodell.",
+          "fr": "Efface la température de zone racinaire stockée pour le modèle de sol pondéré.",
+          "es": "Borra la temperatura de zona radicular almacenada para el modelo de suelo ponderado.",
+          "it": "Cancella la temperatura della zona radicale memorizzata per il modello del suolo.",
+          "sv": "Rensar den lagrade rotzonstemperaturen för den viktade jordmodellen.",
+          "no": "Sletter den lagrede rotsonetemperaturen for den vektede jordmodellen.",
+          "da": "Sletter den gemte rodzonetemperatur for den vægtede jordmodel.",
+          "ru": "Очищает сохранённую температуру корневой зоны для взвешенной модели почвы.",
+          "pl": "Czyści zapisaną temperaturę strefy korzeniowej dla ważonego modelu gleby.",
+          "ko": "가중 토양 모델에 사용되는 저장된 근권 온도를 지웁니다."
         },
         "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=lawn_soil_optimizer"
-          }
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }
         ]
       }
     ]

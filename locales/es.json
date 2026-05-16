@@ -1,0 +1,59 @@
+{
+  "pair": {
+    "start": {
+      "title": "Configurar tu césped",
+      "subtitle": "Cuéntanos sobre tu césped para que podamos estimar las condiciones del suelo con precisión."
+    }
+  },
+  "settings": {
+    "location": "Ubicación",
+    "latitude": "Latitud",
+    "longitude": "Longitud",
+    "lawn_profile": "Perfil del césped",
+    "lawn_name": "Nombre del césped",
+    "grass_type": "Tipo de hierba",
+    "cool_season": "Temporada fría",
+    "warm_season": "Temporada cálida",
+    "mixed": "Mixto",
+    "soil_type": "Tipo de suelo",
+    "sand": "Arenoso",
+    "loam": "Franco",
+    "clay": "Arcilloso",
+    "shade_level": "Nivel de sombra",
+    "full_sun": "Pleno sol",
+    "partial_shade": "Semisombra",
+    "shade": "Sombra total",
+    "root_depth_cm": "Profundidad de raíces (cm)",
+    "update_interval_minutes": "Intervalo de actualización (minutos)",
+    "enable_notifications": "Activar notificaciones de Homey",
+    "thresholds": "Umbrales",
+    "preferred_mowing_min_temp": "Temp. mín. para cortar (°C)",
+    "preferred_fertilizing_min_temp": "Temp. mín. para fertilizar (°C)",
+    "watering_threshold_mm_24h": "Umbral de riego – Lluvia máx. 24 h (mm)"
+  },
+  "capabilities": {
+    "measure_temperature": {
+      "soil_surface": "Temp. superficie del suelo",
+      "soil_6cm": "Temp. del suelo (6 cm)",
+      "root_zone": "Temp. zona radicular",
+      "air": "Temperatura del aire"
+    },
+    "measure_humidity": {
+      "soil": "Humedad del suelo"
+    },
+    "measure_rain": "Lluvia (24 h)",
+    "lawn_growth_score": "Puntuación de crecimiento",
+    "mowing_recommended": "Corte recomendado",
+    "watering_recommended": "Riego recomendado",
+    "fertilizing_recommended": "Fertilización recomendada",
+    "frost_risk": "Riesgo de heladas",
+    "heat_stress_risk": "Riesgo de estrés por calor",
+    "last_updated": "Última actualización"
+  },
+  "errors": {
+    "invalid_latitude": "Latitud no válida. Debe estar entre -90 y 90.",
+    "invalid_longitude": "Longitud no válida. Debe estar entre -180 y 180.",
+    "no_location": "No se ha establecido ninguna ubicación. Configura la latitud y longitud en los ajustes del dispositivo.",
+    "fetch_failed": "Error al obtener los datos meteorológicos. Se reintentará en el próximo ciclo."
+  }
+}

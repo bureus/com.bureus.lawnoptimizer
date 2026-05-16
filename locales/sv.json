@@ -1,0 +1,59 @@
+{
+  "pair": {
+    "start": {
+      "title": "Konfigurera din gräsmatta",
+      "subtitle": "Berätta om din gräsmatta så att vi kan uppskatta markförhållandena noggrant."
+    }
+  },
+  "settings": {
+    "location": "Plats",
+    "latitude": "Latitud",
+    "longitude": "Longitud",
+    "lawn_profile": "Gräsmattsprofil",
+    "lawn_name": "Gräsmattans namn",
+    "grass_type": "Grästyp",
+    "cool_season": "Kallsäsong",
+    "warm_season": "Varmsäsong",
+    "mixed": "Blandat",
+    "soil_type": "Jordtyp",
+    "sand": "Sandig",
+    "loam": "Lerjord",
+    "clay": "Lera",
+    "shade_level": "Skuggningsnivå",
+    "full_sun": "Fullt solsken",
+    "partial_shade": "Halvskugga",
+    "shade": "Fullständig skugga",
+    "root_depth_cm": "Rotdjup (cm)",
+    "update_interval_minutes": "Uppdateringsintervall (minuter)",
+    "enable_notifications": "Aktivera Homey-aviseringar",
+    "thresholds": "Tröskelvärden",
+    "preferred_mowing_min_temp": "Min. temp. för klippning (°C)",
+    "preferred_fertilizing_min_temp": "Min. temp. för gödsling (°C)",
+    "watering_threshold_mm_24h": "Bevattningströskel – Max. regn 24 h (mm)"
+  },
+  "capabilities": {
+    "measure_temperature": {
+      "soil_surface": "Markytetemperatur",
+      "soil_6cm": "Jordtemperatur (6 cm)",
+      "root_zone": "Rotzonstemperatur",
+      "air": "Lufttemperatur"
+    },
+    "measure_humidity": {
+      "soil": "Jordfuktighet"
+    },
+    "measure_rain": "Regn (24 h)",
+    "lawn_growth_score": "Tillväxtpoäng",
+    "mowing_recommended": "Klippning rekommenderas",
+    "watering_recommended": "Bevattning rekommenderas",
+    "fertilizing_recommended": "Gödsling rekommenderas",
+    "frost_risk": "Frostrisk",
+    "heat_stress_risk": "Värmestressrisk",
+    "last_updated": "Senast uppdaterad"
+  },
+  "errors": {
+    "invalid_latitude": "Ogiltig latitud. Måste vara mellan -90 och 90.",
+    "invalid_longitude": "Ogiltig longitud. Måste vara mellan -180 och 180.",
+    "no_location": "Ingen plats angiven. Konfigurera latitud och longitud i enhetsinställningarna.",
+    "fetch_failed": "Det gick inte att hämta väderdata. Försöker igen vid nästa avsökning."
+  }
+}

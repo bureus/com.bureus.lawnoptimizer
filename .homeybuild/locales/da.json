@@ -1,0 +1,59 @@
+{
+  "pair": {
+    "start": {
+      "title": "Konfigurer din plæne",
+      "subtitle": "Fortæl os om din plæne, så vi kan estimere jordbundsforholdene præcist."
+    }
+  },
+  "settings": {
+    "location": "Placering",
+    "latitude": "Breddegrad",
+    "longitude": "Længdegrad",
+    "lawn_profile": "Plæneprofil",
+    "lawn_name": "Plænens navn",
+    "grass_type": "Græstype",
+    "cool_season": "Kold sæson",
+    "warm_season": "Varm sæson",
+    "mixed": "Blandet",
+    "soil_type": "Jordtype",
+    "sand": "Sandet",
+    "loam": "Lerjord",
+    "clay": "Ler",
+    "shade_level": "Skyggenigveau",
+    "full_sun": "Fuld sol",
+    "partial_shade": "Halvskygge",
+    "shade": "Fuld skygge",
+    "root_depth_cm": "Roddybde (cm)",
+    "update_interval_minutes": "Opdateringsinterval (minutter)",
+    "enable_notifications": "Aktivér Homey-notifikationer",
+    "thresholds": "Tærskelværdier",
+    "preferred_mowing_min_temp": "Min. temp. til slåning (°C)",
+    "preferred_fertilizing_min_temp": "Min. temp. til gødskning (°C)",
+    "watering_threshold_mm_24h": "Vandingstærskel – Maks. regn 24 t (mm)"
+  },
+  "capabilities": {
+    "measure_temperature": {
+      "soil_surface": "Jordoverfladetemperatur",
+      "soil_6cm": "Jordtemperatur (6 cm)",
+      "root_zone": "Rodzonetemperatur",
+      "air": "Lufttemperatur"
+    },
+    "measure_humidity": {
+      "soil": "Jordfugtighed"
+    },
+    "measure_rain": "Regn (24 t)",
+    "lawn_growth_score": "Vækstpoint",
+    "mowing_recommended": "Slåning anbefales",
+    "watering_recommended": "Vanding anbefales",
+    "fertilizing_recommended": "Gødskning anbefales",
+    "frost_risk": "Frostrisiko",
+    "heat_stress_risk": "Varmestresstrisiko",
+    "last_updated": "Sidst opdateret"
+  },
+  "errors": {
+    "invalid_latitude": "Ugyldig breddegrad. Skal være mellem -90 og 90.",
+    "invalid_longitude": "Ugyldig længdegrad. Skal være mellem -180 og 180.",
+    "no_location": "Ingen placering angivet. Konfigurer bredde- og længdegrad i enhedsindstillingerne.",
+    "fetch_failed": "Kunne ikke hente vejrdata. Forsøges igen ved næste afspørring."
+  }
+}

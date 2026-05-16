@@ -1,0 +1,59 @@
+{
+  "pair": {
+    "start": {
+      "title": "Настройка газона",
+      "subtitle": "Расскажите нам о вашем газоне, чтобы мы могли точно оценить состояние почвы."
+    }
+  },
+  "settings": {
+    "location": "Местоположение",
+    "latitude": "Широта",
+    "longitude": "Долгота",
+    "lawn_profile": "Профиль газона",
+    "lawn_name": "Название газона",
+    "grass_type": "Тип травы",
+    "cool_season": "Холодный сезон",
+    "warm_season": "Тёплый сезон",
+    "mixed": "Смешанный",
+    "soil_type": "Тип почвы",
+    "sand": "Песчаный",
+    "loam": "Суглинок",
+    "clay": "Глина",
+    "shade_level": "Уровень затенения",
+    "full_sun": "Полное солнце",
+    "partial_shade": "Полутень",
+    "shade": "Полная тень",
+    "root_depth_cm": "Глубина корней (см)",
+    "update_interval_minutes": "Интервал обновления (минуты)",
+    "enable_notifications": "Включить уведомления Homey",
+    "thresholds": "Пороговые значения",
+    "preferred_mowing_min_temp": "Мин. темп. для скашивания (°C)",
+    "preferred_fertilizing_min_temp": "Мин. темп. для удобрения (°C)",
+    "watering_threshold_mm_24h": "Порог полива – Макс. осадки 24 ч (мм)"
+  },
+  "capabilities": {
+    "measure_temperature": {
+      "soil_surface": "Темп. поверхности почвы",
+      "soil_6cm": "Темп. почвы (6 см)",
+      "root_zone": "Темп. корневой зоны",
+      "air": "Температура воздуха"
+    },
+    "measure_humidity": {
+      "soil": "Влажность почвы"
+    },
+    "measure_rain": "Осадки (24 ч)",
+    "lawn_growth_score": "Оценка роста",
+    "mowing_recommended": "Скашивание рекомендуется",
+    "watering_recommended": "Полив рекомендуется",
+    "fertilizing_recommended": "Удобрение рекомендуется",
+    "frost_risk": "Риск заморозков",
+    "heat_stress_risk": "Риск теплового стресса",
+    "last_updated": "Последнее обновление"
+  },
+  "errors": {
+    "invalid_latitude": "Неверная широта. Должна быть от -90 до 90.",
+    "invalid_longitude": "Неверная долгота. Должна быть от -180 до 180.",
+    "no_location": "Местоположение не задано. Укажите широту и долготу в настройках устройства.",
+    "fetch_failed": "Не удалось получить данные о погоде. Повтор при следующем опросе."
+  }
+}

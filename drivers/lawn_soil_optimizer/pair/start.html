@@ -266,18 +266,20 @@
     }
 
     // ── Homey location prefill ────────────────────────────────────────────────
+    // SDK v3 pair views inject the global `Homey` (capital H).
+    // Homey.emit() returns a Promise — there is no callback form.
 
     document.getElementById('btnHomeyLocation').addEventListener('click', function () {
-      // window.homey is injected by the Homey pair runtime
-      window.homey.emit('getHomeyLocation', null, function (err, location) {
-        if (err || !location) {
-          showError('Could not read Homey location. Please enter it manually.');
-          return;
-        }
-        document.getElementById('latitude').value  = location.latitude  != null ? location.latitude.toFixed(4)  : '';
-        document.getElementById('longitude').value = location.longitude != null ? location.longitude.toFixed(4) : '';
-        hideError();
-      });
+      Homey.emit('getHomeyLocation')
+        .then(function (location) {
+          if (!location) throw new Error('No location available');
+          document.getElementById('latitude').value  = Number(location.latitude).toFixed(4);
+          document.getElementById('longitude').value = Number(location.longitude).toFixed(4);
+          hideError();
+        })
+        .catch(function () {
+          showError('Could not read Homey location. Please enter coordinates manually.');
+        });
     });
 
     // ── Form submission ───────────────────────────────────────────────────────
@@ -286,8 +288,8 @@
       e.preventDefault();
       hideError();
 
-      var lat = parseFloat(document.getElementById('latitude').value);
-      var lon = parseFloat(document.getElementById('longitude').value);
+      var lat      = parseFloat(document.getElementById('latitude').value);
+      var lon      = parseFloat(document.getElementById('longitude').value);
       var lawnName = document.getElementById('lawnName').value.trim();
 
       if (!lawnName) {
@@ -317,16 +319,16 @@
 
       setLoading(true);
 
-      // Send data to driver.js onPair session handler 'saveSettings'
-      window.homey.emit('saveSettings', formData, function (err) {
-        setLoading(false);
-        if (err) {
-          showError('Error: ' + (err.message || err));
-          return;
-        }
-        // Move to Homey's built-in add_device view which calls list_devices
-        window.homey.showView('add_device');
-      });
+      // Homey.emit returns a Promise in SDK v3
+      Homey.emit('saveSettings', formData)
+        .then(function () {
+          // Navigate to the list_devices built-in view
+          return Homey.showView('list_devices');
+        })
+        .catch(function (err) {
+          setLoading(false);
+          showError('Error: ' + (err && err.message ? err.message : String(err)));
+        });
     });
   </script>
 </body>

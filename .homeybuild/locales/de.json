@@ -1,0 +1,59 @@
+{
+  "pair": {
+    "start": {
+      "title": "Rasen einrichten",
+      "subtitle": "Erzählen Sie uns von Ihrem Rasen, damit wir die Bodenbedingungen genau einschätzen können."
+    }
+  },
+  "settings": {
+    "location": "Standort",
+    "latitude": "Breitengrad",
+    "longitude": "Längengrad",
+    "lawn_profile": "Rasenprofil",
+    "lawn_name": "Rasenname",
+    "grass_type": "Grastyp",
+    "cool_season": "Kühle Jahreszeit",
+    "warm_season": "Warme Jahreszeit",
+    "mixed": "Gemischt",
+    "soil_type": "Bodentyp",
+    "sand": "Sandig",
+    "loam": "Lehm",
+    "clay": "Ton",
+    "shade_level": "Schattenniveau",
+    "full_sun": "Volle Sonne",
+    "partial_shade": "Halbschatten",
+    "shade": "Voller Schatten",
+    "root_depth_cm": "Wurzeltiefe (cm)",
+    "update_interval_minutes": "Aktualisierungsintervall (Minuten)",
+    "enable_notifications": "Homey-Benachrichtigungen aktivieren",
+    "thresholds": "Schwellenwerte",
+    "preferred_mowing_min_temp": "Min. Temperatur zum Mähen (°C)",
+    "preferred_fertilizing_min_temp": "Min. Temperatur zum Düngen (°C)",
+    "watering_threshold_mm_24h": "Bewässerungsschwelle – Max. Regen 24 h (mm)"
+  },
+  "capabilities": {
+    "measure_temperature": {
+      "soil_surface": "Bodenoberflächentemperatur",
+      "soil_6cm": "Bodentemperatur (6 cm)",
+      "root_zone": "Wurzelzonentemperatur",
+      "air": "Lufttemperatur"
+    },
+    "measure_humidity": {
+      "soil": "Bodenfeuchtigkeit"
+    },
+    "measure_rain": "Regen (24 h)",
+    "lawn_growth_score": "Wachstumswert",
+    "mowing_recommended": "Mähen empfohlen",
+    "watering_recommended": "Bewässerung empfohlen",
+    "fertilizing_recommended": "Düngung empfohlen",
+    "frost_risk": "Frostgefahr",
+    "heat_stress_risk": "Hitzestress-Risiko",
+    "last_updated": "Zuletzt aktualisiert"
+  },
+  "errors": {
+    "invalid_latitude": "Ungültiger Breitengrad. Muss zwischen -90 und 90 liegen.",
+    "invalid_longitude": "Ungültiger Längengrad. Muss zwischen -180 und 180 liegen.",
+    "no_location": "Kein Standort festgelegt. Bitte Breiten- und Längengrad in den Geräteeinstellungen konfigurieren.",
+    "fetch_failed": "Wetterdaten konnten nicht abgerufen werden. Wird beim nächsten Abruf erneut versucht."
+  }
+}

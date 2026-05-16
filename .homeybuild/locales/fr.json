@@ -1,0 +1,59 @@
+{
+  "pair": {
+    "start": {
+      "title": "Configurer votre pelouse",
+      "subtitle": "Parlez-nous de votre pelouse afin que nous puissions estimer précisément les conditions du sol."
+    }
+  },
+  "settings": {
+    "location": "Emplacement",
+    "latitude": "Latitude",
+    "longitude": "Longitude",
+    "lawn_profile": "Profil de la pelouse",
+    "lawn_name": "Nom de la pelouse",
+    "grass_type": "Type de gazon",
+    "cool_season": "Saison fraîche",
+    "warm_season": "Saison chaude",
+    "mixed": "Mixte",
+    "soil_type": "Type de sol",
+    "sand": "Sableux",
+    "loam": "Limoneux",
+    "clay": "Argileux",
+    "shade_level": "Niveau d'ombre",
+    "full_sun": "Plein soleil",
+    "partial_shade": "Mi-ombre",
+    "shade": "Ombre complète",
+    "root_depth_cm": "Profondeur des racines (cm)",
+    "update_interval_minutes": "Intervalle de mise à jour (minutes)",
+    "enable_notifications": "Activer les notifications Homey",
+    "thresholds": "Seuils",
+    "preferred_mowing_min_temp": "Temp. min. pour tondre (°C)",
+    "preferred_fertilizing_min_temp": "Temp. min. pour fertiliser (°C)",
+    "watering_threshold_mm_24h": "Seuil d'arrosage – Pluie max. 24 h (mm)"
+  },
+  "capabilities": {
+    "measure_temperature": {
+      "soil_surface": "Temp. surface du sol",
+      "soil_6cm": "Temp. sol (6 cm)",
+      "root_zone": "Temp. zone racinaire",
+      "air": "Température de l'air"
+    },
+    "measure_humidity": {
+      "soil": "Humidité du sol"
+    },
+    "measure_rain": "Pluie (24 h)",
+    "lawn_growth_score": "Score de croissance",
+    "mowing_recommended": "Tonte recommandée",
+    "watering_recommended": "Arrosage recommandé",
+    "fertilizing_recommended": "Fertilisation recommandée",
+    "frost_risk": "Risque de gel",
+    "heat_stress_risk": "Risque de stress thermique",
+    "last_updated": "Dernière mise à jour"
+  },
+  "errors": {
+    "invalid_latitude": "Latitude invalide. Doit être comprise entre -90 et 90.",
+    "invalid_longitude": "Longitude invalide. Doit être comprise entre -180 et 180.",
+    "no_location": "Aucun emplacement défini. Veuillez configurer la latitude et la longitude dans les paramètres de l'appareil.",
+    "fetch_failed": "Échec de la récupération des données météo. Nouvelle tentative lors du prochain cycle."
+  }
+}
