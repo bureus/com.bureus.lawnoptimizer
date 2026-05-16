@@ -144,19 +144,35 @@
     }
     .spinner.visible { display: block; }
 
-    /* ── Lawn icon ── */
+    /* ── Hero ── */
     .hero {
       text-align: center;
       margin-bottom: 20px;
     }
-    .hero svg { width: 64px; height: 64px; }
+    .hero-img {
+      width: 100%;
+      max-height: 140px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 16px;
+      display: block;
+    }
+    .hero-icon { width: 64px; height: 64px; }
   </style>
 </head>
 
 <body>
   <div class="hero">
-    <!-- Inline grass/lawn SVG icon -->
-    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <!-- Pairing hero image — replace assets/images/pairing-hero.png with a real 1280×720 photo -->
+    <img
+      class="hero-img"
+      src="/assets/images/pairing-hero.png"
+      alt="Lawn Soil Optimizer"
+      onerror="this.style.display='none'; document.getElementById('heroIcon').style.display='block';"
+    />
+    <!-- Fallback inline SVG shown when hero image is missing or a placeholder -->
+    <svg id="heroIcon" class="hero-icon" viewBox="0 0 64 64" fill="none"
+         xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="display:none;">
       <circle cx="32" cy="32" r="32" fill="#E8F5E9"/>
       <path d="M12 48 C12 36 20 28 32 28 C44 28 52 36 52 48 Z" fill="#66BB6A"/>
       <path d="M32 28 C32 20 28 12 24 10 C26 16 27 22 32 28 Z" fill="#43A047"/>
@@ -167,8 +183,8 @@
     </svg>
   </div>
 
-  <h1>Set up your lawn</h1>
-  <p class="subtitle">Tell us about your lawn so we can estimate soil conditions accurately.</p>
+  <h1>Lawn Soil Optimizer</h1>
+  <p class="subtitle">Estimate lawn soil temperature and optimize mowing, watering and fertilizing using weather intelligence.</p>
 
   <form id="pairForm" novalidate>
 

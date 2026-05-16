@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Sun disc -->
+  <circle cx="50" cy="38" r="18" fill="#F57C00"/>
+  <!-- Sun rays -->
+  <line x1="50" y1="8"  x2="50" y2="14" stroke="#F57C00" stroke-width="5" stroke-linecap="round"/>
+  <line x1="50" y1="62" x2="50" y2="56" stroke="#F57C00" stroke-width="5" stroke-linecap="round"/>
+  <line x1="20" y1="38" x2="26" y2="38" stroke="#F57C00" stroke-width="5" stroke-linecap="round"/>
+  <line x1="80" y1="38" x2="74" y2="38" stroke="#F57C00" stroke-width="5" stroke-linecap="round"/>
+  <line x1="29" y1="17" x2="33" y2="21" stroke="#F57C00" stroke-width="5" stroke-linecap="round"/>
+  <line x1="71" y1="17" x2="67" y2="21" stroke="#F57C00" stroke-width="5" stroke-linecap="round"/>
+  <line x1="29" y1="59" x2="33" y2="55" stroke="#F57C00" stroke-width="5" stroke-linecap="round"/>
+  <line x1="71" y1="59" x2="67" y2="55" stroke="#F57C00" stroke-width="5" stroke-linecap="round"/>
+  <!-- Heat wave lines descending from sun -->
+  <path d="M28 70 Q34 65 40 70 Q46 75 52 70 Q58 65 64 70 Q70 75 76 70" stroke="#FF7043" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <path d="M28 82 Q34 77 40 82 Q46 87 52 82 Q58 77 64 82 Q70 87 76 82" stroke="#FFAB76" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>

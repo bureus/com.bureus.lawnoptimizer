@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Three falling droplets -->
+  <path d="M30 8 Q30 22 20 32 Q12 40 20 50 Q28 58 38 50 Q46 42 38 32 Q28 22 30 8 Z" fill="#42A5F5"/>
+  <path d="M50 20 Q50 30 43 38 Q37 45 43 52 Q49 59 57 52 Q63 45 57 38 Q51 30 50 20 Z" fill="#1E88E5"/>
+  <path d="M70 8 Q70 22 60 32 Q52 40 60 50 Q68 58 78 50 Q86 42 78 32 Q68 22 70 8 Z" fill="#42A5F5"/>
+  <!-- Soil / ground line -->
+  <rect x="10" y="75" width="80" height="14" rx="6" fill="#8D6E63"/>
+  <!-- Grass tuft -->
+  <path d="M28 75 Q25 62 20 56" stroke="#43A047" stroke-width="4" stroke-linecap="round" fill="none"/>
+  <path d="M38 75 Q38 60 34 52" stroke="#388E3C" stroke-width="4" stroke-linecap="round" fill="none"/>
+  <path d="M50 75 Q50 58 50 50" stroke="#4CAF50" stroke-width="4" stroke-linecap="round" fill="none"/>
+  <path d="M62 75 Q62 60 66 52" stroke="#388E3C" stroke-width="4" stroke-linecap="round" fill="none"/>
+  <path d="M72 75 Q75 62 80 56" stroke="#43A047" stroke-width="4" stroke-linecap="round" fill="none"/>
+</svg>

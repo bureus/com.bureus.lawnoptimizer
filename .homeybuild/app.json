@@ -52,6 +52,7 @@
   "capabilities": {
     "lawn_growth_score": {
       "type": "number",
+      "icon": "./assets/icons/lawn_growth_score.svg",
       "title": {
         "en": "Growth Score",
         "nl": "Groeiscore",
@@ -77,6 +78,7 @@
     },
     "mowing_recommended": {
       "type": "boolean",
+      "icon": "./assets/icons/mowing.svg",
       "title": {
         "en": "Mowing Recommended",
         "nl": "Maaien aanbevolen",
@@ -98,6 +100,7 @@
     },
     "watering_recommended": {
       "type": "boolean",
+      "icon": "./assets/icons/watering.svg",
       "title": {
         "en": "Watering Recommended",
         "nl": "Gieten aanbevolen",
@@ -119,6 +122,7 @@
     },
     "fertilizing_recommended": {
       "type": "boolean",
+      "icon": "./assets/icons/fertilizing.svg",
       "title": {
         "en": "Fertilizing Recommended",
         "nl": "Bemesting aanbevolen",
@@ -140,6 +144,7 @@
     },
     "frost_risk": {
       "type": "boolean",
+      "icon": "./assets/icons/frost_risk.svg",
       "title": {
         "en": "Frost Risk",
         "nl": "Vorstkans",
@@ -161,6 +166,7 @@
     },
     "heat_stress_risk": {
       "type": "boolean",
+      "icon": "./assets/icons/heat_stress.svg",
       "title": {
         "en": "Heat Stress Risk",
         "nl": "Hittestress risico",

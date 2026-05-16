@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Grass blades (uncut — above the cut line) -->
+  <path d="M14 55 Q11 40 8 30" stroke="#388E3C" stroke-width="5" stroke-linecap="round" fill="none"/>
+  <path d="M22 55 Q22 38 20 26" stroke="#43A047" stroke-width="5" stroke-linecap="round" fill="none"/>
+  <path d="M32 55 Q32 36 30 24" stroke="#2E7D32" stroke-width="5" stroke-linecap="round" fill="none"/>
+  <path d="M42 55 Q42 38 44 26" stroke="#4CAF50" stroke-width="5" stroke-linecap="round" fill="none"/>
+  <path d="M52 55 Q52 36 52 24" stroke="#388E3C" stroke-width="5" stroke-linecap="round" fill="none"/>
+  <path d="M62 55 Q62 38 60 26" stroke="#43A047" stroke-width="5" stroke-linecap="round" fill="none"/>
+  <path d="M72 55 Q72 36 70 24" stroke="#2E7D32" stroke-width="5" stroke-linecap="round" fill="none"/>
+  <path d="M82 55 Q85 40 88 30" stroke="#4CAF50" stroke-width="5" stroke-linecap="round" fill="none"/>
+  <!-- Cut line (blade) -->
+  <line x1="6" y1="55" x2="94" y2="55" stroke="#F9A825" stroke-width="5" stroke-linecap="round"/>
+  <!-- Blade highlight -->
+  <line x1="6" y1="52" x2="94" y2="52" stroke="#FDD835" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+  <!-- Short stubble below cut line -->
+  <path d="M18 55 L18 65" stroke="#81C784" stroke-width="4" stroke-linecap="round"/>
+  <path d="M30 55 L30 65" stroke="#81C784" stroke-width="4" stroke-linecap="round"/>
+  <path d="M42 55 L42 65" stroke="#81C784" stroke-width="4" stroke-linecap="round"/>
+  <path d="M54 55 L54 65" stroke="#81C784" stroke-width="4" stroke-linecap="round"/>
+  <path d="M66 55 L66 65" stroke="#81C784" stroke-width="4" stroke-linecap="round"/>
+  <path d="M78 55 L78 65" stroke="#81C784" stroke-width="4" stroke-linecap="round"/>
+  <!-- Soil -->
+  <rect x="8" y="66" width="84" height="14" rx="6" fill="#8D6E63"/>
+</svg>

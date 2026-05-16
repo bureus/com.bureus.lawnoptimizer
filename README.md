@@ -199,9 +199,108 @@ THEN  Refresh weather data now  (device: My Lawn)
 - **Homey widgets** — the Homey SDK v3 does not expose a custom dashboard widget API
   for third-party apps. All data is visible on the device tile and in Homey Insights.
   A repair/settings view is available via Device → Settings.
-- **Image assets** — placeholder paths are declared in `app.json`. Replace
-  `assets/images/small.png`, `large.png`, and `xlarge.png` (75×75, 500×500, 1000×1000 px)
-  before submitting to the Homey App Store.
+- **Image assets** — placeholder 1×1 transparent PNGs exist for all paths.
+  Run `npm run check:assets` to verify all slots are filled, then replace placeholders
+  with production images before submitting to the Homey App Store.
+
+---
+
+## Image Assets
+
+### Directory layout
+
+```
+assets/
+├── icon.svg                        # App icon — SVG source (Homey SDK default)
+├── icon.png                        # App icon — PNG export 512×512 px  ← PLACEHOLDER
+├── icons/
+│   ├── frost_risk.svg              # Capability icon (wired in app.json)
+│   ├── heat_stress.svg             # Capability icon
+│   ├── watering.svg                # Capability icon
+│   ├── mowing.svg                  # Capability icon
+│   └── fertilizing.svg             # Capability icon
+└── images/
+    ├── pairing-hero.png            # Pairing UI hero — 1280×720 px  ← PLACEHOLDER
+    ├── soil-temperature-cutaway.png# Documentation diagram           ← PLACEHOLDER
+    ├── store-banner.png            # Source for store screenshots    ← PLACEHOLDER
+    ├── small.png                   # Homey store screenshot 500×350  ← PLACEHOLDER
+    ├── large.png                   # Homey store screenshot 1000×700 ← PLACEHOLDER
+    └── xlarge.png                  # Homey store screenshot 1920×1080← PLACEHOLDER
+
+drivers/lawn_soil_optimizer/assets/
+├── icon.svg                        # Driver icon — SVG source
+├── icon.png                        # Driver icon — PNG 512×512       ← PLACEHOLDER
+├── device.png                      # Device illustration 512×512     ← PLACEHOLDER
+├── small.png                       # Driver store screenshot         ← PLACEHOLDER
+└── large.png                       # Driver store screenshot         ← PLACEHOLDER
+```
+
+### Required sizes
+
+| Asset | Size | Notes |
+|---|---|---|
+| `assets/icon.svg` | vector | Already present — SVG preferred |
+| `assets/icon.png` | 512 × 512 px | Export from icon.svg |
+| `assets/icons/*.svg` | vector (100×100 viewBox) | Already present — capability icons |
+| `drivers/.../icon.svg` | vector | Already present |
+| `drivers/.../icon.png` | 512 × 512 px | Export from driver icon.svg |
+| `drivers/.../device.png` | 512 × 512 px | Device detail illustration |
+| `assets/images/pairing-hero.png` | 1280 × 720 px | Pairing screen hero |
+| `assets/images/store-banner.png` | 1920 × 1080 px | Source for store screenshots |
+| `assets/images/small.png` | 500 × 350 px | Homey store (add `images` block to app.json) |
+| `assets/images/large.png` | 1000 × 700 px | Homey store |
+| `assets/images/xlarge.png` | 1920 × 1080 px | Homey store |
+
+### Replacing placeholders
+
+All `← PLACEHOLDER` files are valid 1×1 transparent PNGs that keep the app functional
+during development. Replace them with real artwork before publishing:
+
+1. Generate images using the prompts in [`docs/image-prompts/`](docs/image-prompts/)
+2. Export as **PNG with transparent background** (PNG-24 + alpha)
+3. Drop the file at the path shown in the table above
+4. Run `npm run check:assets` — all lines should show ✔
+
+### Enabling Homey store screenshots
+
+The `images` block is intentionally absent from `app.json` during development
+(Homey CLI validates that referenced files are present and correctly sized at install time).
+
+Once real images are ready, add to the **root** of `app.json`:
+
+```json
+"images": {
+  "small":  "./assets/images/small.png",
+  "large":  "./assets/images/large.png",
+  "xlarge": "./assets/images/xlarge.png"
+}
+```
+
+And to the **driver** object:
+
+```json
+"images": {
+  "small": "./drivers/lawn_soil_optimizer/assets/small.png",
+  "large": "./drivers/lawn_soil_optimizer/assets/large.png"
+}
+```
+
+### Asset validation
+
+```bash
+npm run check:assets
+```
+
+Prints a report of present (✔), required-missing (✘) and optional-missing (⚠) assets.
+The script is at [`scripts/check-assets.js`](scripts/check-assets.js).
+
+### Transparent PNG export tips
+
+- Use **PNG-24** (not PNG-8) for icons with soft edges or anti-aliasing
+- In Figma: *Export → PNG → 2× → include background colour: off*
+- In Photoshop: *Save for Web → PNG-24 → Transparency: on*
+- CLI: `pngquant --quality=80-95 --strip -- file.png`
+- Verify transparency: `identify -verbose file.png | grep Alpha`
 
 ---
 
