@@ -7,7 +7,16 @@
       "Bash(git push *)",
       "Bash(gh pr create --title 'Add fertiliser scheduling feature' --body ' *)",
       "PowerShell(Get-ChildItem \"C:\\\\Program Files\\\\\" -ErrorAction SilentlyContinue | Where-Object { $_.Name -match \"github|gh\" }; Get-ChildItem \"C:\\\\Users\\\\$env:USERNAME\\\\AppData\\\\Local\\\\Programs\\\\\" -ErrorAction SilentlyContinue | Where-Object { $_.Name -match \"github|gh\" })",
-      "PowerShell($env:GITHUB_TOKEN; [System.Environment]::GetEnvironmentVariable\\(\"GITHUB_TOKEN\", \"User\"\\); cmdkey /list 2>$null | Select-String \"github\")"
+      "PowerShell($env:GITHUB_TOKEN; [System.Environment]::GetEnvironmentVariable\\(\"GITHUB_TOKEN\", \"User\"\\); cmdkey /list 2>$null | Select-String \"github\")",
+      "Bash(Get-ChildItem -Path . -Name)",
+      "Bash(Move-Item -Force \"C:\\\\Code\\\\com.bureus.lawnoptimizer\\\\widgets\\\\lawn-dashboard\\\\api.js\" \"C:\\\\Code\\\\com.bureus.lawnoptimizer\\\\widgets\\\\0\\\\api.js\")",
+      "Bash(Move-Item -Force \"C:\\\\Code\\\\com.bureus.lawnoptimizer\\\\widgets\\\\lawn-dashboard\\\\public\\\\index.html\" \"C:\\\\Code\\\\com.bureus.lawnoptimizer\\\\widgets\\\\0\\\\public\\\\index.html\")",
+      "Bash(Remove-Item -Recurse -Force \"C:\\\\Code\\\\com.bureus.lawnoptimizer\\\\widgets\\\\lawn-dashboard\")",
+      "PowerShell(New-Item -ItemType Directory -Force \"C:\\\\Code\\\\com.bureus.lawnoptimizer\\\\widgets\\\\0\\\\public\")",
+      "PowerShell(Move-Item -Force \"C:\\\\Code\\\\com.bureus.lawnoptimizer\\\\widgets\\\\lawn-dashboard\\\\api.js\" \"C:\\\\Code\\\\com.bureus.lawnoptimizer\\\\widgets\\\\0\\\\api.js\")",
+      "PowerShell(Move-Item -Force \"C:\\\\Code\\\\com.bureus.lawnoptimizer\\\\widgets\\\\lawn-dashboard\\\\public\\\\index.html\" \"C:\\\\Code\\\\com.bureus.lawnoptimizer\\\\widgets\\\\0\\\\public\\\\index.html\")",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Code\\\\com.bureus.lawnoptimizer\\\\widgets\" -Recurse -Force | ForEach-Object { \"$\\($_.FullName\\) \\($\\($_.Length\\) bytes\\)\" })",
+      "PowerShell(try { $null = Get-Content \"C:\\\\Code\\\\com.bureus.lawnoptimizer\\\\app.json\" -Raw | ConvertFrom-Json; \"JSON valid\" } catch { \"JSON ERROR: $_\" })"
     ]
   }
 }
