@@ -102,6 +102,32 @@ class LawnSoilOptimizerDriver extends Homey.Driver {
       await device.setSettings(newSettings);
       await device.refreshData().catch(this.error.bind(this));
     });
+
+    // Provides dashboard capability values to the repair view
+    session.setHandler('getDashboardState', async () => {
+      const caps = [
+        'lawn_overall_score',
+        'lawn_status',
+        'primary_recommendation',
+        'next_action',
+        'next_action_date',
+        'next_action_reason',
+        'lawn_growth_score',
+        'frost_severity',
+        'heat_stress_severity',
+        'lawn_recovery_mode',
+        'last_updated',
+      ];
+      const result = {};
+      for (const cap of caps) {
+        try {
+          result[cap] = device.getCapabilityValue(cap);
+        } catch (_) {
+          result[cap] = null;
+        }
+      }
+      return result;
+    });
   }
 
   // ─── Flow trigger helpers (called by device.js) ────────────────────────────

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lawn Soil Optimizer – Dashboard</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f5f5f5;
+      color: #1a1a1a;
+      padding: 24px 16px 40px;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    h1 { font-size: 1.25rem; font-weight: 700; margin-bottom: 4px; }
+    .subtitle { color: #666; font-size: 0.88rem; margin-bottom: 20px; }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin-bottom: 14px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.08);
+    }
+    .card-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: #888;
+      margin-bottom: 12px;
+    }
+
+    /* ── Score ring ── */
+    .score-ring-wrap {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 14px;
+    }
+    .score-ring {
+      position: relative;
+      width: 76px;
+      height: 76px;
+      flex-shrink: 0;
+    }
+    .score-ring svg { transform: rotate(-90deg); }
+    .score-ring .ring-bg  { fill: none; stroke: #e8f5e9; stroke-width: 7; }
+    .score-ring .ring-val { fill: none; stroke: #4caf50; stroke-width: 7;
+                            stroke-linecap: round; transition: stroke-dashoffset .5s; }
+    .score-ring .ring-val.amber  { stroke: #ff9800; }
+    .score-ring .ring-val.red    { stroke: #f44336; }
+    .score-label {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.25rem; font-weight: 800; color: #1a1a1a;
+    }
+    .score-info { flex: 1; }
+    .score-status { font-size: 1rem; font-weight: 700; margin-bottom: 2px; }
+    .score-rec    { font-size: 0.85rem; color: #444; }
+
+    /* ── Status badge ── */
+    .badge {
+      display: inline-block;
+      padding: 2px 9px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      background: #e8f5e9; color: #2e7d32;
+    }
+    .badge.amber { background: #fff3e0; color: #e65100; }
+    .badge.red   { background: #ffebee; color: #b71c1c; }
+
+    /* ── Action row ── */
+    .action-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .action-cell { }
+    .action-label { font-size: 0.72rem; color: #888; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+    .action-val   { font-size: 0.92rem; font-weight: 600; margin-top: 1px; }
+    .action-reason { margin-top: 10px; font-size: 0.82rem; color: #555; font-style: italic; }
+
+    /* ── Detail rows ── */
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 7px 0;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 0.88rem;
+    }
+    .detail-row:last-child { border-bottom: none; }
+    .detail-key   { color: #666; }
+    .detail-val   { font-weight: 600; }
+
+    /* ── Loading / error ── */
+    .loading { text-align: center; color: #aaa; padding: 30px 0; font-size: 0.9rem; }
+    .error-msg {
+      background: #ffebee; color: #c62828;
+      border-radius: 8px; padding: 12px 14px;
+      font-size: 0.88rem; display: none; margin-bottom: 14px;
+    }
+    .error-msg.visible { display: block; }
+
+    /* ── Footer button ── */
+    .btn-done {
+      display: block; width: 100%;
+      padding: 13px;
+      background: #4caf50; color: #fff;
+      border: none; border-radius: 10px;
+      font-size: 1rem; font-weight: 700;
+      cursor: pointer; margin-top: 6px;
+      transition: background .15s;
+    }
+    .btn-done:hover { background: #43a047; }
+
+    .updated { font-size: 0.75rem; color: #bbb; text-align: right; margin-top: 6px; }
+  </style>
+</head>
+
+<body>
+  <h1>Lawn Dashboard</h1>
+  <p class="subtitle">Current lawn status and next recommended action.</p>
+
+  <div id="errorMsg" class="error-msg"></div>
+  <div id="loadingMsg" class="loading">Loading dashboard…</div>
+
+  <!-- Dashboard card (hidden until data loads) -->
+  <div id="dashCard" class="card" style="display:none">
+    <div class="card-title">Lawn Status</div>
+
+    <div class="score-ring-wrap">
+      <div class="score-ring">
+        <svg viewBox="0 0 76 76" width="76" height="76">
+          <circle class="ring-bg"  cx="38" cy="38" r="31" />
+          <circle class="ring-val" cx="38" cy="38" r="31" id="ringVal"
+                  stroke-dasharray="195" stroke-dashoffset="195" />
+        </svg>
+        <div class="score-label" id="scoreLabel">—</div>
+      </div>
+      <div class="score-info">
+        <div class="score-status" id="statusText">—</div>
+        <div class="score-rec"   id="recText">—</div>
+      </div>
+    </div>
+
+    <div id="badgeWrap"></div>
+
+    <div class="action-row">
+      <div class="action-cell">
+        <div class="action-label">Next action</div>
+        <div class="action-val" id="nextAction">—</div>
+      </div>
+      <div class="action-cell">
+        <div class="action-label">Date</div>
+        <div class="action-val" id="nextDate">—</div>
+      </div>
+    </div>
+    <div class="action-reason" id="nextReason"></div>
+  </div>
+
+  <!-- Detail metrics card -->
+  <div id="detailCard" class="card" style="display:none">
+    <div class="card-title">Metrics</div>
+    <div class="detail-row">
+      <span class="detail-key">Growth score</span>
+      <span class="detail-val" id="growthScore">—</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-key">Frost severity</span>
+      <span class="detail-val" id="frostSeverity">—</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-key">Heat stress severity</span>
+      <span class="detail-val" id="heatSeverity">—</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-key">Recovery mode</span>
+      <span class="detail-val" id="recoveryMode">—</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-key">Last updated</span>
+      <span class="detail-val" id="lastUpdated">—</span>
+    </div>
+  </div>
+
+  <button class="btn-done" id="btnDone">Done</button>
+
+  <script>
+    const CIRCUMFERENCE = 2 * Math.PI * 31; // ≈ 194.8
+
+    function scoreColor(score) {
+      if (score >= 60) return 'green';
+      if (score >= 35) return 'amber';
+      return 'red';
+    }
+
+    function renderScore(score) {
+      const ring  = document.getElementById('ringVal');
+      const label = document.getElementById('scoreLabel');
+      const pct   = Math.max(0, Math.min(100, score)) / 100;
+      ring.style.strokeDashoffset = CIRCUMFERENCE * (1 - pct);
+      ring.classList.remove('amber', 'red');
+      if (scoreColor(score) === 'amber') ring.classList.add('amber');
+      if (scoreColor(score) === 'red')   ring.classList.add('red');
+      label.textContent = score != null ? score : '—';
+    }
+
+    function renderBadge(text, color) {
+      const b = document.createElement('span');
+      b.className = 'badge' + (color !== 'green' ? ' ' + color : '');
+      b.textContent = text;
+      return b;
+    }
+
+    function statusColor(lawnStatus) {
+      if (!lawnStatus) return 'green';
+      const s = lawnStatus.toLowerCase();
+      if (s.includes('frost') || s.includes('heat')) return 'red';
+      if (s.includes('water') || s.includes('fertiliser') || s.includes('recovery')) return 'amber';
+      return 'green';
+    }
+
+    async function load() {
+      try {
+        const data = await Homey.emit('getDashboardState');
+
+        document.getElementById('loadingMsg').style.display = 'none';
+
+        if (!data) {
+          showError('No data available yet — wait for the first poll to complete.');
+          return;
+        }
+
+        const score  = data['lawn_overall_score'] ?? null;
+        const status = data['lawn_status']         || 'Unknown';
+        const rec    = data['primary_recommendation'] || '—';
+        const action = data['next_action']          || '—';
+        const date   = data['next_action_date']     || '—';
+        const reason = data['next_action_reason']   || '';
+
+        renderScore(score);
+        document.getElementById('statusText').textContent = status;
+        document.getElementById('recText').textContent    = rec;
+        document.getElementById('nextAction').textContent = action;
+        document.getElementById('nextDate').textContent   = date;
+        document.getElementById('nextReason').textContent = reason;
+
+        // Badge
+        const badgeWrap = document.getElementById('badgeWrap');
+        const color = statusColor(status);
+        badgeWrap.appendChild(renderBadge(status, color));
+
+        // Detail rows
+        const gs = data['lawn_growth_score'];
+        document.getElementById('growthScore').textContent   = gs != null ? gs + ' / 100' : '—';
+        document.getElementById('frostSeverity').textContent = data['frost_severity'] || '—';
+        document.getElementById('heatSeverity').textContent  = data['heat_stress_severity'] || '—';
+        document.getElementById('recoveryMode').textContent  = data['lawn_recovery_mode'] ? 'Yes' : 'No';
+        document.getElementById('lastUpdated').textContent   = data['last_updated'] || '—';
+
+        document.getElementById('dashCard').style.display   = '';
+        document.getElementById('detailCard').style.display = '';
+
+      } catch (err) {
+        document.getElementById('loadingMsg').style.display = 'none';
+        showError('Could not load dashboard: ' + (err.message || err));
+      }
+    }
+
+    function showError(msg) {
+      const el = document.getElementById('errorMsg');
+      el.textContent = msg;
+      el.classList.add('visible');
+    }
+
+    document.getElementById('btnDone').addEventListener('click', () => {
+      Homey.done();
+    });
+
+    load();
+  </script>
+</body>
+</html>

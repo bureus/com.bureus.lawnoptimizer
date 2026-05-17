@@ -29,6 +29,92 @@ Data refreshes every hour by default (configurable down to 15 minutes).
 
 ---
 
+## Dashboard Status
+
+The device exposes a **live lawn dashboard** — a set of capabilities that give you a plain-language summary of what your lawn needs right now, without opening logs or configuring Flows.
+
+### Dashboard capabilities
+
+| Capability | Type | Description |
+|---|---|---|
+| **Overall Lawn Score** | number (0–100) | Composite health score — growth score adjusted for water deficit, frost, and heat stress |
+| **Lawn Status** | string | Short human-readable label, e.g. `"Healthy"`, `"Needs water"`, `"Frost risk"` |
+| **Primary Recommendation** | string | One-sentence actionable advice |
+| **Next Action** | string | Concise action, e.g. `"Water 8 mm"`, `"Apply fertiliser"`, `"Avoid mowing"` |
+| **Next Action Date** | string | ISO date for the next action, or `"—"` if not date-specific |
+| **Next Action Reason** | string | Why this action is needed, e.g. `"Water deficit: 12 mm remaining this week"` |
+| **Next Mowing Window** | string | First forecast dry day suitable for mowing, e.g. `"Tuesday 2026-05-19"` |
+| **Mowing Status** | string | Short mowing phrase, e.g. `"Mowing window: Tuesday"` |
+| **Frost Severity** | string | `none` / `light` / `moderate` / `severe` |
+| **Heat Stress Severity** | string | `none` / `mild` / `moderate` / `severe` |
+| **Recovery Mode** | boolean | True when growth score is low (5–30) but no active frost or heat stress |
+
+### Priority logic
+
+The dashboard picks the most urgent status in this order:
+
+1. **Frost / severe heat stress** — safety first; mowing is blocked
+2. **Watering due** — deficit exceeds forecast rain for the week
+3. **Fertiliser due** — interval reached and conditions are safe
+4. **Mowing recommended** — growth score and temperature qualify
+5. **Recovery mode** — grass is recovering; minimal disturbance advised
+6. **Healthy** — no action needed (or rain is covering the deficit)
+
+### Example statuses
+
+| Lawn Status | Next Action |
+|---|---|
+| Healthy | No action needed |
+| Healthy | Wait for rain |
+| Needs water | Water 8 mm |
+| Fertiliser due | Apply fertiliser |
+| Mowing window soon | Mow Tuesday 2026-05-19 |
+| Heat stress | Water 6 mm |
+| Frost risk | Avoid mowing |
+| Recovery mode | Avoid mowing |
+
+### Dashboard in the Homey UI
+
+The **Overall Lawn Score**, **Lawn Status**, and **Next Action** tiles appear on the device card in the Homey app. You can add any dashboard capability to a Homey widget or use them in Flow conditions.
+
+The **repair view** (device → ··· → Edit device) shows a live dashboard panel:
+
+```
+┌─────────────────────────────────────┐
+│  ● 72   Healthy                     │
+│         No action needed            │
+│                                     │
+│  Next action      Date              │
+│  No action needed  —                │
+│                                     │
+│  Reason: All conditions are good    │
+└─────────────────────────────────────┘
+  Growth score:   72 / 100
+  Frost severity: none
+  Heat severity:  none
+  Recovery mode:  No
+  Last updated:   2026-05-17 08:30:00
+```
+
+<!-- Screenshot placeholder — replace with actual Homey device card screenshot -->
+> **Screenshot:** `assets/images/dashboard-card.png` *(placeholder — 1280×720)*
+
+<!-- Screenshot placeholder — replace with actual repair view screenshot -->
+> **Screenshot:** `assets/images/dashboard-repair.png` *(placeholder — 390×844)*
+
+### Services that power the dashboard
+
+| Service | File | Role |
+|---|---|---|
+| `LawnScoringService` | `lib/LawnScoringService.js` | Growth score, frost/heat flags, base recommendations |
+| `WaterScheduleService` | `lib/WaterScheduleService.js` | Weekly water deficit, watering due flag |
+| `FertiliserScheduleService` | `lib/FertiliserScheduleService.js` | Next fertiliser date, due flag |
+| `MowingWindowService` | `lib/MowingWindowService.js` | Next dry forecast day suitable for mowing |
+| `LawnStressService` | `lib/LawnStressService.js` | Frost/heat severity, recovery mode |
+| `LawnDashboardService` | `lib/LawnDashboardService.js` | Aggregates all services into one prioritised state |
+
+---
+
 ## Requirements
 
 - Homey Pro (any generation running Homey ≥ 5.0)  

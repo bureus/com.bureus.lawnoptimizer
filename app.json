@@ -368,6 +368,217 @@
       "type": "string",
       "title": { "en": "Water Schedule Status" },
       "insights": false, "getable": true, "setable": false, "uiComponent": "sensor"
+    },
+
+    "lawn_overall_score": {
+      "type": "number",
+      "title": {
+        "en": "Overall Lawn Score",
+        "nl": "Algehele Grazonscore",
+        "de": "Gesamtrasen-Score",
+        "fr": "Score global pelouse",
+        "es": "Puntuación total del césped",
+        "it": "Punteggio totale prato",
+        "sv": "Total gräsmattapoäng",
+        "no": "Total gressplenpoeng",
+        "da": "Samlet plænepoint",
+        "ru": "Общая оценка газона",
+        "pl": "Całkowity wynik trawnika",
+        "ko": "전체 잔디 점수"
+      },
+      "units": { "en": "pts" },
+      "min": 0, "max": 100, "decimals": 0,
+      "insights": true, "getable": true, "setable": false, "uiComponent": "sensor"
+    },
+
+    "lawn_status": {
+      "type": "string",
+      "title": {
+        "en": "Lawn Status",
+        "nl": "Grazonstatus",
+        "de": "Rasenstatus",
+        "fr": "Statut pelouse",
+        "es": "Estado del césped",
+        "it": "Stato del prato",
+        "sv": "Gräsmattastatus",
+        "no": "Gressplensstatus",
+        "da": "Plænestatus",
+        "ru": "Статус газона",
+        "pl": "Status trawnika",
+        "ko": "잔디 상태"
+      },
+      "insights": false, "getable": true, "setable": false, "uiComponent": "sensor"
+    },
+
+    "primary_recommendation": {
+      "type": "string",
+      "title": {
+        "en": "Primary Recommendation",
+        "nl": "Primaire aanbeveling",
+        "de": "Hauptempfehlung",
+        "fr": "Recommandation principale",
+        "es": "Recomendación principal",
+        "it": "Raccomandazione principale",
+        "sv": "Primär rekommendation",
+        "no": "Primær anbefaling",
+        "da": "Primær anbefaling",
+        "ru": "Главная рекомендация",
+        "pl": "Główna rekomendacja",
+        "ko": "주요 권장 사항"
+      },
+      "insights": false, "getable": true, "setable": false, "uiComponent": "sensor"
+    },
+
+    "next_action": {
+      "type": "string",
+      "title": {
+        "en": "Next Action",
+        "nl": "Volgende actie",
+        "de": "Nächste Aktion",
+        "fr": "Prochaine action",
+        "es": "Próxima acción",
+        "it": "Prossima azione",
+        "sv": "Nästa åtgärd",
+        "no": "Neste handling",
+        "da": "Næste handling",
+        "ru": "Следующее действие",
+        "pl": "Następna czynność",
+        "ko": "다음 조치"
+      },
+      "insights": false, "getable": true, "setable": false, "uiComponent": "sensor"
+    },
+
+    "next_action_date": {
+      "type": "string",
+      "title": {
+        "en": "Next Action Date",
+        "nl": "Datum volgende actie",
+        "de": "Datum nächste Aktion",
+        "fr": "Date prochaine action",
+        "es": "Fecha próxima acción",
+        "it": "Data prossima azione",
+        "sv": "Datum nästa åtgärd",
+        "no": "Dato for neste handling",
+        "da": "Dato for næste handling",
+        "ru": "Дата следующего действия",
+        "pl": "Data następnej czynności",
+        "ko": "다음 조치 날짜"
+      },
+      "insights": false, "getable": true, "setable": false, "uiComponent": "sensor"
+    },
+
+    "next_action_reason": {
+      "type": "string",
+      "title": {
+        "en": "Next Action Reason",
+        "nl": "Reden volgende actie",
+        "de": "Grund nächste Aktion",
+        "fr": "Raison prochaine action",
+        "es": "Motivo próxima acción",
+        "it": "Motivo prossima azione",
+        "sv": "Anledning nästa åtgärd",
+        "no": "Grunn til neste handling",
+        "da": "Grund til næste handling",
+        "ru": "Причина следующего действия",
+        "pl": "Powód następnej czynności",
+        "ko": "다음 조치 이유"
+      },
+      "insights": false, "getable": true, "setable": false, "uiComponent": "sensor"
+    },
+
+    "next_mowing_window": {
+      "type": "string",
+      "title": {
+        "en": "Next Mowing Window",
+        "nl": "Volgend maamoment",
+        "de": "Nächstes Mähfenster",
+        "fr": "Prochaine fenêtre de tonte",
+        "es": "Próxima ventana de corte",
+        "it": "Prossima finestra di taglio",
+        "sv": "Nästa klippningsfönster",
+        "no": "Neste klippingsvindu",
+        "da": "Næste slåningsvindue",
+        "ru": "Следующее окно для стрижки",
+        "pl": "Następne okno koszenia",
+        "ko": "다음 잔디깎기 시간대"
+      },
+      "insights": false, "getable": true, "setable": false, "uiComponent": "sensor"
+    },
+
+    "mowing_status": {
+      "type": "string",
+      "title": {
+        "en": "Mowing Status",
+        "nl": "Maastatus",
+        "de": "Mähstatus",
+        "fr": "Statut de tonte",
+        "es": "Estado de corte",
+        "it": "Stato del taglio",
+        "sv": "Klippningsstatus",
+        "no": "Klippingsstatus",
+        "da": "Slåningsstatus",
+        "ru": "Статус стрижки",
+        "pl": "Status koszenia",
+        "ko": "잔디깎기 상태"
+      },
+      "insights": false, "getable": true, "setable": false, "uiComponent": "sensor"
+    },
+
+    "frost_severity": {
+      "type": "string",
+      "title": {
+        "en": "Frost Severity",
+        "nl": "Ernst van vorst",
+        "de": "Froststärke",
+        "fr": "Intensité du gel",
+        "es": "Severidad de la helada",
+        "it": "Gravità del gelo",
+        "sv": "Frostsvårighetsgrad",
+        "no": "Frostalvorlighet",
+        "da": "Frostalvorlighed",
+        "ru": "Интенсивность заморозков",
+        "pl": "Nasilenie mrozu",
+        "ko": "서리 심각도"
+      },
+      "insights": false, "getable": true, "setable": false, "uiComponent": "sensor"
+    },
+
+    "heat_stress_severity": {
+      "type": "string",
+      "title": {
+        "en": "Heat Stress Severity",
+        "nl": "Ernst van hittestress",
+        "de": "Hitzestress-Schweregrad",
+        "fr": "Intensité du stress thermique",
+        "es": "Severidad del estrés por calor",
+        "it": "Gravità dello stress da calore",
+        "sv": "Svårighetsgrad värmestress",
+        "no": "Alvorlighetsgrad varmesstress",
+        "da": "Alvorlighed af varmestress",
+        "ru": "Интенсивность теплового стресса",
+        "pl": "Nasilenie stresu cieplnego",
+        "ko": "열 스트레스 심각도"
+      },
+      "insights": false, "getable": true, "setable": false, "uiComponent": "sensor"
+    },
+
+    "lawn_recovery_mode": {
+      "type": "boolean",
+      "title": {
+        "en": "Recovery Mode",
+        "nl": "Herstelmodus",
+        "de": "Erholungsmodus",
+        "fr": "Mode récupération",
+        "es": "Modo recuperación",
+        "it": "Modalità recupero",
+        "sv": "Återhämtningsläge",
+        "no": "Gjenopprettingsmodus",
+        "da": "Gendannelsestilstand",
+        "ru": "Режим восстановления",
+        "pl": "Tryb odbudowy",
+        "ko": "회복 모드"
+      },
+      "insights": false, "getable": true, "setable": false, "uiComponent": "sensor"
     }
   },
 
@@ -415,7 +626,18 @@
         "watering_due",
         "next_watering_date",
         "next_watering_amount_mm",
-        "water_schedule_status"
+        "water_schedule_status",
+        "lawn_overall_score",
+        "lawn_status",
+        "primary_recommendation",
+        "next_action",
+        "next_action_date",
+        "next_action_reason",
+        "next_mowing_window",
+        "mowing_status",
+        "frost_severity",
+        "heat_stress_severity",
+        "lawn_recovery_mode"
       ],
       "capabilitiesOptions": {
         "measure_temperature.soil_surface": {
@@ -514,6 +736,11 @@
         {
           "id": "add_devices",
           "template": "add_devices"
+        }
+      ],
+      "repair": [
+        {
+          "id": "repair"
         }
       ],
       "settings": [

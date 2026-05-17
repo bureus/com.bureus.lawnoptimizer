@@ -6,6 +6,9 @@ const SoilTemperatureModel      = require('../../lib/SoilTemperatureModel');
 const LawnScoringService        = require('../../lib/LawnScoringService');
 const FertiliserScheduleService = require('../../lib/FertiliserScheduleService');
 const WaterScheduleService      = require('../../lib/WaterScheduleService');
+const LawnStressService         = require('../../lib/LawnStressService');
+const MowingWindowService       = require('../../lib/MowingWindowService');
+const LawnDashboardService      = require('../../lib/LawnDashboardService');
 const { getWeekStartDate, formatIsoDate, parseIsoDate } = require('../../lib/DateHelpers');
 
 // ── Persistent store keys ──────────────────────────────────────────────────────
@@ -57,6 +60,9 @@ class LawnSoilOptimizerDevice extends Homey.Device {
     this._client         = new OpenMeteoClient(this.log.bind(this));
     this._fertiliserService = new FertiliserScheduleService();
     this._waterService      = new WaterScheduleService();
+    this._stressService     = new LawnStressService();
+    this._mowingService     = new MowingWindowService();
+    this._dashboardService  = new LawnDashboardService();
 
     await this._startPolling();
 
@@ -131,12 +137,37 @@ class LawnSoilOptimizerDevice extends Homey.Device {
       // ── Water schedule ───────────────────────────────────────────────────────
       const waterResult = this._calcWaterSchedule(snapshot, settings, temps, assessment);
 
-      await this._updateCapabilities(temps, assessment, fertResult, waterResult);
+      // ── Stress assessment ────────────────────────────────────────────────────
+      const stressResult = this._stressService.assess({
+        rootZoneTemp: temps.rootZone,
+        airTemp:      temps.airTemp,
+        growthScore:  assessment.growthScore,
+      });
+
+      // ── Mowing window ────────────────────────────────────────────────────────
+      const mowingResult = this._mowingService.findNextWindow({
+        precipitationByDay: snapshot.precipitationByDay,
+        rootZoneTemp:       temps.rootZone,
+        mowingRecommended:  assessment.mowingRecommended,
+        mowingMinTemp:      settings.preferred_mowing_min_temp ?? 8,
+      });
+
+      // ── Dashboard state ──────────────────────────────────────────────────────
+      const dashboard = this._dashboardService.compute({
+        scoringResult:      assessment,
+        waterResult,
+        fertResult,
+        mowingWindowResult: mowingResult,
+        stressResult,
+      });
+
+      await this._updateCapabilities(temps, assessment, fertResult, waterResult, mowingResult, stressResult, dashboard);
       await this._fireTriggers(temps, assessment, fertResult, waterResult);
       await this._checkFertiliserNotification(fertResult, settings);
       await this._checkWaterNotification(waterResult, settings);
 
       this.log(`Refresh complete – rootZone: ${temps.rootZone} °C, score: ${assessment.growthScore}, fertDue: ${fertResult.due}, waterDue: ${waterResult.wateringDue}`);
+      this.log(`Dashboard – score: ${dashboard.overallScore}, status: "${dashboard.lawnStatus}", nextAction: "${dashboard.nextAction}", date: ${dashboard.nextActionDate}`);
     } catch (err) {
       this.error('Failed to refresh data:', err.message);
     }
@@ -251,7 +282,7 @@ class LawnSoilOptimizerDevice extends Homey.Device {
 
   // ─── Capability updates ────────────────────────────────────────────────────
 
-  async _updateCapabilities(temps, assessment, fertResult, waterResult) {
+  async _updateCapabilities(temps, assessment, fertResult, waterResult, mowingResult, stressResult, dashboard) {
     const now = new Date().toLocaleString('sv-SE', { hour12: false });
 
     const updates = [
@@ -263,7 +294,7 @@ class LawnSoilOptimizerDevice extends Homey.Device {
       ['measure_rain',                     temps.rain24h],
       ['lawn_growth_score',                assessment.growthScore],
       ['mowing_recommended',               assessment.mowingRecommended],
-      // watering_recommended now driven by water schedule
+      // watering_recommended driven by water schedule
       ['watering_recommended',             waterResult.wateringRecommended],
       ['fertilizing_recommended',          assessment.fertilizingRecommended],
       ['frost_risk',                       assessment.frostRisk],
@@ -284,11 +315,28 @@ class LawnSoilOptimizerDevice extends Homey.Device {
       ['next_watering_date',        waterResult.nextWateringDate ?? '—'],
       ['next_watering_amount_mm',   waterResult.nextWateringAmountMm],
       ['water_schedule_status',     waterResult.status],
+      // Mowing window
+      ['next_mowing_window',        mowingResult.nextMowingWindow],
+      ['mowing_status',             mowingResult.mowingStatus],
+      // Stress severity
+      ['frost_severity',            stressResult.frostSeverity],
+      ['heat_stress_severity',      stressResult.heatStressSeverity],
+      ['lawn_recovery_mode',        stressResult.recoveryMode],
+      // Dashboard summary — only write when changed to reduce Insights noise
+      ['lawn_overall_score',        dashboard.overallScore],
+      ['lawn_status',               dashboard.lawnStatus],
+      ['primary_recommendation',    dashboard.primaryRecommendation],
+      ['next_action',               dashboard.nextAction],
+      ['next_action_date',          dashboard.nextActionDate],
+      ['next_action_reason',        dashboard.nextActionReason],
     ];
 
     for (const [cap, value] of updates) {
       if (value === null || value === undefined) continue;
       try {
+        // Skip write if value is unchanged (avoids unnecessary Homey events for text caps)
+        const current = this.getCapabilityValue(cap);
+        if (current === value) continue;
         await this.setCapabilityValue(cap, value);
       } catch (err) {
         this.error(`Failed to set capability "${cap}":`, err.message);
