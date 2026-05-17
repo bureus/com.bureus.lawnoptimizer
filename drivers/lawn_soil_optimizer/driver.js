@@ -249,6 +249,50 @@ class LawnSoilOptimizerDriver extends Homey.Driver {
       .trigger(device, { reason: reason || '' })
       .catch(this.error.bind(this));
   }
+
+  // ─── Mowing trigger helpers ────────────────────────────────────────────────
+
+  triggerMowingSafeStarted(device) {
+    this.homey.flow
+      .getDeviceTriggerCard('mowing_safe_started')
+      .trigger(device)
+      .catch(this.error.bind(this));
+  }
+
+  triggerMowingSafeEnded(device) {
+    this.homey.flow
+      .getDeviceTriggerCard('mowing_safe_ended')
+      .trigger(device)
+      .catch(this.error.bind(this));
+  }
+
+  triggerMowingWindowStarted(device, window) {
+    this.homey.flow
+      .getDeviceTriggerCard('mowing_window_started')
+      .trigger(device, { window: window || '' })
+      .catch(this.error.bind(this));
+  }
+
+  triggerMowingBlocked(device, reason) {
+    this.homey.flow
+      .getDeviceTriggerCard('mowing_blocked_trigger')
+      .trigger(device, { reason: reason || '' })
+      .catch(this.error.bind(this));
+  }
+
+  triggerMowingBlockRemoved(device) {
+    this.homey.flow
+      .getDeviceTriggerCard('mowing_block_removed')
+      .trigger(device)
+      .catch(this.error.bind(this));
+  }
+
+  triggerMowingRecommendedStateChanged(device, recommended) {
+    this.homey.flow
+      .getDeviceTriggerCard('mowing_recommended_state_changed')
+      .trigger(device, { recommended })
+      .catch(this.error.bind(this));
+  }
 }
 
 module.exports = LawnSoilOptimizerDriver;

@@ -577,6 +577,113 @@ This runs 9 scenarios covering basic deficit, rain delay, target reached, heat s
 
 ---
 
+## Mowing recommendations and robot mower safety
+
+The **MowingWindowService** calculates whether it is currently safe and recommended to mow, and estimates the next optimal mowing window. It integrates with soil temperature, growth score, weather, soil moisture, fertiliser timing, and frost/heat logic.
+
+### New capabilities
+
+| Capability | Type | Description |
+|---|---|---|
+| **Mowing Safe** | boolean | All safety conditions currently pass |
+| **Mowing Blocked** | boolean | A blocking condition is active |
+| **Mowing Block Reason** | string | Human-readable explanation of the block |
+| **Next Mowing Window** | string | Next preferred day/time with acceptable conditions, e.g. `2026-05-22 14:00` |
+| **Mowing Window Score** | number (0–100) | Quality score for current mowing conditions |
+| **Mowing Status** | string | Summary message, e.g. `Good mowing conditions` |
+
+The existing **Mowing Recommended** capability is now driven by the window service (safe AND score ≥ 60).
+
+### Blocking conditions
+
+Mowing is blocked when **any** of the following apply:
+
+| Condition | Setting |
+|---|---|
+| Frost risk active | — |
+| Root zone temp below minimum | `mowing_min_soil_temp` (default 8 °C) |
+| Precipitation last 24 h > 5 mm | — |
+| Rain drying period not yet elapsed | `mowing_block_hours_after_rain` (default 8 h) |
+| Forecast rain next 24 h too high | `mowing_max_precipitation_next_24h_mm` (default 4 mm) |
+| Growth score too low | `mowing_min_growth_score` (default 40) |
+| Fertiliser applied recently | `mowing_block_hours_after_fertiliser` (default 48 h) |
+| Heat stress AND allow-heat-stress disabled | `mowing_allow_during_heat_stress` |
+| Soil moisture too high for strategy | `mowing_avoid_high_moisture` |
+| Manual block active | via flow action |
+
+### Mowing strategy
+
+| Strategy | Moisture limit | Behaviour |
+|---|---|---|
+| **Conservative** | 60 % | Prefers dry weather and strong growth |
+| **Balanced** | 70 % | Standard thresholds (default) |
+| **Aggressive** | 80 % | Allows mowing sooner, in wetter conditions |
+
+### Window scoring (0–100)
+
+| Factor | Max pts |
+|---|---|
+| No/low precipitation last 24 h | 25 |
+| Moderate soil temperature (12–22 °C optimal) | 25 |
+| Strong growth score | 25 |
+| No frost risk | 10 |
+| No heat stress | 10 |
+| No rain forecast | 5 |
+
+### Flow cards
+
+**Triggers:**
+- Mowing became safe
+- Mowing is no longer safe
+- Optimal mowing window started *(token: `window`)*
+- Mowing was blocked *(token: `reason`)*
+- Mowing block was removed
+- Mowing recommendation state changed *(token: `recommended`)*
+
+**Conditions:**
+- Mowing is/is not safe
+- Mowing is/is not blocked
+- Mowing window score is/is not above _N_
+
+**Actions:**
+- Refresh mowing schedule
+- Mark lawn as mowed now
+- Block mowing for _N_ hours
+- Clear mowing block
+
+### Flow examples
+
+```
+WHEN mowing becomes unsafe THEN pause robot mower
+WHEN ideal mowing window starts THEN notify user
+WHEN fertiliser applied THEN block mowing for 48 h
+WHEN mowing safe AND window score above 70 THEN start robot mower
+WHEN frost risk detected THEN send notification "Avoid mowing tonight"
+```
+
+### Robot mower integration
+
+`lib/RobotMowerIntegrationService.js` provides `pauseRobotMower()` and `resumeRobotMower()` as an abstraction layer. Currently a **mock implementation** — actual vendor API calls are marked with `// TODO` comments.
+
+Planned integrations:
+- **Husqvarna** Automower Connect API
+- **Gardena** Smart System API
+- **Mammotion** LUBA / YUKA cloud API
+- **Worx** Landroid cloud API
+- **Homey device integration** via `homey.devices`
+
+Use the flow actions to manually control mowing and wire them to any smart device via Homey flows.
+
+### Running the validation script
+
+```bash
+node scripts/test-mowing-window.js
+```
+
+Covers 9 scenarios: frost, heavy rain, ideal spring, heat stress, heat-stress-allowed, fertiliser block, rain drying, conservative/aggressive moisture, low growth, and mowing-disabled.
+
+---
+
 ## License
 
 MIT — see [LICENSE](LICENSE) for details.

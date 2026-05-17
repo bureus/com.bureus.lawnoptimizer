@@ -55,7 +55,20 @@
     "preferred_watering_time": "Preferred Watering Time (HH:mm)",
     "watering_min_soil_temp": "Min. Soil Temp for Watering (°C)",
     "watering_max_heat_stress_temp": "Heat Stress Temp Threshold (°C)",
-    "reset_water_weekday": "Weekly Reset Day"
+    "reset_water_weekday": "Weekly Reset Day",
+    "mowing_scheduling": "Mowing Schedule",
+    "mowing_enabled": "Enable Mowing Recommendations",
+    "preferred_mowing_days": "Preferred Mowing Days",
+    "preferred_mowing_time": "Preferred Mowing Time (HH:mm)",
+    "mowing_min_soil_temp": "Min. Soil Temp for Mowing (°C)",
+    "mowing_max_heat_stress_temp": "Max Heat Stress Temp for Mowing (°C)",
+    "mowing_max_precipitation_next_24h_mm": "Max Forecast Rain (mm / 24 h)",
+    "mowing_block_hours_after_rain": "Block Hours After Rain",
+    "mowing_block_hours_after_fertiliser": "Block Hours After Fertilising",
+    "mowing_min_growth_score": "Min. Growth Score for Mowing",
+    "mowing_avoid_high_moisture": "Avoid Mowing on High Soil Moisture",
+    "mowing_allow_during_heat_stress": "Allow Mowing During Heat Stress",
+    "mowing_strategy": "Mowing Strategy"
   },
   "capabilities": {
     "measure_temperature": {
@@ -87,7 +100,13 @@
     "watering_due": "Watering Due",
     "next_watering_date": "Next Watering Date",
     "next_watering_amount_mm": "Next Watering Amount (mm)",
-    "water_schedule_status": "Water Schedule Status"
+    "water_schedule_status": "Water Schedule Status",
+    "mowing_safe": "Mowing Safe",
+    "mowing_blocked": "Mowing Blocked",
+    "mowing_block_reason": "Mowing Block Reason",
+    "next_mowing_window": "Next Mowing Window",
+    "mowing_window_score": "Mowing Window Score",
+    "mowing_status": "Mowing Status"
   },
   "errors": {
     "invalid_latitude": "Invalid latitude. Must be between -90 and 90.",

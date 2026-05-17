@@ -368,6 +368,46 @@
       "type": "string",
       "title": { "en": "Water Schedule Status" },
       "insights": false, "getable": true, "setable": false, "uiComponent": "sensor"
+    },
+
+    "mowing_safe": {
+      "type": "boolean",
+      "icon": "./assets/icons/mowing.svg",
+      "title": { "en": "Mowing Safe" },
+      "insights": false, "getable": true, "setable": false, "uiComponent": "sensor"
+    },
+
+    "mowing_blocked": {
+      "type": "boolean",
+      "icon": "./assets/icons/mowing.svg",
+      "title": { "en": "Mowing Blocked" },
+      "insights": false, "getable": true, "setable": false, "uiComponent": "sensor"
+    },
+
+    "mowing_block_reason": {
+      "type": "string",
+      "title": { "en": "Mowing Block Reason" },
+      "insights": false, "getable": true, "setable": false, "uiComponent": "sensor"
+    },
+
+    "next_mowing_window": {
+      "type": "string",
+      "title": { "en": "Next Mowing Window" },
+      "insights": false, "getable": true, "setable": false, "uiComponent": "sensor"
+    },
+
+    "mowing_window_score": {
+      "type": "number",
+      "title": { "en": "Mowing Window Score" },
+      "units": { "en": "pts" },
+      "min": 0, "max": 100, "decimals": 0,
+      "insights": true, "getable": true, "setable": false, "uiComponent": "sensor"
+    },
+
+    "mowing_status": {
+      "type": "string",
+      "title": { "en": "Mowing Status" },
+      "insights": false, "getable": true, "setable": false, "uiComponent": "sensor"
     }
   },
 
@@ -415,7 +455,13 @@
         "watering_due",
         "next_watering_date",
         "next_watering_amount_mm",
-        "water_schedule_status"
+        "water_schedule_status",
+        "mowing_safe",
+        "mowing_blocked",
+        "mowing_block_reason",
+        "next_mowing_window",
+        "mowing_window_score",
+        "mowing_status"
       ],
       "capabilitiesOptions": {
         "measure_temperature.soil_surface": {
@@ -1336,6 +1382,101 @@
               ]
             }
           ]
+        },
+        {
+          "type": "group",
+          "label": { "en": "Mowing Schedule" },
+          "children": [
+            {
+              "id": "mowing_enabled",
+              "type": "checkbox",
+              "label": { "en": "Enable Mowing Recommendations" },
+              "hint": { "en": "When disabled, mowing is always blocked and no mowing flow cards fire." },
+              "value": true
+            },
+            {
+              "id": "preferred_mowing_days",
+              "type": "text",
+              "label": { "en": "Preferred Mowing Days" },
+              "hint": { "en": "Comma-separated weekday codes, e.g. TUE,FRI" },
+              "value": "TUE,FRI"
+            },
+            {
+              "id": "preferred_mowing_time",
+              "type": "text",
+              "label": { "en": "Preferred Mowing Time (HH:mm)" },
+              "hint": { "en": "Time of day for the mowing window, e.g. 14:00" },
+              "value": "14:00"
+            },
+            {
+              "id": "mowing_min_soil_temp",
+              "type": "number",
+              "label": { "en": "Min. Soil Temp for Mowing (°C)" },
+              "hint": { "en": "Mowing is blocked when root zone temperature is below this value." },
+              "value": 8, "min": 0, "max": 20
+            },
+            {
+              "id": "mowing_max_heat_stress_temp",
+              "type": "number",
+              "label": { "en": "Max Heat Stress Temp for Mowing (°C)" },
+              "hint": { "en": "Mowing is blocked above this temperature unless 'Allow mowing during heat stress' is enabled." },
+              "value": 28, "min": 20, "max": 45
+            },
+            {
+              "id": "mowing_max_precipitation_next_24h_mm",
+              "type": "number",
+              "label": { "en": "Max Forecast Rain (mm / 24 h)" },
+              "hint": { "en": "Mowing is blocked when more than this amount of rain is forecast in the next 24 hours." },
+              "value": 4, "min": 0, "max": 30
+            },
+            {
+              "id": "mowing_block_hours_after_rain",
+              "type": "number",
+              "label": { "en": "Block Hours After Rain" },
+              "hint": { "en": "Number of hours to block mowing after significant rainfall (requires rain sensor via Flow)." },
+              "value": 8, "min": 0, "max": 48
+            },
+            {
+              "id": "mowing_block_hours_after_fertiliser",
+              "type": "number",
+              "label": { "en": "Block Hours After Fertilising" },
+              "hint": { "en": "Mowing is blocked for this many hours after the last fertiliser date." },
+              "value": 48, "min": 0, "max": 168
+            },
+            {
+              "id": "mowing_min_growth_score",
+              "type": "number",
+              "label": { "en": "Min. Growth Score for Mowing" },
+              "hint": { "en": "Mowing is blocked when the growth score is below this value (0–100)." },
+              "value": 40, "min": 0, "max": 100
+            },
+            {
+              "id": "mowing_avoid_high_moisture",
+              "type": "checkbox",
+              "label": { "en": "Avoid Mowing on High Soil Moisture" },
+              "hint": { "en": "When enabled, mowing is blocked when soil moisture exceeds the strategy threshold." },
+              "value": true
+            },
+            {
+              "id": "mowing_allow_during_heat_stress",
+              "type": "checkbox",
+              "label": { "en": "Allow Mowing During Heat Stress" },
+              "hint": { "en": "When enabled, mowing is permitted even when heat stress is active. Not recommended." },
+              "value": false
+            },
+            {
+              "id": "mowing_strategy",
+              "type": "dropdown",
+              "label": { "en": "Mowing Strategy" },
+              "hint": { "en": "Conservative: strictest conditions. Balanced: standard. Aggressive: allows mowing sooner." },
+              "value": "balanced",
+              "values": [
+                { "id": "conservative", "label": { "en": "Conservative" } },
+                { "id": "balanced",     "label": { "en": "Balanced" } },
+                { "id": "aggressive",   "label": { "en": "Aggressive" } }
+              ]
+            }
+          ]
         }
       ]
     }
@@ -1942,6 +2083,67 @@
         "title": { "en": "Weekly water tracking reset" },
         "hint": { "en": "Fires when the weekly water counters are reset (automatic or manual)." },
         "args": [{ "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }]
+      },
+
+      {
+        "id": "mowing_safe_started",
+        "title": { "en": "Mowing became safe" },
+        "hint": { "en": "Fires once when all safety conditions are met and mowing transitions to safe." },
+        "args": [{ "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }]
+      },
+      {
+        "id": "mowing_safe_ended",
+        "title": { "en": "Mowing is no longer safe" },
+        "hint": { "en": "Fires once when a safety condition is violated and mowing transitions to unsafe." },
+        "args": [{ "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }]
+      },
+      {
+        "id": "mowing_window_started",
+        "title": { "en": "Optimal mowing window started" },
+        "hint": { "en": "Fires when a preferred mowing day/time arrives with acceptable conditions." },
+        "args": [{ "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }],
+        "tokens": [
+          {
+            "name": "window",
+            "type": "string",
+            "title": { "en": "Mowing Window" },
+            "example": "2026-05-20 14:00"
+          }
+        ]
+      },
+      {
+        "id": "mowing_blocked_trigger",
+        "title": { "en": "Mowing was blocked" },
+        "hint": { "en": "Fires once when mowing transitions from unblocked to blocked." },
+        "args": [{ "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }],
+        "tokens": [
+          {
+            "name": "reason",
+            "type": "string",
+            "title": { "en": "Block Reason" },
+            "example": "Blocked due to frost risk"
+          }
+        ]
+      },
+      {
+        "id": "mowing_block_removed",
+        "title": { "en": "Mowing block was removed" },
+        "hint": { "en": "Fires once when mowing transitions from blocked to unblocked." },
+        "args": [{ "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }]
+      },
+      {
+        "id": "mowing_recommended_state_changed",
+        "title": { "en": "Mowing recommendation state changed" },
+        "hint": { "en": "Fires when the detailed mowing recommendation (from window service) changes." },
+        "args": [{ "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }],
+        "tokens": [
+          {
+            "name": "recommended",
+            "type": "boolean",
+            "title": { "en": "Recommended" },
+            "example": true
+          }
+        ]
       }
     ],
 
@@ -2300,6 +2502,29 @@
         "args": [
           { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }
         ]
+      },
+      {
+        "id": "mowing_is_safe",
+        "title": { "en": "Mowing !{{is|is not}} safe" },
+        "args": [{ "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }]
+      },
+      {
+        "id": "mowing_is_blocked",
+        "title": { "en": "Mowing !{{is|is not}} blocked" },
+        "args": [{ "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }]
+      },
+      {
+        "id": "mowing_window_score_above",
+        "title": { "en": "Mowing window score !{{is|is not}} above" },
+        "titleFormatted": { "en": "Mowing window score !{{is|is not}} above [[score]]" },
+        "args": [
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" },
+          {
+            "name": "score", "type": "number",
+            "title": { "en": "Score (0–100)" },
+            "placeholder": { "en": "60" }
+          }
+        ]
       }
     ],
 
@@ -2652,6 +2877,38 @@
         "id": "refresh_water_schedule",
         "title": { "en": "Refresh water schedule" },
         "hint": { "en": "Recalculates the water schedule based on current rainfall, forecast, and settings." },
+        "args": [{ "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }]
+      },
+      {
+        "id": "refresh_mowing_schedule",
+        "title": { "en": "Refresh mowing schedule" },
+        "hint": { "en": "Recalculates mowing safety and the next mowing window based on current conditions." },
+        "args": [{ "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }]
+      },
+      {
+        "id": "mark_mowed_now",
+        "title": { "en": "Mark lawn as mowed now" },
+        "hint": { "en": "Records the current time as the last mowing event and refreshes conditions." },
+        "args": [{ "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }]
+      },
+      {
+        "id": "temporarily_block_mowing",
+        "title": { "en": "Temporarily block mowing" },
+        "titleFormatted": { "en": "Block mowing for [[hours]] hours" },
+        "hint": { "en": "Manually blocks mowing for the specified number of hours. Useful after manual operations." },
+        "args": [
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" },
+          {
+            "name": "hours", "type": "number",
+            "title": { "en": "Hours" },
+            "placeholder": { "en": "24" }
+          }
+        ]
+      },
+      {
+        "id": "clear_mowing_block",
+        "title": { "en": "Clear mowing block" },
+        "hint": { "en": "Removes any active manual mowing block and recalculates conditions." },
         "args": [{ "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }]
       },
       {

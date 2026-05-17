@@ -1,11 +1,13 @@
 'use strict';
 
 const Homey = require('homey');
-const OpenMeteoClient           = require('../../lib/OpenMeteoClient');
-const SoilTemperatureModel      = require('../../lib/SoilTemperatureModel');
-const LawnScoringService        = require('../../lib/LawnScoringService');
-const FertiliserScheduleService = require('../../lib/FertiliserScheduleService');
-const WaterScheduleService      = require('../../lib/WaterScheduleService');
+const OpenMeteoClient            = require('../../lib/OpenMeteoClient');
+const SoilTemperatureModel       = require('../../lib/SoilTemperatureModel');
+const LawnScoringService         = require('../../lib/LawnScoringService');
+const FertiliserScheduleService  = require('../../lib/FertiliserScheduleService');
+const WaterScheduleService       = require('../../lib/WaterScheduleService');
+const MowingWindowService        = require('../../lib/MowingWindowService');
+const RobotMowerIntegrationService = require('../../lib/RobotMowerIntegrationService');
 const { getWeekStartDate, formatIsoDate, parseIsoDate } = require('../../lib/DateHelpers');
 
 // ── Persistent store keys ──────────────────────────────────────────────────────
@@ -36,6 +38,14 @@ const STORE_WATER_FORECAST_24H  = 'waterForecastNext24h';
 const STORE_WATER_FORECAST_7D   = 'waterForecastNext7Days';
 const STORE_NOTIF_WATERING_DATE = 'waterNotifDate';
 
+// Mowing store keys
+const STORE_PREV_MOWING_SAFE       = 'prevMowingSafe';
+const STORE_PREV_MOWING_BLOCKED    = 'prevMowingBlocked';
+const STORE_PREV_MOWING_RECOMMENDED = 'prevMowingRecommended2'; // suffix to avoid conflict
+const STORE_MOWING_MANUAL_BLOCK_MS = 'mowingManualBlockUntilMs';
+const STORE_LAST_RAIN_TS           = 'lastRainTimestampMs';
+const STORE_NOTIF_MOWING_DATE      = 'mowingNotifDate';
+
 // Reason codes that indicate a blocking condition (not "due") for fertiliser
 const BLOCKING_REASONS = new Set([
   'soil_too_cold', 'low_growth', 'heavy_rain', 'warm_season_cool', 'outside_season',
@@ -57,6 +67,8 @@ class LawnSoilOptimizerDevice extends Homey.Device {
     this._client         = new OpenMeteoClient(this.log.bind(this));
     this._fertiliserService = new FertiliserScheduleService();
     this._waterService      = new WaterScheduleService();
+    this._mowingService     = new MowingWindowService();
+    this._robotMowerService = new RobotMowerIntegrationService({ log: this.log.bind(this), homey: this.homey });
 
     await this._startPolling();
 
@@ -131,12 +143,16 @@ class LawnSoilOptimizerDevice extends Homey.Device {
       // ── Water schedule ───────────────────────────────────────────────────────
       const waterResult = this._calcWaterSchedule(snapshot, settings, temps, assessment);
 
-      await this._updateCapabilities(temps, assessment, fertResult, waterResult);
-      await this._fireTriggers(temps, assessment, fertResult, waterResult);
+      // ── Mowing schedule ──────────────────────────────────────────────────────
+      const mowingResult = this._calcMowingWindow(snapshot, settings, temps, assessment, fertResult);
+
+      await this._updateCapabilities(temps, assessment, fertResult, waterResult, mowingResult);
+      await this._fireTriggers(temps, assessment, fertResult, waterResult, mowingResult);
       await this._checkFertiliserNotification(fertResult, settings);
       await this._checkWaterNotification(waterResult, settings);
+      await this._checkMowingNotification(mowingResult, settings);
 
-      this.log(`Refresh complete – rootZone: ${temps.rootZone} °C, score: ${assessment.growthScore}, fertDue: ${fertResult.due}, waterDue: ${waterResult.wateringDue}`);
+      this.log(`Refresh complete – rootZone: ${temps.rootZone} °C, score: ${assessment.growthScore}, fertDue: ${fertResult.due}, waterDue: ${waterResult.wateringDue}, mowingSafe: ${mowingResult.mowingSafe}`);
     } catch (err) {
       this.error('Failed to refresh data:', err.message);
     }
@@ -249,9 +265,56 @@ class LawnSoilOptimizerDevice extends Homey.Device {
     });
   }
 
+  // ─── Mowing schedule calculation ──────────────────────────────────────────
+
+  _calcMowingWindow(snapshot, settings, temps, assessment, fertResult) {
+    const today = new Date().toISOString().slice(0, 10);
+
+    // Track rain timestamp: when significant rain is first detected, record ms timestamp
+    const rain24h = temps.rain24h ?? 0;
+    if (rain24h > 1) {
+      const stored = this.getStoreValue(STORE_LAST_RAIN_TS);
+      if (!stored) {
+        this.setStoreValue(STORE_LAST_RAIN_TS, Date.now()).catch(() => {});
+      }
+    } else {
+      // Rain has cleared — clear the stored timestamp so the block can expire
+      const stored = this.getStoreValue(STORE_LAST_RAIN_TS);
+      if (stored) {
+        this.setStoreValue(STORE_LAST_RAIN_TS, null).catch(() => {});
+      }
+    }
+
+    const lastRainTs = this.getStoreValue(STORE_LAST_RAIN_TS);
+    const hoursSinceLastRain = lastRainTs
+      ? (Date.now() - lastRainTs) / 3_600_000
+      : null;
+
+    const manualBlockUntilMs = this.getStoreValue(STORE_MOWING_MANUAL_BLOCK_MS) || null;
+
+    return this._mowingService.calculate({
+      today,
+      rootZoneTemp:            temps.rootZone,
+      growthScore:             assessment.growthScore,
+      frostRisk:               assessment.frostRisk,
+      heatStressRisk:          assessment.heatStressRisk,
+      precipitationLast24hMm:  rain24h,
+      precipitationNext24hMm:  snapshot.precipitationNext24h ?? 0,
+      soilMoisture:            temps.soilMoisturePct,
+      lastFertiliserDate:      settings.last_fertiliser_date || null,
+      preferredMowingDays:     settings.preferred_mowing_days  || 'TUE,FRI',
+      preferredMowingTime:     settings.preferred_mowing_time  || '14:00',
+      strategy:                settings.mowing_strategy        || 'balanced',
+      forecastByDay:           snapshot.precipitationByDay     || [],
+      manualBlockUntilMs,
+      hoursSinceLastRain,
+      settings,
+    });
+  }
+
   // ─── Capability updates ────────────────────────────────────────────────────
 
-  async _updateCapabilities(temps, assessment, fertResult, waterResult) {
+  async _updateCapabilities(temps, assessment, fertResult, waterResult, mowingResult) {
     const now = new Date().toLocaleString('sv-SE', { hour12: false });
 
     const updates = [
@@ -262,8 +325,9 @@ class LawnSoilOptimizerDevice extends Homey.Device {
       ['measure_humidity.soil',            temps.soilMoisturePct],
       ['measure_rain',                     temps.rain24h],
       ['lawn_growth_score',                assessment.growthScore],
-      ['mowing_recommended',               assessment.mowingRecommended],
-      // watering_recommended now driven by water schedule
+      // mowing_recommended now driven by the full mowing window service
+      ['mowing_recommended',               mowingResult.mowingRecommended],
+      // watering_recommended driven by water schedule
       ['watering_recommended',             waterResult.wateringRecommended],
       ['fertilizing_recommended',          assessment.fertilizingRecommended],
       ['frost_risk',                       assessment.frostRisk],
@@ -284,6 +348,13 @@ class LawnSoilOptimizerDevice extends Homey.Device {
       ['next_watering_date',        waterResult.nextWateringDate ?? '—'],
       ['next_watering_amount_mm',   waterResult.nextWateringAmountMm],
       ['water_schedule_status',     waterResult.status],
+      // Mowing schedule capabilities
+      ['mowing_safe',               mowingResult.mowingSafe],
+      ['mowing_blocked',            mowingResult.mowingBlocked],
+      ['mowing_block_reason',       mowingResult.mowingBlockReason ?? ''],
+      ['next_mowing_window',        mowingResult.nextMowingWindow  ?? ''],
+      ['mowing_window_score',       mowingResult.mowingWindowScore ?? 0],
+      ['mowing_status',             mowingResult.status            ?? ''],
     ];
 
     for (const [cap, value] of updates) {
@@ -298,7 +369,7 @@ class LawnSoilOptimizerDevice extends Homey.Device {
 
   // ─── Flow trigger logic ────────────────────────────────────────────────────
 
-  async _fireTriggers(temps, assessment, fertResult, waterResult) {
+  async _fireTriggers(temps, assessment, fertResult, waterResult, mowingResult) {
     const driver = this.driver;
 
     // ── Existing lawn triggers ─────────────────────────────────────────────
@@ -395,6 +466,48 @@ class LawnSoilOptimizerDevice extends Homey.Device {
     await this.setStoreValue(STORE_PREV_WATERING_DUE, wateringDue);
     await this.setStoreValue(STORE_PREV_WATER_STATUS, waterReason);
     await this.setStoreValue(STORE_PREV_DEFICIT,      waterDeficitMm);
+
+    // ── Mowing triggers ────────────────────────────────────────────────────
+    const prevMowingSafe    = this.getStoreValue(STORE_PREV_MOWING_SAFE);
+    const prevMowingBlocked = this.getStoreValue(STORE_PREV_MOWING_BLOCKED);
+    const prevMowingRec     = this.getStoreValue(STORE_PREV_MOWING_RECOMMENDED);
+
+    const { mowingSafe, mowingBlocked, mowingRecommended, mowingBlockReason, nextMowingWindow } = mowingResult;
+
+    // Rising/falling edge on safe
+    if (prevMowingSafe === false && mowingSafe === true)
+      driver.triggerMowingSafeStarted(this);
+    if (prevMowingSafe === true && mowingSafe === false)
+      driver.triggerMowingSafeEnded(this);
+
+    // Rising/falling edge on blocked
+    if (prevMowingBlocked === false && mowingBlocked === true)
+      driver.triggerMowingBlocked(this, mowingBlockReason);
+    if (prevMowingBlocked === true && mowingBlocked === false)
+      driver.triggerMowingBlockRemoved(this);
+
+    // Change in recommended state
+    if (prevMowingRec !== null && prevMowingRec !== mowingRecommended)
+      driver.triggerMowingRecommendedStateChanged(this, mowingRecommended);
+
+    // Mowing window started: fires when we enter a preferred day/time window while safe
+    const now = new Date();
+    const nowHour    = now.getUTCHours();
+    const nowMinute  = now.getUTCMinutes();
+    const nowDateStr = formatIsoDate(now);
+    if (mowingSafe && nextMowingWindow && nextMowingWindow.startsWith(nowDateStr)) {
+      const [, winTime] = nextMowingWindow.split(' ');
+      if (winTime) {
+        const [winH, winM] = winTime.split(':').map(Number);
+        if (nowHour === winH && nowMinute === winM) {
+          driver.triggerMowingWindowStarted(this, nextMowingWindow);
+        }
+      }
+    }
+
+    await this.setStoreValue(STORE_PREV_MOWING_SAFE,        mowingSafe);
+    await this.setStoreValue(STORE_PREV_MOWING_BLOCKED,     mowingBlocked);
+    await this.setStoreValue(STORE_PREV_MOWING_RECOMMENDED, mowingRecommended);
   }
 
   // ─── Fertiliser notifications ──────────────────────────────────────────────
@@ -480,6 +593,59 @@ class LawnSoilOptimizerDevice extends Homey.Device {
     }
   }
 
+  // ─── Mowing notifications ─────────────────────────────────────────────────
+
+  async _checkMowingNotification(mowingResult, settings) {
+    if (!settings.enable_notifications) return;
+
+    const today = new Date().toISOString().slice(0, 10);
+
+    const shouldNotify = async () => {
+      if (this.getStoreValue(STORE_NOTIF_MOWING_DATE) === today) return false;
+      await this.setStoreValue(STORE_NOTIF_MOWING_DATE, today);
+      return true;
+    };
+
+    if (mowingResult.mowingRecommended) {
+      if (await shouldNotify()) {
+        await this.homey.notifications.createNotification({
+          excerpt: 'Excellent mowing conditions detected. Good time to mow your lawn.',
+        });
+      }
+      return;
+    }
+
+    if (mowingResult.mowingBlocked) {
+      const reason = mowingResult.reason;
+      let msg = null;
+
+      if (reason === 'frost_risk')      msg = 'Avoid mowing — frost risk tonight.';
+      if (reason === 'recent_rain')     msg = 'Avoid mowing — wet grass after recent rain.';
+      if (reason === 'rain_drying')     msg = 'Grass still drying after rain — mowing delayed.';
+      if (reason === 'after_fertiliser') msg = 'Mowing delayed after fertilising.';
+      if (reason === 'heat_stress')     msg = 'Heat stress detected — avoid mowing.';
+
+      if (msg && await shouldNotify()) {
+        await this.homey.notifications.createNotification({ excerpt: msg });
+      }
+      return;
+    }
+
+    // Notify about upcoming mowing window
+    if (mowingResult.nextMowingWindow) {
+      const windowDate = mowingResult.nextMowingWindow.split(' ')[0];
+      const tomorrow   = new Date();
+      tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
+      if (windowDate === formatIsoDate(tomorrow)) {
+        if (await shouldNotify()) {
+          await this.homey.notifications.createNotification({
+            excerpt: `Best mowing window tomorrow at ${mowingResult.nextMowingWindow.split(' ')[1]}.`,
+          });
+        }
+      }
+    }
+  }
+
   // ─── Flow action handlers ──────────────────────────────────────────────────
 
   async sendLawnAdviceNotification() {
@@ -497,10 +663,16 @@ class LawnSoilOptimizerDevice extends Homey.Device {
     const fertStatus  = this.getCapabilityValue('fertiliser_status') || '';
     const waterStatus = this.getCapabilityValue('water_schedule_status') || '';
 
+    const mowStatus = this.getCapabilityValue('mowing_status') || '';
+    const mowScore  = this.getCapabilityValue('mowing_window_score') ?? '–';
+    const nextWin   = this.getCapabilityValue('next_mowing_window') || '';
+
     const message = [
       `🌱 ${name}`,
       `Root zone: ${temp} °C  |  Score: ${score}/100`,
       `Mow: ${mow}  Water: ${water}  Fertilize: ${fert}`,
+      mowStatus ? `Mowing: ${mowStatus} (score: ${mowScore})` : '',
+      nextWin   ? `Next mow window: ${nextWin}` : '',
       fertStatus  ? `Fertiliser: ${fertStatus}`   : '',
       waterStatus ? `Water schedule: ${waterStatus}` : '',
       frost, heat,
@@ -575,6 +747,31 @@ class LawnSoilOptimizerDevice extends Homey.Device {
     });
     await this.setStoreValue(STORE_WATER_WEEK_START, formatIsoDate(weekStart));
     this.driver.triggerWeeklyWaterReset(this);
+    await this.refreshData();
+  }
+
+  // ── Mowing action handlers ─────────────────────────────────────────────────
+
+  async markMowedNow() {
+    this.log('markMowedNow called — recording mow event');
+    // Clear any manual block so mowing can be re-evaluated cleanly
+    await this.setStoreValue(STORE_MOWING_MANUAL_BLOCK_MS, null);
+    await this.refreshData();
+  }
+
+  async temporarilyBlockMowing(hours) {
+    const h = Math.max(0, Number(hours) || 0);
+    if (h === 0) return;
+    const until = Date.now() + h * 3_600_000;
+    this.log(`temporarilyBlockMowing: blocking mowing for ${h}h (until ${new Date(until).toISOString()})`);
+    await this.setStoreValue(STORE_MOWING_MANUAL_BLOCK_MS, until);
+    await this.refreshData();
+  }
+
+  async clearMowingBlock() {
+    this.log('clearMowingBlock: clearing manual mowing block');
+    await this.setStoreValue(STORE_MOWING_MANUAL_BLOCK_MS, null);
+    await this.setStoreValue(STORE_LAST_RAIN_TS, null);
     await this.refreshData();
   }
 }

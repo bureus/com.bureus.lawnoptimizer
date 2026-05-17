@@ -53,6 +53,14 @@ class LawnSoilOptimizerApp extends Homey.App {
     this.homey.flow.getDeviceTriggerCard('water_schedule_changed');
     this.homey.flow.getDeviceTriggerCard('watering_delayed_due_to_rain');
     this.homey.flow.getDeviceTriggerCard('weekly_water_reset');
+
+    // ── Mowing triggers ───────────────────────────────────────────────────────
+    this.homey.flow.getDeviceTriggerCard('mowing_safe_started');
+    this.homey.flow.getDeviceTriggerCard('mowing_safe_ended');
+    this.homey.flow.getDeviceTriggerCard('mowing_window_started');
+    this.homey.flow.getDeviceTriggerCard('mowing_blocked_trigger');
+    this.homey.flow.getDeviceTriggerCard('mowing_block_removed');
+    this.homey.flow.getDeviceTriggerCard('mowing_recommended_state_changed');
   }
 
   _registerConditions() {
@@ -145,6 +153,22 @@ class LawnSoilOptimizerApp extends Homey.App {
         const month   = new Date().getUTCMonth() + 1; // 1–12
         return isMonthInSeason(month, start, end);
       });
+
+    // ── Mowing conditions ─────────────────────────────────────────────────────
+
+    this.homey.flow.getConditionCard('mowing_is_safe')
+      .registerRunListener(async (args) =>
+        args.device.getCapabilityValue('mowing_safe') === true);
+
+    this.homey.flow.getConditionCard('mowing_is_blocked')
+      .registerRunListener(async (args) =>
+        args.device.getCapabilityValue('mowing_blocked') === true);
+
+    this.homey.flow.getConditionCard('mowing_window_score_above')
+      .registerRunListener(async (args) => {
+        const score = args.device.getCapabilityValue('mowing_window_score');
+        return typeof score === 'number' && score > args.score;
+      });
   }
 
   _registerActions() {
@@ -209,6 +233,20 @@ class LawnSoilOptimizerApp extends Homey.App {
 
     this.homey.flow.getActionCard('refresh_fertiliser_schedule')
       .registerRunListener(async (args) => args.device.refreshData());
+
+    // ── Mowing actions ────────────────────────────────────────────────────────
+
+    this.homey.flow.getActionCard('refresh_mowing_schedule')
+      .registerRunListener(async (args) => args.device.refreshData());
+
+    this.homey.flow.getActionCard('mark_mowed_now')
+      .registerRunListener(async (args) => args.device.markMowedNow());
+
+    this.homey.flow.getActionCard('temporarily_block_mowing')
+      .registerRunListener(async (args) => args.device.temporarilyBlockMowing(args.hours));
+
+    this.homey.flow.getActionCard('clear_mowing_block')
+      .registerRunListener(async (args) => args.device.clearMowingBlock());
   }
 }
 
