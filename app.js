@@ -43,6 +43,16 @@ class LawnSoilOptimizerApp extends Homey.App {
     this.homey.flow.getDeviceTriggerCard('fertiliser_due_cleared');
     this.homey.flow.getDeviceTriggerCard('fertiliser_date_changed');
     this.homey.flow.getDeviceTriggerCard('fertiliser_delayed');
+
+    // ── Water schedule triggers ────────────────────────────────────────────────
+    this.homey.flow.getDeviceTriggerCard('watering_due_started');
+    this.homey.flow.getDeviceTriggerCard('watering_due_cleared');
+    this.homey.flow.getDeviceTriggerCard('water_deficit_above')
+      .registerRunListener(async (args, state) => state.deficit > args.deficit_mm);
+    this.homey.flow.getDeviceTriggerCard('weekly_water_target_reached');
+    this.homey.flow.getDeviceTriggerCard('water_schedule_changed');
+    this.homey.flow.getDeviceTriggerCard('watering_delayed_due_to_rain');
+    this.homey.flow.getDeviceTriggerCard('weekly_water_reset');
   }
 
   _registerConditions() {
@@ -84,6 +94,37 @@ class LawnSoilOptimizerApp extends Homey.App {
       .registerRunListener(async (args) =>
         args.device.getCapabilityValue('heat_stress_risk') === true);
 
+    // ── Water schedule conditions ──────────────────────────────────────────────
+
+    this.homey.flow.getConditionCard('watering_is_due')
+      .registerRunListener(async (args) =>
+        args.device.getCapabilityValue('watering_due') === true);
+
+    this.homey.flow.getConditionCard('water_deficit_is_above')
+      .registerRunListener(async (args) => {
+        const deficit = args.device.getCapabilityValue('water_deficit_mm');
+        return typeof deficit === 'number' && deficit > args.deficit_mm;
+      });
+
+    this.homey.flow.getConditionCard('weekly_water_target_is_reached')
+      .registerRunListener(async (args) => {
+        const deficit = args.device.getCapabilityValue('water_deficit_mm');
+        return typeof deficit === 'number' && deficit === 0;
+      });
+
+    this.homey.flow.getConditionCard('rain_expected_next_24h')
+      .registerRunListener(async (args) => {
+        const mm = args.device.getStoreValue('waterForecastNext24h') ?? 0;
+        return mm > 1;
+      });
+
+    this.homey.flow.getConditionCard('enough_rain_expected_this_week')
+      .registerRunListener(async (args) => {
+        const forecast = args.device.getStoreValue('waterForecastNext7Days') ?? 0;
+        const deficit  = args.device.getCapabilityValue('water_deficit_mm') ?? 0;
+        return deficit > 0 && forecast >= deficit;
+      });
+
     // ── Fertiliser conditions ──────────────────────────────────────────────
 
     this.homey.flow.getConditionCard('fertiliser_is_due')
@@ -124,6 +165,29 @@ class LawnSoilOptimizerApp extends Homey.App {
 
     this.homey.flow.getActionCard('reset_model_memory')
       .registerRunListener(async (args) => args.device.resetModelMemory());
+
+    // ── Water schedule actions ─────────────────────────────────────────────────
+
+    this.homey.flow.getActionCard('add_manual_rain')
+      .registerRunListener(async (args) => args.device.addManualRain(args.amount_mm));
+
+    this.homey.flow.getActionCard('set_manual_rain_this_week')
+      .registerRunListener(async (args) => args.device.setManualRain(args.amount_mm));
+
+    this.homey.flow.getActionCard('add_manual_irrigation')
+      .registerRunListener(async (args) => args.device.addManualIrrigation(args.amount_mm));
+
+    this.homey.flow.getActionCard('set_manual_irrigation_this_week')
+      .registerRunListener(async (args) => args.device.setManualIrrigation(args.amount_mm));
+
+    this.homey.flow.getActionCard('reset_weekly_water_tracking')
+      .registerRunListener(async (args) => args.device.resetWeeklyWaterTracking());
+
+    this.homey.flow.getActionCard('mark_watered_now')
+      .registerRunListener(async (args) => args.device.addManualIrrigation(args.amount_mm));
+
+    this.homey.flow.getActionCard('refresh_water_schedule')
+      .registerRunListener(async (args) => args.device.refreshData());
 
     // ── Fertiliser actions ─────────────────────────────────────────────────
 

@@ -41,7 +41,21 @@
     "fertiliser_season_end_month": "Season End (month)",
     "fertiliser_min_soil_temp": "Min. Soil Temp to Fertilise (°C)",
     "fertiliser_rain_window_mm_min": "Ideal Rain – Min (mm/48 h)",
-    "fertiliser_rain_window_mm_max": "Ideal Rain – Max (mm/48 h)"
+    "fertiliser_rain_window_mm_max": "Ideal Rain – Max (mm/48 h)",
+    "water_scheduling": "Weekly Water Scheduling",
+    "weekly_water_target_mm": "Weekly Water Target (mm)",
+    "manual_rain_this_week_mm": "Manual Rain This Week (mm)",
+    "manual_irrigation_this_week_mm": "Manual Irrigation This Week (mm)",
+    "rain_sensor_capability_source": "Rain Sensor Source (optional)",
+    "use_weather_forecast_rain": "Use Weather Forecast Rain",
+    "use_manual_rain_input": "Use Manual Rain Input",
+    "use_rain_sensor_input": "Use Rain Sensor via Flow",
+    "water_schedule_strategy": "Watering Strategy",
+    "preferred_watering_days": "Preferred Watering Days",
+    "preferred_watering_time": "Preferred Watering Time (HH:mm)",
+    "watering_min_soil_temp": "Min. Soil Temp for Watering (°C)",
+    "watering_max_heat_stress_temp": "Heat Stress Temp Threshold (°C)",
+    "reset_water_weekday": "Weekly Reset Day"
   },
   "capabilities": {
     "measure_temperature": {
@@ -64,7 +78,16 @@
     "fertiliser_next_date": "Next Fertiliser Date",
     "fertiliser_days_remaining": "Days to Next Fertiliser",
     "fertiliser_due": "Fertiliser Due",
-    "fertiliser_status": "Fertiliser Status"
+    "fertiliser_status": "Fertiliser Status",
+    "weekly_water_target_mm": "Weekly Water Target (mm)",
+    "rain_this_week_mm": "Rain This Week (mm)",
+    "irrigation_this_week_mm": "Irrigation This Week (mm)",
+    "total_water_this_week_mm": "Total Water This Week (mm)",
+    "water_deficit_mm": "Water Deficit (mm)",
+    "watering_due": "Watering Due",
+    "next_watering_date": "Next Watering Date",
+    "next_watering_amount_mm": "Next Watering Amount (mm)",
+    "water_schedule_status": "Water Schedule Status"
   },
   "errors": {
     "invalid_latitude": "Invalid latitude. Must be between -90 and 90.",
