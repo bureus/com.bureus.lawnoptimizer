@@ -29,7 +29,19 @@
     "thresholds": "Thresholds",
     "preferred_mowing_min_temp": "Min. Temp for Mowing (°C)",
     "preferred_fertilizing_min_temp": "Min. Temp for Fertilizing (°C)",
-    "watering_threshold_mm_24h": "Watering Threshold – Max Rain 24 h (mm)"
+    "watering_threshold_mm_24h": "Watering Threshold – Max Rain 24 h (mm)",
+    "fertiliser_scheduling": "Fertiliser Scheduling",
+    "last_fertiliser_date": "Last Fertiliser Date",
+    "fertiliser_interval_days": "Interval (days)",
+    "fertiliser_strategy": "Strategy",
+    "conservative": "Conservative (+14 days)",
+    "balanced": "Balanced",
+    "aggressive": "Aggressive (−7 days)",
+    "fertiliser_season_start_month": "Season Start (month)",
+    "fertiliser_season_end_month": "Season End (month)",
+    "fertiliser_min_soil_temp": "Min. Soil Temp to Fertilise (°C)",
+    "fertiliser_rain_window_mm_min": "Ideal Rain – Min (mm/48 h)",
+    "fertiliser_rain_window_mm_max": "Ideal Rain – Max (mm/48 h)"
   },
   "capabilities": {
     "measure_temperature": {
@@ -48,7 +60,11 @@
     "fertilizing_recommended": "Fertilizing Recommended",
     "frost_risk": "Frost Risk",
     "heat_stress_risk": "Heat Stress Risk",
-    "last_updated": "Last Updated"
+    "last_updated": "Last Updated",
+    "fertiliser_next_date": "Next Fertiliser Date",
+    "fertiliser_days_remaining": "Days to Next Fertiliser",
+    "fertiliser_due": "Fertiliser Due",
+    "fertiliser_status": "Fertiliser Status"
   },
   "errors": {
     "invalid_latitude": "Invalid latitude. Must be between -90 and 90.",

@@ -188,6 +188,100 @@ THEN  Refresh weather data now  (device: My Lawn)
 
 ---
 
+## Fertiliser Scheduling
+
+The app includes a built-in fertiliser calendar that tells you **when your next
+application is due** and flags conditions that would make fertilising harmful or wasteful.
+
+### How it works
+
+1. **Set the last fertiliser date** — enter it during pairing, change it in device
+   settings, or use the *"Mark fertilised today"* / *"Set last fertiliser date"* Flow
+   actions at any time.
+2. **The service calculates the next date** by adding the configured interval (default
+   42 days / 6 weeks) to the last date, then applies two optional offset modifiers:
+
+   | Setting | Effect on next date |
+   |---|---|
+   | Strategy: Conservative | + 14 days |
+   | Strategy: Balanced (default) | ± 0 days |
+   | Strategy: Aggressive | − 7 days |
+   | Soil type: Sand | − 7 days (nutrients leach faster) |
+   | Soil type: Loam (default) | ± 0 days |
+   | Soil type: Clay | + 7 days (nutrients held longer) |
+
+3. **Blocking conditions** — even when the date has passed, fertilising may be flagged
+   as unsafe. Conditions are checked in priority order:
+
+   | Reason code | When triggered |
+   |---|---|
+   | `no_date` | No last fertiliser date has been set |
+   | `outside_season` | Today is outside the configured season window (default Apr–Oct) |
+   | `soil_too_cold` | Root-zone temp < min soil temp (default 10 °C) |
+   | `low_growth` | Growth score < 40 (grass is dormant or stressed) |
+   | `warm_season_cool` | Warm-season grass and root zone < 18 °C |
+   | `heavy_rain` | > 15 mm forecast in the next 48 h (fertiliser would wash away) |
+
+4. **Ideal rain window** — if 2–15 mm is forecast in the next 48 h the status message
+   mentions *"light rain expected"*, since a small amount of rain helps activate granular
+   fertiliser without leaching it.
+
+### Capabilities added
+
+| Capability | Type | Description |
+|---|---|---|
+| `fertiliser_next_date` | string | ISO date of the next scheduled application |
+| `fertiliser_days_remaining` | number | Days until (positive) or since (negative) that date |
+| `fertiliser_due` | boolean | `true` when due date has passed and no blocking condition applies |
+| `fertiliser_status` | string | Human-readable one-line summary |
+
+### Example Homey Flows
+
+**Notify when fertiliser is due and soil is warm enough:**
+```
+WHEN  Fertiliser due started         (device: My Lawn)
+THEN  Send push notification "Time to fertilise!"
+```
+
+**Mark done from a virtual button:**
+```
+WHEN  Virtual button pressed
+THEN  Mark fertilised today          (device: My Lawn)
+```
+
+**Pause irrigation after fertilising:**
+```
+WHEN  Last fertiliser date changed   (device: My Lawn)
+THEN  Pause irrigation controller for 2 hours
+```
+
+**Warn when overdue but blocked by rain:**
+```
+WHEN  Fertiliser delayed             (device: My Lawn)
+THEN  Send notification with reason token
+```
+
+**Conditional: skip mowing flow if fertiliser was just applied:**
+```
+WHEN  Mowing recommended changed     (device: My Lawn)
+AND   Fertiliser days remaining > 3  (i.e. not freshly applied)
+THEN  Send "Ready to mow" notification
+```
+
+### Validating the service logic
+
+A self-contained validation script exercises the scheduling service against
+representative scenarios:
+
+```bash
+npm run validate:fertiliser
+```
+
+It runs ~30 assertions (spec example, strategy offsets, soil modifiers, blocking
+conditions, date helpers) and exits with code 0 on full pass.
+
+---
+
 ## Limitations
 
 - **No real soil sensor** — temperatures are estimated from weather data + the model.
@@ -339,7 +433,11 @@ com.bureus.lawnoptimizer/
 ├── lib/
 │   ├── OpenMeteoClient.js                   HTTP client with retry/timeout
 │   ├── SoilTemperatureModel.js              Weighted soil temp model
-│   └── LawnScoringService.js               Pure scoring / recommendation logic
+│   ├── LawnScoringService.js               Pure scoring / recommendation logic
+│   └── FertiliserScheduleService.js         Fertiliser calendar & blocking logic
+├── scripts/
+│   ├── check-assets.js                      Asset manifest validator
+│   └── validate-fertiliser.js               Fertiliser service regression tests
 └── drivers/
     └── lawn_soil_optimizer/
         ├── driver.js                        Pairing + flow trigger helpers

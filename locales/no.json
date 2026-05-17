@@ -29,7 +29,19 @@
     "thresholds": "Terskelverdier",
     "preferred_mowing_min_temp": "Min. temp. for klipping (°C)",
     "preferred_fertilizing_min_temp": "Min. temp. for gjødsling (°C)",
-    "watering_threshold_mm_24h": "Vanningsterskel – Maks. regn 24 t (mm)"
+    "watering_threshold_mm_24h": "Vanningsterskel – Maks. regn 24 t (mm)",
+    "fertiliser_scheduling": "Gjødslingsplan",
+    "last_fertiliser_date": "Siste gjødslingsdato",
+    "fertiliser_interval_days": "Intervall (dager)",
+    "fertiliser_strategy": "Strategi",
+    "conservative": "Forsiktig (+14 dager)",
+    "balanced": "Balansert",
+    "aggressive": "Intensiv (−7 dager)",
+    "fertiliser_season_start_month": "Sesongstart (måned)",
+    "fertiliser_season_end_month": "Sesongslutt (måned)",
+    "fertiliser_min_soil_temp": "Min. jordtemperatur for gjødsling (°C)",
+    "fertiliser_rain_window_mm_min": "Idealregn – min. (mm/48 t)",
+    "fertiliser_rain_window_mm_max": "Idealregn – maks. (mm/48 t)"
   },
   "capabilities": {
     "measure_temperature": {
@@ -48,7 +60,11 @@
     "fertilizing_recommended": "Gjødsling anbefales",
     "frost_risk": "Frostrisiko",
     "heat_stress_risk": "Varmestresstrisiko",
-    "last_updated": "Sist oppdatert"
+    "last_updated": "Sist oppdatert",
+    "fertiliser_next_date": "Neste gjødslingsdato",
+    "fertiliser_days_remaining": "Dager til neste gjødsling",
+    "fertiliser_due": "Gjødsling forfalt",
+    "fertiliser_status": "Gjødslingsstatus"
   },
   "errors": {
     "invalid_latitude": "Ugyldig breddegrad. Må være mellom -90 og 90.",
