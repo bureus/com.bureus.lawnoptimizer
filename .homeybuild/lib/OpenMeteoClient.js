@@ -48,11 +48,12 @@ class OpenMeteoClient {
   // ─── Private helpers ───────────────────────────────────────────────────────
 
   _buildPath(lat, lon) {
-    // past_days=1 ensures we have 24 h of history for rolling averages
+    // past_days=7 covers a full week for weekly rain totals
+    // forecast_days=8 gives 7 future days for watering schedule look-ahead
     return `/v1/forecast?latitude=${lat}&longitude=${lon}`
       + `&hourly=${HOURLY_VARS}`
-      + `&forecast_days=2`
-      + `&past_days=1`
+      + `&forecast_days=8`
+      + `&past_days=7`
       + `&timezone=auto`;
   }
 
@@ -132,7 +133,52 @@ class OpenMeteoClient {
 
     const current = this._rowAt(hourly, closestIdx);
 
-    return { current, history, raw };
+    // ── Forecast precipitation sums ────────────────────────────────────────────
+    let precipitationNext48h  = 0;
+    let precipitationNext24h  = 0;
+    let precipitationNext7Days = 0;
+
+    if (Array.isArray(hourly.precipitation)) {
+      const end48h   = Math.min(closestIdx + 48,   times.length - 1);
+      const end24h   = Math.min(closestIdx + 24,   times.length - 1);
+      const end7days = Math.min(closestIdx + 168,  times.length - 1);
+
+      for (let i = closestIdx + 1; i <= end48h; i++) {
+        const v = hourly.precipitation[i];
+        if (v !== null && v !== undefined) precipitationNext48h += v;
+      }
+      for (let i = closestIdx + 1; i <= end24h; i++) {
+        const v = hourly.precipitation[i];
+        if (v !== null && v !== undefined) precipitationNext24h += v;
+      }
+      for (let i = closestIdx + 1; i <= end7days; i++) {
+        const v = hourly.precipitation[i];
+        if (v !== null && v !== undefined) precipitationNext7Days += v;
+      }
+    }
+
+    precipitationNext48h   = Math.round(precipitationNext48h   * 10) / 10;
+    precipitationNext24h   = Math.round(precipitationNext24h   * 10) / 10;
+    precipitationNext7Days = Math.round(precipitationNext7Days * 10) / 10;
+
+    // ── Daily precipitation aggregation ────────────────────────────────────────
+    // Aggregate all hourly precipitation into calendar-day totals.
+    // The first 10 chars of each time string give the local date 'YYYY-MM-DD'.
+    const dailyMap = new Map();
+    if (Array.isArray(hourly.precipitation)) {
+      for (let i = 0; i < times.length; i++) {
+        const dateKey = times[i].slice(0, 10);
+        const v = hourly.precipitation[i];
+        if (v !== null && v !== undefined) {
+          dailyMap.set(dateKey, (dailyMap.get(dateKey) ?? 0) + v);
+        }
+      }
+    }
+    const precipitationByDay = Array.from(dailyMap.entries())
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([date, totalMm]) => ({ date, totalMm: Math.round(totalMm * 10) / 10 }));
+
+    return { current, history, precipitationNext48h, precipitationNext24h, precipitationNext7Days, precipitationByDay, raw };
   }
 
   _rowAt(hourly, idx) {
@@ -181,10 +227,20 @@ class OpenMeteoClient {
  */
 
 /**
+ * @typedef {object} DailyPrecip
+ * @property {string} date     'YYYY-MM-DD' (local timezone from API)
+ * @property {number} totalMm  Sum of hourly precipitation for that day
+ */
+
+/**
  * @typedef {object} WeatherSnapshot
- * @property {WeatherRow}   current   Closest hour to now
- * @property {WeatherRow[]} history   Up to 24 hourly rows ending at current
- * @property {object}       raw       Full API response (for debugging)
+ * @property {WeatherRow}     current               Closest hour to now
+ * @property {WeatherRow[]}   history               Up to 24 hourly rows ending at current
+ * @property {number}         precipitationNext48h  Total forecast precipitation for the next 48 h (mm)
+ * @property {number}         precipitationNext24h  Total forecast precipitation for the next 24 h (mm)
+ * @property {number}         precipitationNext7Days Total forecast precipitation for the next 7 days (mm)
+ * @property {DailyPrecip[]}  precipitationByDay    Per-day rain totals across the full window
+ * @property {object}         raw                   Full API response (for debugging)
  */
 
 module.exports = OpenMeteoClient;

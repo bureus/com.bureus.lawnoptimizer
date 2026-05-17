@@ -8,7 +8,9 @@
   },
   "scripts": {
     "start": "homey app run",
-    "check:assets": "node scripts/check-assets.js"
+    "check:assets": "node scripts/check-assets.js",
+    "validate:fertiliser": "node scripts/validate-fertiliser.js",
+    "test:water": "node scripts/test-water-schedule.js"
   },
   "keywords": [
     "homey",

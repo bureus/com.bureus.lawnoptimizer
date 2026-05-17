@@ -40,6 +40,7 @@ const ASSETS = [
   { file: 'assets/icons/watering.svg',       required: true,  note: 'Watering recommendation icon' },
   { file: 'assets/icons/mowing.svg',         required: true,  note: 'Mowing recommendation icon' },
   { file: 'assets/icons/fertilizing.svg',    required: true,  note: 'Fertilizing recommendation icon' },
+  { file: 'assets/icons/fertiliser_due.svg', required: true,  note: 'Fertiliser due capability icon' },
 
   // ── Marketing / store images (optional during development) ───────────────
   {

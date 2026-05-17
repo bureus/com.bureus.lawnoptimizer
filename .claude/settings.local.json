@@ -1,7 +1,13 @@
 {
   "permissions": {
     "allow": [
-      "Bash(node scripts/check-assets.js)"
+      "Bash(node scripts/check-assets.js)",
+      "PowerShell(node -e \"try { require\\('C:/Code/com.bureus.lawnoptimizer/app.json'\\); console.log\\('app.json OK'\\) } catch\\(e\\) { console.error\\(e.message\\) }\")",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(gh pr create --title 'Add fertiliser scheduling feature' --body ' *)",
+      "PowerShell(Get-ChildItem \"C:\\\\Program Files\\\\\" -ErrorAction SilentlyContinue | Where-Object { $_.Name -match \"github|gh\" }; Get-ChildItem \"C:\\\\Users\\\\$env:USERNAME\\\\AppData\\\\Local\\\\Programs\\\\\" -ErrorAction SilentlyContinue | Where-Object { $_.Name -match \"github|gh\" })",
+      "PowerShell($env:GITHUB_TOKEN; [System.Environment]::GetEnvironmentVariable\\(\"GITHUB_TOKEN\", \"User\"\\); cmdkey /list 2>$null | Select-String \"github\")"
     ]
   }
 }

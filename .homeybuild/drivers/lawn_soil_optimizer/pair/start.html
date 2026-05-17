@@ -255,6 +255,58 @@
       </div>
     </div>
 
+    <!-- Fertiliser Setup (optional) -->
+    <div class="card">
+      <div class="card-title">
+        Fertiliser Setup
+        <span style="font-weight:400;text-transform:none;font-size:0.78rem;color:#aaa;"> — optional</span>
+      </div>
+
+      <div class="field">
+        <label for="lastFertiliserDate">Last Fertiliser Date</label>
+        <input type="text" id="lastFertiliserDate" name="lastFertiliserDate"
+               placeholder="2026-05-11" pattern="\d{4}-\d{2}-\d{2}" />
+        <div class="hint">Format YYYY-MM-DD. Leave empty to configure later.</div>
+      </div>
+
+      <div class="field">
+        <label for="fertiliserStrategy">Strategy</label>
+        <select id="fertiliserStrategy" name="fertiliserStrategy">
+          <option value="balanced">Balanced (recommended)</option>
+          <option value="conservative">Conservative (+14 days)</option>
+          <option value="aggressive">Aggressive (−7 days)</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="fertiliserIntervalDays">Interval (days)</label>
+        <input type="number" id="fertiliserIntervalDays" name="fertiliserIntervalDays"
+               value="42" min="14" max="90" />
+        <div class="hint">Typical: 42 days (6 weeks)</div>
+      </div>
+
+      <div class="field">
+        <label for="fertiliserMinTemp">Min. Soil Temp to Fertilise (°C)</label>
+        <input type="number" id="fertiliserMinTemp" name="fertiliserMinTemp"
+               value="10" min="0" max="20" />
+      </div>
+
+      <div class="location-row">
+        <div class="field">
+          <label for="fertiliserSeasonStart">Season Start (month)</label>
+          <input type="number" id="fertiliserSeasonStart" name="fertiliserSeasonStart"
+                 value="4" min="1" max="12" />
+          <div class="hint">1 = Jan, 4 = Apr</div>
+        </div>
+        <div class="field">
+          <label for="fertiliserSeasonEnd">Season End (month)</label>
+          <input type="number" id="fertiliserSeasonEnd" name="fertiliserSeasonEnd"
+                 value="10" min="1" max="12" />
+          <div class="hint">10 = Oct, 12 = Dec</div>
+        </div>
+      </div>
+    </div>
+
     <div id="errorMsg" class="error-msg"></div>
     <div id="spinner" class="spinner">Saving settings…</div>
 
@@ -324,13 +376,22 @@
       }
 
       var formData = {
-        lawnName:   lawnName,
-        latitude:   lat,
-        longitude:  lon,
-        grassType:  document.getElementById('grassType').value,
-        soilType:   document.getElementById('soilType').value,
-        shadeLevel: document.getElementById('shadeLevel').value,
-        rootDepth:  parseInt(document.getElementById('rootDepth').value, 10) || 6,
+        lawnName:                lawnName,
+        latitude:                lat,
+        longitude:               lon,
+        grassType:               document.getElementById('grassType').value,
+        soilType:                document.getElementById('soilType').value,
+        shadeLevel:              document.getElementById('shadeLevel').value,
+        rootDepth:               parseInt(document.getElementById('rootDepth').value, 10) || 6,
+        // Fertiliser scheduling
+        lastFertiliserDate:      document.getElementById('lastFertiliserDate').value.trim(),
+        fertiliserStrategy:      document.getElementById('fertiliserStrategy').value,
+        fertiliserIntervalDays:  parseInt(document.getElementById('fertiliserIntervalDays').value, 10) || 42,
+        fertiliserMinTemp:       parseFloat(document.getElementById('fertiliserMinTemp').value) || 10,
+        fertiliserSeasonStart:   parseInt(document.getElementById('fertiliserSeasonStart').value, 10) || 4,
+        fertiliserSeasonEnd:     parseInt(document.getElementById('fertiliserSeasonEnd').value, 10) || 10,
+        fertiliserRainMin:       2,
+        fertiliserRainMax:       15,
       };
 
       setLoading(true);

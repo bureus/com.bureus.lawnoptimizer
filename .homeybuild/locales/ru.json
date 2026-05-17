@@ -29,7 +29,19 @@
     "thresholds": "Пороговые значения",
     "preferred_mowing_min_temp": "Мин. темп. для скашивания (°C)",
     "preferred_fertilizing_min_temp": "Мин. темп. для удобрения (°C)",
-    "watering_threshold_mm_24h": "Порог полива – Макс. осадки 24 ч (мм)"
+    "watering_threshold_mm_24h": "Порог полива – Макс. осадки 24 ч (мм)",
+    "fertiliser_scheduling": "Расписание удобрений",
+    "last_fertiliser_date": "Дата последнего удобрения",
+    "fertiliser_interval_days": "Интервал (дни)",
+    "fertiliser_strategy": "Стратегия",
+    "conservative": "Осторожная (+14 дней)",
+    "balanced": "Сбалансированная",
+    "aggressive": "Интенсивная (−7 дней)",
+    "fertiliser_season_start_month": "Начало сезона (месяц)",
+    "fertiliser_season_end_month": "Конец сезона (месяц)",
+    "fertiliser_min_soil_temp": "Мин. темп. почвы для удобрения (°C)",
+    "fertiliser_rain_window_mm_min": "Идеальные осадки – мин. (мм/48 ч)",
+    "fertiliser_rain_window_mm_max": "Идеальные осадки – макс. (мм/48 ч)"
   },
   "capabilities": {
     "measure_temperature": {
@@ -48,7 +60,11 @@
     "fertilizing_recommended": "Удобрение рекомендуется",
     "frost_risk": "Риск заморозков",
     "heat_stress_risk": "Риск теплового стресса",
-    "last_updated": "Последнее обновление"
+    "last_updated": "Последнее обновление",
+    "fertiliser_next_date": "Следующая дата удобрения",
+    "fertiliser_days_remaining": "Дней до следующего удобрения",
+    "fertiliser_due": "Удобрение ожидается",
+    "fertiliser_status": "Статус удобрения"
   },
   "errors": {
     "invalid_latitude": "Неверная широта. Должна быть от -90 до 90.",
