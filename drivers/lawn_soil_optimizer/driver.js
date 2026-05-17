@@ -169,6 +169,57 @@ class LawnSoilOptimizerDriver extends Homey.Driver {
       .catch(this.error.bind(this));
   }
 
+  // ─── Water schedule trigger helpers ───────────────────────────────────────
+
+  triggerWateringDueStarted(device) {
+    this.homey.flow
+      .getDeviceTriggerCard('watering_due_started')
+      .trigger(device)
+      .catch(this.error.bind(this));
+  }
+
+  triggerWateringDueCleared(device) {
+    this.homey.flow
+      .getDeviceTriggerCard('watering_due_cleared')
+      .trigger(device)
+      .catch(this.error.bind(this));
+  }
+
+  triggerWaterDeficitAbove(device, deficit) {
+    this.homey.flow
+      .getDeviceTriggerCard('water_deficit_above')
+      .trigger(device, { deficit_mm: deficit }, { deficit: deficit })
+      .catch(this.error.bind(this));
+  }
+
+  triggerWeeklyWaterTargetReached(device) {
+    this.homey.flow
+      .getDeviceTriggerCard('weekly_water_target_reached')
+      .trigger(device)
+      .catch(this.error.bind(this));
+  }
+
+  triggerWaterScheduleChanged(device, status) {
+    this.homey.flow
+      .getDeviceTriggerCard('water_schedule_changed')
+      .trigger(device, { status: status || '' })
+      .catch(this.error.bind(this));
+  }
+
+  triggerWateringDelayedDueToRain(device) {
+    this.homey.flow
+      .getDeviceTriggerCard('watering_delayed_due_to_rain')
+      .trigger(device)
+      .catch(this.error.bind(this));
+  }
+
+  triggerWeeklyWaterReset(device) {
+    this.homey.flow
+      .getDeviceTriggerCard('weekly_water_reset')
+      .trigger(device)
+      .catch(this.error.bind(this));
+  }
+
   // ─── Fertiliser trigger helpers ────────────────────────────────────────────
 
   triggerFertiliserDueStarted(device, nextDate) {

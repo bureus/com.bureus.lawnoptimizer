@@ -301,6 +301,73 @@
       "getable": true,
       "setable": false,
       "uiComponent": "sensor"
+    },
+
+    "weekly_water_target_mm": {
+      "type": "number",
+      "title": { "en": "Weekly Water Target (mm)" },
+      "units": { "en": "mm" },
+      "min": 0, "max": 200, "decimals": 1,
+      "insights": false, "getable": true, "setable": false, "uiComponent": "sensor"
+    },
+
+    "rain_this_week_mm": {
+      "type": "number",
+      "title": { "en": "Rain This Week (mm)" },
+      "units": { "en": "mm" },
+      "min": 0, "max": 500, "decimals": 1,
+      "insights": true, "getable": true, "setable": false, "uiComponent": "sensor"
+    },
+
+    "irrigation_this_week_mm": {
+      "type": "number",
+      "title": { "en": "Irrigation This Week (mm)" },
+      "units": { "en": "mm" },
+      "min": 0, "max": 500, "decimals": 1,
+      "insights": false, "getable": true, "setable": false, "uiComponent": "sensor"
+    },
+
+    "total_water_this_week_mm": {
+      "type": "number",
+      "title": { "en": "Total Water This Week (mm)" },
+      "units": { "en": "mm" },
+      "min": 0, "max": 500, "decimals": 1,
+      "insights": true, "getable": true, "setable": false, "uiComponent": "sensor"
+    },
+
+    "water_deficit_mm": {
+      "type": "number",
+      "title": { "en": "Water Deficit (mm)" },
+      "units": { "en": "mm" },
+      "min": 0, "max": 200, "decimals": 1,
+      "insights": true, "getable": true, "setable": false, "uiComponent": "sensor"
+    },
+
+    "watering_due": {
+      "type": "boolean",
+      "icon": "./assets/icons/watering.svg",
+      "title": { "en": "Watering Due" },
+      "insights": false, "getable": true, "setable": false, "uiComponent": "sensor"
+    },
+
+    "next_watering_date": {
+      "type": "string",
+      "title": { "en": "Next Watering Date" },
+      "insights": false, "getable": true, "setable": false, "uiComponent": "sensor"
+    },
+
+    "next_watering_amount_mm": {
+      "type": "number",
+      "title": { "en": "Next Watering Amount (mm)" },
+      "units": { "en": "mm" },
+      "min": 0, "max": 100, "decimals": 1,
+      "insights": false, "getable": true, "setable": false, "uiComponent": "sensor"
+    },
+
+    "water_schedule_status": {
+      "type": "string",
+      "title": { "en": "Water Schedule Status" },
+      "insights": false, "getable": true, "setable": false, "uiComponent": "sensor"
     }
   },
 
@@ -339,7 +406,16 @@
         "fertiliser_next_date",
         "fertiliser_days_remaining",
         "fertiliser_due",
-        "fertiliser_status"
+        "fertiliser_status",
+        "weekly_water_target_mm",
+        "rain_this_week_mm",
+        "irrigation_this_week_mm",
+        "total_water_this_week_mm",
+        "water_deficit_mm",
+        "watering_due",
+        "next_watering_date",
+        "next_watering_amount_mm",
+        "water_schedule_status"
       ],
       "capabilitiesOptions": {
         "measure_temperature.soil_surface": {
@@ -1149,6 +1225,117 @@
               "max": 50
             }
           ]
+        },
+        {
+          "type": "group",
+          "label": { "en": "Weekly Water Scheduling" },
+          "children": [
+            {
+              "id": "weekly_water_target_mm",
+              "type": "number",
+              "label": { "en": "Weekly Water Target (mm)" },
+              "hint": { "en": "Target total water per week including rain and irrigation." },
+              "value": 25, "min": 5, "max": 60
+            },
+            {
+              "id": "manual_rain_this_week_mm",
+              "type": "number",
+              "label": { "en": "Manual Rain This Week (mm)" },
+              "hint": { "en": "Manually recorded rain amount for the current week. Auto-resets on the reset weekday." },
+              "value": 0, "min": 0, "max": 200
+            },
+            {
+              "id": "manual_irrigation_this_week_mm",
+              "type": "number",
+              "label": { "en": "Manual Irrigation This Week (mm)" },
+              "hint": { "en": "Manually recorded irrigation for the current week. Auto-resets on the reset weekday." },
+              "value": 0, "min": 0, "max": 200
+            },
+            {
+              "id": "rain_sensor_capability_source",
+              "type": "text",
+              "label": { "en": "Rain Sensor Source (optional)" },
+              "hint": { "en": "Leave empty. Use Flow actions to feed rain sensor data: WHEN rain sensor reports rain THEN add manual rain." },
+              "value": ""
+            },
+            {
+              "id": "use_weather_forecast_rain",
+              "type": "checkbox",
+              "label": { "en": "Use Weather Forecast Rain" },
+              "hint": { "en": "Include Open-Meteo forecast precipitation in weekly totals." },
+              "value": true
+            },
+            {
+              "id": "use_manual_rain_input",
+              "type": "checkbox",
+              "label": { "en": "Use Manual Rain Input" },
+              "hint": { "en": "Include manually entered rain and irrigation amounts." },
+              "value": true
+            },
+            {
+              "id": "use_rain_sensor_input",
+              "type": "checkbox",
+              "label": { "en": "Use Rain Sensor via Flow" },
+              "hint": { "en": "When enabled, rain sensor data entered via Flow actions is counted separately." },
+              "value": false
+            },
+            {
+              "id": "water_schedule_strategy",
+              "type": "dropdown",
+              "label": { "en": "Watering Strategy" },
+              "hint": { "en": "Conservative reduces recommended amount by 20 %; Aggressive increases by 20 %." },
+              "value": "balanced",
+              "values": [
+                { "id": "conservative", "label": { "en": "Conservative (−20 %)" } },
+                { "id": "balanced",     "label": { "en": "Balanced" } },
+                { "id": "aggressive",   "label": { "en": "Aggressive (+20 %)" } }
+              ]
+            },
+            {
+              "id": "preferred_watering_days",
+              "type": "text",
+              "label": { "en": "Preferred Watering Days" },
+              "hint": { "en": "Comma-separated weekday codes, e.g. MON,WED,SAT" },
+              "value": "MON,WED,SAT"
+            },
+            {
+              "id": "preferred_watering_time",
+              "type": "text",
+              "label": { "en": "Preferred Watering Time (HH:mm)" },
+              "hint": { "en": "Preferred start time for watering, e.g. 06:00" },
+              "value": "06:00"
+            },
+            {
+              "id": "watering_min_soil_temp",
+              "type": "number",
+              "label": { "en": "Min. Soil Temp for Watering (°C)" },
+              "hint": { "en": "Watering is not recommended when root zone temperature is below this value." },
+              "value": 8, "min": 0, "max": 20
+            },
+            {
+              "id": "watering_max_heat_stress_temp",
+              "type": "number",
+              "label": { "en": "Heat Stress Temp Threshold (°C)" },
+              "hint": { "en": "Above this root zone temperature, lighter but more frequent watering is recommended." },
+              "value": 28, "min": 20, "max": 40
+            },
+            {
+              "id": "reset_water_weekday",
+              "type": "dropdown",
+              "label": { "en": "Weekly Reset Day" },
+              "hint": { "en": "Day of week on which manual water counters are automatically reset to 0." },
+              "value": "MON",
+              "values": [
+                { "id": "MON", "label": { "en": "Monday" } },
+                { "id": "TUE", "label": { "en": "Tuesday" } },
+                { "id": "WED", "label": { "en": "Wednesday" } },
+                { "id": "THU", "label": { "en": "Thursday" } },
+                { "id": "FRI", "label": { "en": "Friday" } },
+                { "id": "SAT", "label": { "en": "Saturday" } },
+                { "id": "SUN", "label": { "en": "Sunday" } }
+              ]
+            }
+          ]
         }
       ]
     }
@@ -1699,6 +1886,62 @@
             "example": "Good growth conditions"
           }
         ]
+      },
+
+      {
+        "id": "watering_due_started",
+        "title": { "en": "Watering became due" },
+        "hint": { "en": "Fires once when watering_due changes from false to true." },
+        "args": [{ "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }]
+      },
+      {
+        "id": "watering_due_cleared",
+        "title": { "en": "Watering is no longer due" },
+        "hint": { "en": "Fires once when watering_due changes from true to false." },
+        "args": [{ "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }]
+      },
+      {
+        "id": "water_deficit_above",
+        "title": { "en": "Water deficit rises above" },
+        "titleFormatted": { "en": "Water deficit rises above [[deficit_mm]] mm" },
+        "hint": { "en": "Fires whenever the current water deficit exceeds the specified threshold." },
+        "args": [
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" },
+          {
+            "name": "deficit_mm", "type": "number",
+            "title": { "en": "Deficit (mm)" },
+            "placeholder": { "en": "10" }
+          }
+        ],
+        "tokens": [
+          { "name": "deficit_mm", "type": "number", "title": { "en": "Deficit (mm)" }, "example": 12 }
+        ]
+      },
+      {
+        "id": "weekly_water_target_reached",
+        "title": { "en": "Weekly water target reached" },
+        "hint": { "en": "Fires once when the water deficit reaches zero for the week." },
+        "args": [{ "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }]
+      },
+      {
+        "id": "water_schedule_changed",
+        "title": { "en": "Water schedule status changed" },
+        "args": [{ "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }],
+        "tokens": [
+          { "name": "status", "type": "string", "title": { "en": "Status" }, "example": "Watering window: Wednesday 06:00" }
+        ]
+      },
+      {
+        "id": "watering_delayed_due_to_rain",
+        "title": { "en": "Watering delayed due to rain forecast" },
+        "hint": { "en": "Fires when watering is delayed because rain is expected within 24 hours." },
+        "args": [{ "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }]
+      },
+      {
+        "id": "weekly_water_reset",
+        "title": { "en": "Weekly water tracking reset" },
+        "hint": { "en": "Fires when the weekly water counters are reset (automatic or manual)." },
+        "args": [{ "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }]
       }
     ],
 
@@ -1917,6 +2160,41 @@
         "args": [
           { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }
         ]
+      },
+      {
+        "id": "watering_is_due",
+        "title": { "en": "Watering !{{is|is not}} due" },
+        "args": [{ "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }]
+      },
+      {
+        "id": "water_deficit_is_above",
+        "title": { "en": "Water deficit !{{is|is not}} above" },
+        "titleFormatted": { "en": "Water deficit !{{is|is not}} above [[deficit_mm]] mm" },
+        "args": [
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" },
+          {
+            "name": "deficit_mm", "type": "number",
+            "title": { "en": "Deficit (mm)" },
+            "placeholder": { "en": "5" }
+          }
+        ]
+      },
+      {
+        "id": "weekly_water_target_is_reached",
+        "title": { "en": "Weekly water target !{{is|is not}} reached" },
+        "args": [{ "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }]
+      },
+      {
+        "id": "rain_expected_next_24h",
+        "title": { "en": "Rain !{{is|is not}} expected in the next 24 hours" },
+        "hint": { "en": "True when forecast precipitation for the next 24 h is more than 1 mm." },
+        "args": [{ "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }]
+      },
+      {
+        "id": "enough_rain_expected_this_week",
+        "title": { "en": "Enough rain !{{is|is not}} forecast to cover weekly deficit" },
+        "hint": { "en": "True when the 7-day rain forecast is enough to cover the remaining water deficit." },
+        "args": [{ "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }]
       },
       {
         "id": "fertiliser_is_due",
@@ -2315,6 +2593,66 @@
         "args": [
           { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }
         ]
+      },
+      {
+        "id": "add_manual_rain",
+        "title": { "en": "Add manual rain" },
+        "titleFormatted": { "en": "Add [[amount_mm]] mm manual rain" },
+        "hint": { "en": "Adds the specified amount to this week's manual rain total. Useful for rain sensors via Flow." },
+        "args": [
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" },
+          { "name": "amount_mm", "type": "number", "title": { "en": "Amount (mm)" }, "placeholder": { "en": "5" } }
+        ]
+      },
+      {
+        "id": "set_manual_rain_this_week",
+        "title": { "en": "Set manual rain this week" },
+        "titleFormatted": { "en": "Set manual rain to [[amount_mm]] mm" },
+        "args": [
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" },
+          { "name": "amount_mm", "type": "number", "title": { "en": "Amount (mm)" }, "placeholder": { "en": "10" } }
+        ]
+      },
+      {
+        "id": "add_manual_irrigation",
+        "title": { "en": "Add manual irrigation" },
+        "titleFormatted": { "en": "Add [[amount_mm]] mm manual irrigation" },
+        "hint": { "en": "Adds the specified amount to this week's irrigation total." },
+        "args": [
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" },
+          { "name": "amount_mm", "type": "number", "title": { "en": "Amount (mm)" }, "placeholder": { "en": "8" } }
+        ]
+      },
+      {
+        "id": "set_manual_irrigation_this_week",
+        "title": { "en": "Set manual irrigation this week" },
+        "titleFormatted": { "en": "Set manual irrigation to [[amount_mm]] mm" },
+        "args": [
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" },
+          { "name": "amount_mm", "type": "number", "title": { "en": "Amount (mm)" }, "placeholder": { "en": "15" } }
+        ]
+      },
+      {
+        "id": "reset_weekly_water_tracking",
+        "title": { "en": "Reset weekly water tracking" },
+        "hint": { "en": "Manually resets manual rain and irrigation counters to zero and starts a new week." },
+        "args": [{ "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }]
+      },
+      {
+        "id": "mark_watered_now",
+        "title": { "en": "Mark lawn as watered now" },
+        "titleFormatted": { "en": "Mark lawn as watered — [[amount_mm]] mm applied" },
+        "hint": { "en": "Adds the specified amount to irrigation total and recalculates the water schedule." },
+        "args": [
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" },
+          { "name": "amount_mm", "type": "number", "title": { "en": "Amount (mm)" }, "placeholder": { "en": "8" } }
+        ]
+      },
+      {
+        "id": "refresh_water_schedule",
+        "title": { "en": "Refresh water schedule" },
+        "hint": { "en": "Recalculates the water schedule based on current rainfall, forecast, and settings." },
+        "args": [{ "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }]
       },
       {
         "id": "reset_model_memory",

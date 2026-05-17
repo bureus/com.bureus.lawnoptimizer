@@ -434,10 +434,13 @@ com.bureus.lawnoptimizer/
 │   ├── OpenMeteoClient.js                   HTTP client with retry/timeout
 │   ├── SoilTemperatureModel.js              Weighted soil temp model
 │   ├── LawnScoringService.js               Pure scoring / recommendation logic
-│   └── FertiliserScheduleService.js         Fertiliser calendar & blocking logic
+│   ├── FertiliserScheduleService.js         Fertiliser calendar & blocking logic
+│   ├── WaterScheduleService.js              Weekly water schedule (standalone)
+│   └── DateHelpers.js                       ISO date utilities (shared)
 ├── scripts/
 │   ├── check-assets.js                      Asset manifest validator
-│   └── validate-fertiliser.js               Fertiliser service regression tests
+│   ├── validate-fertiliser.js               Fertiliser service regression tests
+│   └── test-water-schedule.js               Water schedule validation scenarios
 └── drivers/
     └── lawn_soil_optimizer/
         ├── driver.js                        Pairing + flow trigger helpers
@@ -447,6 +450,130 @@ com.bureus.lawnoptimizer/
         └── pair/
             └── start.html                   Custom pairing form
 ```
+
+---
+
+## Weekly water scheduling
+
+The app tracks how much water your lawn receives each week and tells you when and how much to irrigate.
+
+### How it works
+
+The scheduler combines three sources of water into a weekly total:
+
+| Source | How it enters |
+|---|---|
+| Weather forecast rain | Automatically from Open-Meteo (if **Use Weather Forecast Rain** is enabled) |
+| Manual rain | Entered via Flow action **Add manual rain** or device setting |
+| Manual irrigation | Entered via Flow action **Add manual irrigation** or **Mark lawn as watered** |
+
+Every time the app refreshes it calculates:
+
+```
+totalWaterThisWeek = weatherRain + manualRain + manualIrrigation
+waterDeficit       = weeklyTarget − totalWaterThisWeek   (minimum 0)
+```
+
+### Weekly target (mm)
+
+The default target is **25 mm per week**. This is adjusted automatically for:
+
+- **Soil type** — Sandy soil drains faster (+20 % effective target). Clay holds water longer (−10 %).
+- **Shade** — Shaded lawns need less water: Partial shade −10 %, Full shade −20 %.
+- **Grass type** — Warm-season grass gets a 10 % boost during hot weather.
+
+### Watering strategy
+
+| Strategy | Effect |
+|---|---|
+| Conservative | Suggests 20 % less than the calculated deficit per session |
+| Balanced | Suggests exactly the deficit |
+| Aggressive | Suggests 20 % more (may exceed single-session cap) |
+
+Single-session maximum is 15 mm (except Aggressive strategy). Minimum actionable amount is 3 mm.
+
+### Weather rules
+
+- If forecast rain in the next 24 hours covers the deficit → watering is **delayed**.
+- If forecast rain over the next 7 days covers the deficit → watering is **not recommended**.
+- If root zone temperature is below `watering_min_soil_temp` (default 8 °C) → watering **blocked**.
+- If heat stress is active or root zone > `watering_max_heat_stress_temp` (default 28 °C) → lighter watering (max 8 mm per session) with status suggesting repeat sessions.
+
+### Weekly reset
+
+Manual rain and irrigation counters reset automatically at the start of the week (configurable via **Weekly Reset Day**, default Monday). Historical values are logged before reset. You can also reset manually via the Flow action **Reset weekly water tracking**.
+
+### Using a rain sensor
+
+Homey cannot read another device's capability directly without a flow. Wire your rain sensor using a flow:
+
+**Example 1 — Rain sensor feeds manual rain:**
+```
+WHEN  rain sensor detects rain
+THEN  Add manual rain 5 mm  →  Lawn Soil Optimizer
+```
+
+**Example 2 — Notify when watering is due:**
+```
+WHEN  Watering became due
+AND   Rain is not expected in the next 24 hours
+THEN  Send notification "Time to water the lawn"
+```
+
+**Example 3 — Log irrigation after sprinkler runs:**
+```
+WHEN  Sprinkler zone completes
+THEN  Add manual irrigation 8 mm  →  Lawn Soil Optimizer
+```
+
+### New capabilities
+
+| Capability | Type | Description |
+|---|---|---|
+| `weekly_water_target_mm` | number | Effective weekly target (adjusted for soil/shade) |
+| `rain_this_week_mm` | number | Total rain this week (weather + manual + sensor) |
+| `irrigation_this_week_mm` | number | Irrigation applied this week |
+| `total_water_this_week_mm` | number | Rain + irrigation combined |
+| `water_deficit_mm` | number | Remaining water needed this week |
+| `watering_due` | boolean | True when watering should happen today/next preferred day |
+| `next_watering_date` | string | ISO date of next scheduled watering |
+| `next_watering_amount_mm` | number | Suggested amount for next session |
+| `water_schedule_status` | string | Human-readable schedule status |
+
+### New flow cards
+
+**Triggers:**
+- Watering became due
+- Watering is no longer due
+- Water deficit rises above _N_ mm
+- Weekly water target reached
+- Water schedule status changed
+- Watering delayed due to rain forecast
+- Weekly water tracking reset
+
+**Conditions:**
+- Watering is/is not due
+- Water deficit is/is not above _N_ mm
+- Weekly water target is/is not reached
+- Rain is/is not expected in the next 24 hours
+- Enough rain is/is not forecast to cover weekly deficit
+
+**Actions:**
+- Add manual rain _N_ mm
+- Set manual rain this week to _N_ mm
+- Add manual irrigation _N_ mm
+- Set manual irrigation this week to _N_ mm
+- Reset weekly water tracking
+- Mark lawn as watered now (_N_ mm)
+- Refresh water schedule
+
+### Running the validation script
+
+```bash
+node scripts/test-water-schedule.js
+```
+
+This runs 9 scenarios covering basic deficit, rain delay, target reached, heat stress, soil modifiers, and more.
 
 ---
 
