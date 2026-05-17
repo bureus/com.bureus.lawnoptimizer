@@ -29,7 +29,19 @@
     "thresholds": "Seuils",
     "preferred_mowing_min_temp": "Temp. min. pour tondre (°C)",
     "preferred_fertilizing_min_temp": "Temp. min. pour fertiliser (°C)",
-    "watering_threshold_mm_24h": "Seuil d'arrosage – Pluie max. 24 h (mm)"
+    "watering_threshold_mm_24h": "Seuil d'arrosage – Pluie max. 24 h (mm)",
+    "fertiliser_scheduling": "Planification de la fertilisation",
+    "last_fertiliser_date": "Dernière fertilisation",
+    "fertiliser_interval_days": "Intervalle (jours)",
+    "fertiliser_strategy": "Stratégie",
+    "conservative": "Conservatrice (+14 jours)",
+    "balanced": "Équilibrée",
+    "aggressive": "Intensive (−7 jours)",
+    "fertiliser_season_start_month": "Début de saison (mois)",
+    "fertiliser_season_end_month": "Fin de saison (mois)",
+    "fertiliser_min_soil_temp": "Temp. sol min. pour fertiliser (°C)",
+    "fertiliser_rain_window_mm_min": "Pluie idéale – min. (mm/48 h)",
+    "fertiliser_rain_window_mm_max": "Pluie idéale – max. (mm/48 h)"
   },
   "capabilities": {
     "measure_temperature": {
@@ -48,7 +60,11 @@
     "fertilizing_recommended": "Fertilisation recommandée",
     "frost_risk": "Risque de gel",
     "heat_stress_risk": "Risque de stress thermique",
-    "last_updated": "Dernière mise à jour"
+    "last_updated": "Dernière mise à jour",
+    "fertiliser_next_date": "Prochaine fertilisation",
+    "fertiliser_days_remaining": "Jours avant prochaine fertilisation",
+    "fertiliser_due": "Fertilisation due",
+    "fertiliser_status": "Statut de la fertilisation"
   },
   "errors": {
     "invalid_latitude": "Latitude invalide. Doit être comprise entre -90 et 90.",

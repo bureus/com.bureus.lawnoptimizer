@@ -206,6 +206,101 @@
       "getable": true,
       "setable": false,
       "uiComponent": "sensor"
+    },
+
+    "fertiliser_next_date": {
+      "type": "string",
+      "title": {
+        "en": "Next Fertiliser Date",
+        "nl": "Volgende bemestingsdatum",
+        "de": "Nächster Düngungstermin",
+        "fr": "Prochaine fertilisation",
+        "es": "Próxima fecha de fertilización",
+        "it": "Prossima data fertilizzazione",
+        "sv": "Nästa gödningsdatum",
+        "no": "Neste gjødseldato",
+        "da": "Næste gødningsdato",
+        "ru": "Дата следующего удобрения",
+        "pl": "Następna data nawożenia",
+        "ko": "다음 시비 날짜"
+      },
+      "insights": false,
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor"
+    },
+
+    "fertiliser_days_remaining": {
+      "type": "number",
+      "title": {
+        "en": "Days Until Fertiliser",
+        "nl": "Dagen tot bemesting",
+        "de": "Tage bis zur Düngung",
+        "fr": "Jours avant fertilisation",
+        "es": "Días hasta la fertilización",
+        "it": "Giorni alla fertilizzazione",
+        "sv": "Dagar till gödsling",
+        "no": "Dager til gjødsling",
+        "da": "Dage til gødskning",
+        "ru": "Дней до удобрения",
+        "pl": "Dni do nawożenia",
+        "ko": "시비까지 남은 일수"
+      },
+      "units": { "en": "days", "nl": "dagen", "de": "Tage", "fr": "jours", "es": "días",
+                 "it": "giorni", "sv": "dagar", "no": "dager", "da": "dage",
+                 "ru": "дн.", "pl": "dni", "ko": "일" },
+      "min": -365,
+      "max": 365,
+      "decimals": 0,
+      "insights": false,
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor"
+    },
+
+    "fertiliser_due": {
+      "type": "boolean",
+      "icon": "./assets/icons/fertiliser_due.svg",
+      "title": {
+        "en": "Fertiliser Due",
+        "nl": "Bemesting vereist",
+        "de": "Düngung fällig",
+        "fr": "Fertilisation requise",
+        "es": "Fertilización pendiente",
+        "it": "Fertilizzazione necessaria",
+        "sv": "Gödsling förfallen",
+        "no": "Gjødsling forfalt",
+        "da": "Gødskning forfalden",
+        "ru": "Удобрение требуется",
+        "pl": "Nawożenie wymagane",
+        "ko": "시비 기한"
+      },
+      "insights": false,
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor"
+    },
+
+    "fertiliser_status": {
+      "type": "string",
+      "title": {
+        "en": "Fertiliser Status",
+        "nl": "Bemestingsstatus",
+        "de": "Düngungsstatus",
+        "fr": "Statut fertilisation",
+        "es": "Estado de fertilización",
+        "it": "Stato fertilizzazione",
+        "sv": "Gödningsstatus",
+        "no": "Gjødslingsstatus",
+        "da": "Gødningsstatus",
+        "ru": "Статус удобрения",
+        "pl": "Status nawożenia",
+        "ko": "시비 상태"
+      },
+      "insights": false,
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor"
     }
   },
 
@@ -240,7 +335,11 @@
         "fertilizing_recommended",
         "frost_risk",
         "heat_stress_risk",
-        "last_updated"
+        "last_updated",
+        "fertiliser_next_date",
+        "fertiliser_days_remaining",
+        "fertiliser_due",
+        "fertiliser_status"
       ],
       "capabilitiesOptions": {
         "measure_temperature.soil_surface": {
@@ -764,6 +863,292 @@
               "value": false
             }
           ]
+        },
+        {
+          "type": "group",
+          "label": {
+            "en": "Fertiliser Scheduling",
+            "nl": "Bemestingsplanning",
+            "de": "Düngungsplanung",
+            "fr": "Planification de la fertilisation",
+            "es": "Planificación de fertilización",
+            "it": "Pianificazione fertilizzazione",
+            "sv": "Gödningsplanering",
+            "no": "Gjødslingsplanlegging",
+            "da": "Gødningsplanlægning",
+            "ru": "Планирование удобрений",
+            "pl": "Planowanie nawożenia",
+            "ko": "시비 일정"
+          },
+          "children": [
+            {
+              "id": "last_fertiliser_date",
+              "type": "text",
+              "label": {
+                "en": "Last Fertiliser Date",
+                "nl": "Laatste bemestingsdatum",
+                "de": "Letzter Düngungstermin",
+                "fr": "Dernière date de fertilisation",
+                "es": "Última fecha de fertilización",
+                "it": "Ultima data di fertilizzazione",
+                "sv": "Senaste gödningsdatum",
+                "no": "Siste gjødseldato",
+                "da": "Seneste gødningsdato",
+                "ru": "Дата последнего удобрения",
+                "pl": "Data ostatniego nawożenia",
+                "ko": "마지막 시비 날짜"
+              },
+              "hint": {
+                "en": "Format: YYYY-MM-DD (e.g. 2026-05-11). Leave empty to disable scheduling.",
+                "nl": "Formaat: JJJJ-MM-DD (bijv. 2026-05-11). Leeglaten om planning uit te schakelen.",
+                "de": "Format: JJJJ-MM-TT (z. B. 2026-05-11). Leer lassen zum Deaktivieren.",
+                "fr": "Format : AAAA-MM-JJ (ex. 2026-05-11). Laisser vide pour désactiver.",
+                "es": "Formato: AAAA-MM-DD (p. ej. 2026-05-11). Dejar vacío para desactivar.",
+                "it": "Formato: AAAA-MM-GG (es. 2026-05-11). Lasciare vuoto per disattivare.",
+                "sv": "Format: ÅÅÅÅ-MM-DD (t.ex. 2026-05-11). Lämna tomt för att inaktivera.",
+                "no": "Format: ÅÅÅÅ-MM-DD (f.eks. 2026-05-11). La stå tomt for å deaktivere.",
+                "da": "Format: ÅÅÅÅ-MM-DD (f.eks. 2026-05-11). Lad stå tomt for at deaktivere.",
+                "ru": "Формат: ГГГГ-ММ-ДД (напр. 2026-05-11). Оставьте пустым для отключения.",
+                "pl": "Format: RRRR-MM-DD (np. 2026-05-11). Zostaw puste, aby wyłączyć planowanie.",
+                "ko": "형식: YYYY-MM-DD (예: 2026-05-11). 비워두면 일정 기능이 비활성화됩니다."
+              },
+              "value": ""
+            },
+            {
+              "id": "fertiliser_interval_days",
+              "type": "number",
+              "label": {
+                "en": "Fertiliser Interval (days)",
+                "nl": "Bemestingsinterval (dagen)",
+                "de": "Düngungsintervall (Tage)",
+                "fr": "Intervalle de fertilisation (jours)",
+                "es": "Intervalo de fertilización (días)",
+                "it": "Intervallo fertilizzazione (giorni)",
+                "sv": "Gödningsintervall (dagar)",
+                "no": "Gjødslingsintervall (dager)",
+                "da": "Gødningsinterval (dage)",
+                "ru": "Интервал удобрения (дни)",
+                "pl": "Interwał nawożenia (dni)",
+                "ko": "시비 간격 (일)"
+              },
+              "hint": {
+                "en": "Typical: 42 days (6 weeks) for most lawns.",
+                "nl": "Typisch: 42 dagen (6 weken) voor de meeste gazons.",
+                "de": "Typisch: 42 Tage (6 Wochen) für die meisten Rasenflächen.",
+                "fr": "Typique : 42 jours (6 semaines) pour la plupart des pelouses.",
+                "es": "Típico: 42 días (6 semanas) para la mayoría de los céspedes.",
+                "it": "Tipico: 42 giorni (6 settimane) per la maggior parte dei prati.",
+                "sv": "Typiskt: 42 dagar (6 veckor) för de flesta gräsmattor.",
+                "no": "Typisk: 42 dager (6 uker) for de fleste plener.",
+                "da": "Typisk: 42 dage (6 uger) for de fleste plæner.",
+                "ru": "Обычно: 42 дня (6 недель) для большинства газонов.",
+                "pl": "Typowo: 42 dni (6 tygodni) dla większości trawników.",
+                "ko": "일반적: 대부분의 잔디에 42일(6주)."
+              },
+              "value": 42,
+              "min": 14,
+              "max": 90
+            },
+            {
+              "id": "fertiliser_strategy",
+              "type": "dropdown",
+              "label": {
+                "en": "Fertiliser Strategy",
+                "nl": "Bemestingsstrategie",
+                "de": "Düngungsstrategie",
+                "fr": "Stratégie de fertilisation",
+                "es": "Estrategia de fertilización",
+                "it": "Strategia fertilizzazione",
+                "sv": "Gödningsstrategi",
+                "no": "Gjødslingsstrategi",
+                "da": "Gødningsstrategi",
+                "ru": "Стратегия удобрения",
+                "pl": "Strategia nawożenia",
+                "ko": "시비 전략"
+              },
+              "hint": {
+                "en": "Conservative adds 14 days, Aggressive subtracts 7 days from the base interval.",
+                "nl": "Conservatief voegt 14 dagen toe, Agressief trekt 7 dagen af van het basisinterval.",
+                "de": "Konservativ +14 Tage, Aggressiv −7 Tage gegenüber dem Basisintervall.",
+                "fr": "Conservateur +14 jours, Agressif −7 jours par rapport à l'intervalle de base.",
+                "es": "Conservador +14 días, Agresivo −7 días respecto al intervalo base.",
+                "it": "Conservativo +14 giorni, Aggressivo −7 giorni sull'intervallo base.",
+                "sv": "Konservativ +14 dagar, Aggressiv −7 dagar från basintervallet.",
+                "no": "Konservativ +14 dager, Aggressiv −7 dager fra basisintervallet.",
+                "da": "Konservativ +14 dage, Aggressiv −7 dage fra basisintervallet.",
+                "ru": "Консервативный +14 дней, Агрессивный −7 дней от базового интервала.",
+                "pl": "Konserwatywny +14 dni, Agresywny −7 dni od bazowego interwału.",
+                "ko": "보수적 +14일, 적극적 −7일(기본 간격 기준)."
+              },
+              "value": "balanced",
+              "values": [
+                { "id": "conservative", "label": { "en": "Conservative (+14 days)", "nl": "Conservatief (+14 dagen)", "de": "Konservativ (+14 Tage)", "fr": "Conservateur (+14 j)", "es": "Conservador (+14 días)", "it": "Conservativo (+14 gg)", "sv": "Konservativ (+14 dagar)", "no": "Konservativ (+14 dager)", "da": "Konservativ (+14 dage)", "ru": "Консервативный (+14 дн.)", "pl": "Konserwatywny (+14 dni)", "ko": "보수적 (+14일)" } },
+                { "id": "balanced",     "label": { "en": "Balanced (no change)",     "nl": "Gebalanceerd (geen wijziging)", "de": "Ausgewogen (keine Änderung)", "fr": "Équilibré (sans changement)", "es": "Equilibrado (sin cambio)", "it": "Bilanciato (nessuna modifica)", "sv": "Balanserad (ingen ändring)", "no": "Balansert (ingen endring)", "da": "Afbalanceret (ingen ændring)", "ru": "Сбалансированный (без изменений)", "pl": "Zrównoważony (bez zmian)", "ko": "균형적 (변경 없음)" } },
+                { "id": "aggressive",   "label": { "en": "Aggressive (−7 days)",     "nl": "Agressief (−7 dagen)", "de": "Aggressiv (−7 Tage)", "fr": "Agressif (−7 j)", "es": "Agresivo (−7 días)", "it": "Aggressivo (−7 gg)", "sv": "Aggressiv (−7 dagar)", "no": "Aggressiv (−7 dager)", "da": "Aggressiv (−7 dage)", "ru": "Агрессивный (−7 дн.)", "pl": "Agresywny (−7 dni)", "ko": "적극적 (−7일)" } }
+              ]
+            },
+            {
+              "id": "fertiliser_season_start_month",
+              "type": "number",
+              "label": {
+                "en": "Season Start Month",
+                "nl": "Seizoen startmaand",
+                "de": "Saisonbeginn (Monat)",
+                "fr": "Mois de début de saison",
+                "es": "Mes de inicio de temporada",
+                "it": "Mese inizio stagione",
+                "sv": "Säsongsstartmånad",
+                "no": "Sesongstartmåned",
+                "da": "Sæsonstartsdag (måned)",
+                "ru": "Начало сезона (месяц)",
+                "pl": "Miesiąc początku sezonu",
+                "ko": "시즌 시작 월"
+              },
+              "hint": {
+                "en": "Month number 1–12. Default: 4 (April).",
+                "nl": "Maandnummer 1–12. Standaard: 4 (april).",
+                "de": "Monatsnummer 1–12. Standard: 4 (April).",
+                "fr": "Numéro de mois 1–12. Défaut : 4 (avril).",
+                "es": "Número de mes 1–12. Predeterminado: 4 (abril).",
+                "it": "Numero mese 1–12. Predefinito: 4 (aprile).",
+                "sv": "Månadstal 1–12. Standard: 4 (april).",
+                "no": "Månedstall 1–12. Standard: 4 (april).",
+                "da": "Månedsnummer 1–12. Standard: 4 (april).",
+                "ru": "Номер месяца 1–12. По умолчанию: 4 (апрель).",
+                "pl": "Numer miesiąca 1–12. Domyślnie: 4 (kwiecień).",
+                "ko": "월 번호 1–12. 기본값: 4 (4월)."
+              },
+              "value": 4,
+              "min": 1,
+              "max": 12
+            },
+            {
+              "id": "fertiliser_season_end_month",
+              "type": "number",
+              "label": {
+                "en": "Season End Month",
+                "nl": "Seizoen eindmaand",
+                "de": "Saisonende (Monat)",
+                "fr": "Mois de fin de saison",
+                "es": "Mes de fin de temporada",
+                "it": "Mese fine stagione",
+                "sv": "Säsongsslutmånad",
+                "no": "Sesongslutt-måned",
+                "da": "Sæsonslutning (måned)",
+                "ru": "Конец сезона (месяц)",
+                "pl": "Miesiąc końca sezonu",
+                "ko": "시즌 종료 월"
+              },
+              "hint": {
+                "en": "Month number 1–12. Default: 10 (October).",
+                "nl": "Maandnummer 1–12. Standaard: 10 (oktober).",
+                "de": "Monatsnummer 1–12. Standard: 10 (Oktober).",
+                "fr": "Numéro de mois 1–12. Défaut : 10 (octobre).",
+                "es": "Número de mes 1–12. Predeterminado: 10 (octubre).",
+                "it": "Numero mese 1–12. Predefinito: 10 (ottobre).",
+                "sv": "Månadstal 1–12. Standard: 10 (oktober).",
+                "no": "Månedstall 1–12. Standard: 10 (oktober).",
+                "da": "Månedsnummer 1–12. Standard: 10 (oktober).",
+                "ru": "Номер месяца 1–12. По умолчанию: 10 (октябрь).",
+                "pl": "Numer miesiąca 1–12. Domyślnie: 10 (październik).",
+                "ko": "월 번호 1–12. 기본값: 10 (10월)."
+              },
+              "value": 10,
+              "min": 1,
+              "max": 12
+            },
+            {
+              "id": "fertiliser_min_soil_temp",
+              "type": "number",
+              "label": {
+                "en": "Min. Soil Temp for Fertilising (°C)",
+                "nl": "Min. bodemtemp. voor bemesting (°C)",
+                "de": "Min. Bodentemp. zum Düngen (°C)",
+                "fr": "Temp. sol min. pour fertiliser (°C)",
+                "es": "Temp. suelo mín. para fertilizar (°C)",
+                "it": "Temp. suolo min. per fertilizzare (°C)",
+                "sv": "Min. jordtemp. för gödsling (°C)",
+                "no": "Min. jordtemp. for gjødsling (°C)",
+                "da": "Min. jordtemp. til gødskning (°C)",
+                "ru": "Мин. темп. почвы для удобрения (°C)",
+                "pl": "Min. temp. gleby do nawożenia (°C)",
+                "ko": "시비를 위한 최소 토양 온도 (°C)"
+              },
+              "value": 10,
+              "min": 0,
+              "max": 20
+            },
+            {
+              "id": "fertiliser_rain_window_mm_min",
+              "type": "number",
+              "label": {
+                "en": "Light Rain Threshold (mm / 48 h)",
+                "nl": "Drempel lichte regen (mm / 48 u)",
+                "de": "Leichtregen-Schwelle (mm / 48 h)",
+                "fr": "Seuil pluie légère (mm / 48 h)",
+                "es": "Umbral lluvia ligera (mm / 48 h)",
+                "it": "Soglia pioggia leggera (mm / 48 h)",
+                "sv": "Tröskel lätt regn (mm / 48 h)",
+                "no": "Terskel lett regn (mm / 48 t)",
+                "da": "Grænse let regn (mm / 48 t)",
+                "ru": "Порог лёгкого дождя (мм / 48 ч)",
+                "pl": "Próg lekkiego deszczu (mm / 48 h)",
+                "ko": "가벼운 비 임계값 (mm / 48h)"
+              },
+              "hint": {
+                "en": "Forecast rain above this is considered ideal for fertilising (washes in).",
+                "nl": "Voorspelde regen boven deze waarde is ideaal voor bemesting (helpt inspoelen).",
+                "de": "Prognostizierter Regen darüber gilt als ideal zum Einwaschen des Düngers.",
+                "fr": "Pluie prévue au-dessus de ce seuil : idéale pour faire pénétrer l'engrais.",
+                "es": "La lluvia pronosticada por encima de esto es ideal para fertilizar (ayuda a penetrar).",
+                "it": "La pioggia prevista sopra questo valore è ideale per fertilizzare (aiuta l'assorbimento).",
+                "sv": "Prognostiserat regn över detta anses idealiskt för gödsling (hjälper inlösningen).",
+                "no": "Varslet regn over dette anses ideelt for gjødsling (hjelper inntrenging).",
+                "da": "Prognosticeret regn over dette anses ideelt til gødskning (hjælper indtrænging).",
+                "ru": "Прогнозируемый дождь выше этого значения — идеален для удобрения (вмывает).",
+                "pl": "Prognozowany deszcz powyżej tego progu jest idealny do nawożenia (pomaga we wchłanianiu).",
+                "ko": "이 임계값 이상의 예보 강수량은 시비에 이상적입니다(흡수에 도움)."
+              },
+              "value": 2,
+              "min": 0,
+              "max": 10
+            },
+            {
+              "id": "fertiliser_rain_window_mm_max",
+              "type": "number",
+              "label": {
+                "en": "Heavy Rain Delay Threshold (mm / 48 h)",
+                "nl": "Drempel hevige regen (mm / 48 u)",
+                "de": "Starkregenverzögerung (mm / 48 h)",
+                "fr": "Seuil pluie forte – report (mm / 48 h)",
+                "es": "Umbral lluvia fuerte – retraso (mm / 48 h)",
+                "it": "Soglia pioggia forte – ritardo (mm / 48 h)",
+                "sv": "Tröskel kraftigt regn – fördröjning (mm / 48 h)",
+                "no": "Terskel kraftig regn – forsinkelse (mm / 48 t)",
+                "da": "Grænse kraftig regn – forsinkelse (mm / 48 t)",
+                "ru": "Порог сильного дождя – задержка (мм / 48 ч)",
+                "pl": "Próg silnego deszczu – opóźnienie (mm / 48 h)",
+                "ko": "강한 비 지연 임계값 (mm / 48h)"
+              },
+              "hint": {
+                "en": "Fertiliser is delayed when forecast rain for the next 48 h exceeds this value.",
+                "nl": "Bemesting wordt uitgesteld als de regenprognose voor de komende 48 uur deze waarde overschrijdt.",
+                "de": "Düngung wird verzögert, wenn der Niederschlag für die nächsten 48 h diesen Wert überschreitet.",
+                "fr": "La fertilisation est retardée si les précipitations prévues sur 48 h dépassent cette valeur.",
+                "es": "La fertilización se retrasa si la lluvia prevista en 48 h supera este valor.",
+                "it": "La fertilizzazione viene ritardata se le precipitazioni previste nelle 48 h superano questo valore.",
+                "sv": "Gödsling fördröjs om den prognostiserade nederbörden under 48 h överskrider detta värde.",
+                "no": "Gjødsling utsettes hvis den varslede nedbøren de neste 48 timene overstiger denne verdien.",
+                "da": "Gødskning udsættes, hvis den prognosticerede regn de næste 48 t overstiger denne værdi.",
+                "ru": "Удобрение откладывается, если прогнозируемые осадки за 48 ч превышают это значение.",
+                "pl": "Nawożenie jest odkładane, gdy prognozowane opady w ciągu 48 h przekraczają tę wartość.",
+                "ko": "향후 48시간 예보 강수량이 이 값을 초과하면 시비가 지연됩니다."
+              },
+              "value": 15,
+              "min": 5,
+              "max": 50
+            }
+          ]
         }
       ]
     }
@@ -1125,6 +1510,164 @@
         ]
       },
       {
+        "id": "fertiliser_due_started",
+        "title": {
+          "en": "Fertiliser became due",
+          "nl": "Bemesting is nu vereist",
+          "de": "Düngung ist jetzt fällig",
+          "fr": "La fertilisation est maintenant requise",
+          "es": "La fertilización está pendiente",
+          "it": "La fertilizzazione è ora necessaria",
+          "sv": "Gödsling är nu förfallen",
+          "no": "Gjødsling er nå forfalt",
+          "da": "Gødskning er nu forfalden",
+          "ru": "Наступил срок удобрения",
+          "pl": "Nawożenie stało się wymagalne",
+          "ko": "시비 기한이 됨"
+        },
+        "hint": {
+          "en": "Fires once when all conditions are met and the fertiliser date has passed.",
+          "nl": "Activeert eenmalig wanneer aan alle voorwaarden is voldaan en de bemestingsdatum is verstreken.",
+          "de": "Wird einmal ausgelöst, wenn alle Bedingungen erfüllt sind und der Düngungstermin abgelaufen ist.",
+          "fr": "Se déclenche une fois quand toutes les conditions sont réunies et la date est dépassée.",
+          "es": "Se activa una vez cuando se cumplen todas las condiciones y la fecha ha pasado.",
+          "it": "Si attiva una volta quando tutte le condizioni sono soddisfatte e la data è passata.",
+          "sv": "Utlöses en gång när alla villkor är uppfyllda och gödningsdatumet har passerat.",
+          "no": "Utløses én gang når alle betingelser er oppfylt og gjødseldatoen er passert.",
+          "da": "Udløses én gang, når alle betingelser er opfyldt og gødningsdatoen er passeret.",
+          "ru": "Срабатывает один раз, когда выполнены все условия и дата удобрения прошла.",
+          "pl": "Wyzwala się raz, gdy spełnione są wszystkie warunki i data nawożenia minęła.",
+          "ko": "모든 조건이 충족되고 시비 날짜가 지났을 때 한 번 실행됩니다."
+        },
+        "args": [
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }
+        ],
+        "tokens": [
+          {
+            "name": "next_date",
+            "type": "string",
+            "title": {
+              "en": "Next Date", "nl": "Volgende datum", "de": "Nächstes Datum",
+              "fr": "Date suivante", "es": "Fecha siguiente", "it": "Data successiva",
+              "sv": "Nästa datum", "no": "Neste dato", "da": "Næste dato",
+              "ru": "Следующая дата", "pl": "Następna data", "ko": "다음 날짜"
+            },
+            "example": "2026-06-22"
+          }
+        ]
+      },
+      {
+        "id": "fertiliser_due_cleared",
+        "title": {
+          "en": "Fertiliser is no longer due",
+          "nl": "Bemesting is niet meer vereist",
+          "de": "Düngung ist nicht mehr fällig",
+          "fr": "La fertilisation n'est plus requise",
+          "es": "La fertilización ya no está pendiente",
+          "it": "La fertilizzazione non è più necessaria",
+          "sv": "Gödsling är inte längre förfallen",
+          "no": "Gjødsling er ikke lenger forfalt",
+          "da": "Gødskning er ikke længere forfalden",
+          "ru": "Срок удобрения истёк или отменён",
+          "pl": "Nawożenie nie jest już wymagalne",
+          "ko": "시비 기한 해제됨"
+        },
+        "args": [
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }
+        ]
+      },
+      {
+        "id": "fertiliser_date_changed",
+        "title": {
+          "en": "Next fertiliser date changed",
+          "nl": "Volgende bemestingsdatum gewijzigd",
+          "de": "Nächster Düngungstermin geändert",
+          "fr": "La prochaine date de fertilisation a changé",
+          "es": "La próxima fecha de fertilización cambió",
+          "it": "La prossima data di fertilizzazione è cambiata",
+          "sv": "Nästa gödningsdatum ändrat",
+          "no": "Neste gjødseldato endret",
+          "da": "Næste gødningsdato ændret",
+          "ru": "Дата следующего удобрения изменилась",
+          "pl": "Data następnego nawożenia zmieniła się",
+          "ko": "다음 시비 날짜 변경됨"
+        },
+        "args": [
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }
+        ],
+        "tokens": [
+          {
+            "name": "next_date",
+            "type": "string",
+            "title": {
+              "en": "Next Fertiliser Date", "nl": "Volgende bemestingsdatum", "de": "Nächster Düngungstermin",
+              "fr": "Prochaine date fertilisation", "es": "Próxima fecha fertilización", "it": "Prossima data fertilizzazione",
+              "sv": "Nästa gödningsdatum", "no": "Neste gjødseldato", "da": "Næste gødningsdato",
+              "ru": "Следующая дата удобрения", "pl": "Następna data nawożenia", "ko": "다음 시비 날짜"
+            },
+            "example": "2026-06-22"
+          },
+          {
+            "name": "days_remaining",
+            "type": "number",
+            "title": {
+              "en": "Days Remaining", "nl": "Resterende dagen", "de": "Verbleibende Tage",
+              "fr": "Jours restants", "es": "Días restantes", "it": "Giorni rimanenti",
+              "sv": "Återstående dagar", "no": "Gjenværende dager", "da": "Resterende dage",
+              "ru": "Осталось дней", "pl": "Pozostałe dni", "ko": "남은 일수"
+            },
+            "example": 7
+          }
+        ]
+      },
+      {
+        "id": "fertiliser_delayed",
+        "title": {
+          "en": "Fertiliser delayed due to conditions",
+          "nl": "Bemesting uitgesteld door omstandigheden",
+          "de": "Düngung wegen Bedingungen verzögert",
+          "fr": "Fertilisation retardée en raison des conditions",
+          "es": "Fertilización retrasada por condiciones",
+          "it": "Fertilizzazione ritardata per condizioni",
+          "sv": "Gödsling fördröjd p.g.a. förhållanden",
+          "no": "Gjødsling forsinket på grunn av forhold",
+          "da": "Gødskning forsinket på grund af forhold",
+          "ru": "Удобрение отложено из-за условий",
+          "pl": "Nawożenie opóźnione z powodu warunków",
+          "ko": "환경 조건으로 인한 시비 지연"
+        },
+        "hint": {
+          "en": "Fires when fertiliser is overdue but blocked by weather or soil conditions.",
+          "nl": "Activeert wanneer bemesting achterstallig is maar geblokkeerd door weer of bodemomstandigheden.",
+          "de": "Wird ausgelöst, wenn Düngung überfällig ist, aber durch Wetter oder Bodenbedingungen blockiert wird.",
+          "fr": "Se déclenche quand la fertilisation est en retard mais bloquée par les conditions météo ou de sol.",
+          "es": "Se activa cuando la fertilización está atrasada pero bloqueada por condiciones meteorológicas o de suelo.",
+          "it": "Si attiva quando la fertilizzazione è in ritardo ma bloccata da condizioni meteo o del suolo.",
+          "sv": "Utlöses när gödsling är försenad men blockerad av väder eller jordförhållanden.",
+          "no": "Utløses når gjødsling er forsinket men blokkert av vær- eller jordforhold.",
+          "da": "Udløses når gødskning er forsinket men blokeret af vejr- eller jordforhold.",
+          "ru": "Срабатывает, когда удобрение просрочено, но заблокировано погодными или почвенными условиями.",
+          "pl": "Wyzwala się, gdy nawożenie jest zaległe, ale zablokowane przez pogodę lub warunki glebowe.",
+          "ko": "시비가 기한이 지났지만 날씨 또는 토양 조건으로 인해 차단될 때 실행됩니다."
+        },
+        "args": [
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }
+        ],
+        "tokens": [
+          {
+            "name": "reason",
+            "type": "string",
+            "title": {
+              "en": "Delay Reason", "nl": "Reden voor uitstel", "de": "Verzögerungsgrund",
+              "fr": "Raison du retard", "es": "Motivo del retraso", "it": "Motivo del ritardo",
+              "sv": "Fördröjningsorsak", "no": "Forsinkelsesårsak", "da": "Forsinkelsesårsag",
+              "ru": "Причина задержки", "pl": "Powód opóźnienia", "ko": "지연 이유"
+            },
+            "example": "Due, but delayed — heavy rain expected"
+          }
+        ]
+      },
+      {
         "id": "lawn_status_changed",
         "title": {
           "en": "Lawn status text changed",
@@ -1376,6 +1919,91 @@
         ]
       },
       {
+        "id": "fertiliser_is_due",
+        "title": {
+          "en": "Fertiliser !{{is|is not}} due",
+          "nl": "Bemesting !{{is|is niet}} vereist",
+          "de": "Düngung !{{ist|ist nicht}} fällig",
+          "fr": "La fertilisation !{{est|n'est pas}} requise",
+          "es": "La fertilización !{{está|no está}} pendiente",
+          "it": "La fertilizzazione !{{è|non è}} necessaria",
+          "sv": "Gödsling !{{är|är inte}} förfallen",
+          "no": "Gjødsling !{{er|er ikke}} forfalt",
+          "da": "Gødskning !{{er|er ikke}} forfalden",
+          "ru": "Удобрение !{{требуется|не требуется}}",
+          "pl": "Nawożenie !{{jest|nie jest}} wymagane",
+          "ko": "시비 !{{기한됨|기한 안 됨}"
+        },
+        "args": [
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }
+        ]
+      },
+      {
+        "id": "fertiliser_days_remaining_less_than",
+        "title": {
+          "en": "Days until fertiliser !{{is|is not}} fewer than",
+          "nl": "Dagen tot bemesting !{{is|is niet}} minder dan",
+          "de": "Tage bis Düngung !{{sind|sind nicht}} weniger als",
+          "fr": "Jours avant fertilisation !{{est|n'est pas}} inférieur à",
+          "es": "Días hasta fertilización !{{es|no es}} menor que",
+          "it": "Giorni alla fertilizzazione !{{è|non è}} inferiore a",
+          "sv": "Dagar till gödsling !{{är|är inte}} färre än",
+          "no": "Dager til gjødsling !{{er|er ikke}} færre enn",
+          "da": "Dage til gødskning !{{er|er ikke}} færre end",
+          "ru": "Дней до удобрения !{{меньше|не меньше}} чем",
+          "pl": "Dni do nawożenia !{{jest|nie jest}} mniej niż",
+          "ko": "시비까지 남은 일수 !{{미만|이상}"
+        },
+        "titleFormatted": {
+          "en": "Days until fertiliser !{{is|is not}} fewer than [[days]]",
+          "nl": "Dagen tot bemesting !{{is|is niet}} minder dan [[days]]",
+          "de": "Tage bis Düngung !{{sind|sind nicht}} weniger als [[days]]",
+          "fr": "Jours avant fertilisation !{{est|n'est pas}} inférieur à [[days]]",
+          "es": "Días hasta fertilización !{{es|no es}} menor que [[days]]",
+          "it": "Giorni alla fertilizzazione !{{è|non è}} inferiore a [[days]]",
+          "sv": "Dagar till gödsling !{{är|är inte}} färre än [[days]]",
+          "no": "Dager til gjødsling !{{er|er ikke}} færre enn [[days]]",
+          "da": "Dage til gødskning !{{er|er ikke}} færre end [[days]]",
+          "ru": "Дней до удобрения !{{меньше|не меньше}} чем [[days]]",
+          "pl": "Dni do nawożenia !{{jest|nie jest}} mniej niż [[days]]",
+          "ko": "시비까지 남은 일수 !{{미만|이상} [[days]]"
+        },
+        "args": [
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" },
+          {
+            "name": "days",
+            "type": "number",
+            "title": {
+              "en": "Days", "nl": "Dagen", "de": "Tage",
+              "fr": "Jours", "es": "Días", "it": "Giorni",
+              "sv": "Dagar", "no": "Dager", "da": "Dage",
+              "ru": "Дней", "pl": "Dni", "ko": "일"
+            },
+            "placeholder": { "en": "7" }
+          }
+        ]
+      },
+      {
+        "id": "fertiliser_is_in_season",
+        "title": {
+          "en": "Current date !{{is|is not}} within fertiliser season",
+          "nl": "Huidige datum !{{is|is niet}} binnen het bemestingsseizoen",
+          "de": "Aktuelles Datum !{{ist|ist nicht}} innerhalb der Düngungssaison",
+          "fr": "La date actuelle !{{est|n'est pas}} dans la saison de fertilisation",
+          "es": "La fecha actual !{{está|no está}} dentro de la temporada de fertilización",
+          "it": "La data corrente !{{è|non è}} nella stagione di fertilizzazione",
+          "sv": "Aktuellt datum !{{är|är inte}} inom gödningssäsongen",
+          "no": "Gjeldende dato !{{er|er ikke}} innenfor gjødselsesong",
+          "da": "Aktuel dato !{{er|er ikke}} inden for gødningssæsonen",
+          "ru": "Текущая дата !{{входит|не входит}} в сезон удобрений",
+          "pl": "Bieżąca data !{{jest|nie jest}} w sezonie nawożenia",
+          "ko": "현재 날짜 !{{시비 시즌 내|시비 시즌 외}"
+        },
+        "args": [
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }
+        ]
+      },
+      {
         "id": "heat_stress_is_active",
         "title": {
           "en": "Heat stress risk !{{is|is not}} active",
@@ -1525,6 +2153,164 @@
           "ru": "Отправляет уведомление Homey с текущим состоянием газона и рекомендациями.",
           "pl": "Wysyła powiadomienie Homey z aktualnym statusem trawnika i zaleceniami.",
           "ko": "현재 잔디 상태 및 권장 사항이 포함된 Homey 알림을 보냅니다."
+        },
+        "args": [
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }
+        ]
+      },
+      {
+        "id": "set_last_fertiliser_date",
+        "title": {
+          "en": "Set last fertiliser date",
+          "nl": "Laatste bemestingsdatum instellen",
+          "de": "Letzten Düngungstermin festlegen",
+          "fr": "Définir la dernière date de fertilisation",
+          "es": "Establecer la última fecha de fertilización",
+          "it": "Imposta ultima data di fertilizzazione",
+          "sv": "Ange senaste gödningsdatum",
+          "no": "Angi siste gjødseldato",
+          "da": "Angiv seneste gødningsdato",
+          "ru": "Установить дату последнего удобрения",
+          "pl": "Ustaw datę ostatniego nawożenia",
+          "ko": "마지막 시비 날짜 설정"
+        },
+        "titleFormatted": {
+          "en": "Set last fertiliser date to [[date]]",
+          "nl": "Laatste bemestingsdatum instellen op [[date]]",
+          "de": "Letzten Düngungstermin auf [[date]] setzen",
+          "fr": "Définir la dernière fertilisation au [[date]]",
+          "es": "Establecer última fertilización el [[date]]",
+          "it": "Imposta ultima fertilizzazione al [[date]]",
+          "sv": "Ange senaste gödsling till [[date]]",
+          "no": "Angi siste gjødsling til [[date]]",
+          "da": "Angiv seneste gødskning til [[date]]",
+          "ru": "Установить дату удобрения на [[date]]",
+          "pl": "Ustaw datę nawożenia na [[date]]",
+          "ko": "마지막 시비 날짜를 [[date]]로 설정"
+        },
+        "args": [
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" },
+          {
+            "name": "date",
+            "type": "text",
+            "title": {
+              "en": "Date (YYYY-MM-DD)", "nl": "Datum (JJJJ-MM-DD)", "de": "Datum (JJJJ-MM-TT)",
+              "fr": "Date (AAAA-MM-JJ)", "es": "Fecha (AAAA-MM-DD)", "it": "Data (AAAA-MM-GG)",
+              "sv": "Datum (ÅÅÅÅ-MM-DD)", "no": "Dato (ÅÅÅÅ-MM-DD)", "da": "Dato (ÅÅÅÅ-MM-DD)",
+              "ru": "Дата (ГГГГ-ММ-ДД)", "pl": "Data (RRRR-MM-DD)", "ko": "날짜 (YYYY-MM-DD)"
+            },
+            "placeholder": { "en": "2026-05-11" }
+          }
+        ]
+      },
+      {
+        "id": "mark_fertilised_today",
+        "title": {
+          "en": "Mark lawn as fertilised today",
+          "nl": "Gazon markeren als bemest vandaag",
+          "de": "Rasen als heute gedüngt markieren",
+          "fr": "Marquer la pelouse comme fertilisée aujourd'hui",
+          "es": "Marcar el césped como fertilizado hoy",
+          "it": "Segna il prato come fertilizzato oggi",
+          "sv": "Markera gräsmattan som gödslade idag",
+          "no": "Merk plenen som gjødslet i dag",
+          "da": "Markér plænen som gødsket i dag",
+          "ru": "Отметить газон как удобренный сегодня",
+          "pl": "Oznacz trawnik jako nawożony dzisiaj",
+          "ko": "오늘 시비한 것으로 표시"
+        },
+        "hint": {
+          "en": "Sets last fertiliser date to today and recalculates the next recommended date.",
+          "nl": "Stelt de laatste bemestingsdatum in op vandaag en herberekent de volgende aanbevolen datum.",
+          "de": "Setzt das letzte Düngungsdatum auf heute und berechnet den nächsten empfohlenen Termin neu.",
+          "fr": "Définit la dernière date de fertilisation à aujourd'hui et recalcule la prochaine date.",
+          "es": "Establece la última fecha de fertilización en hoy y recalcula la próxima fecha recomendada.",
+          "it": "Imposta l'ultima data di fertilizzazione a oggi e ricalcola la prossima data consigliata.",
+          "sv": "Sätter senaste gödningsdatum till idag och räknar om nästa rekommenderade datum.",
+          "no": "Setter siste gjødseldato til i dag og beregner neste anbefalte dato på nytt.",
+          "da": "Sætter seneste gødningsdato til i dag og genberegner næste anbefalede dato.",
+          "ru": "Устанавливает дату последнего удобрения на сегодня и пересчитывает следующую дату.",
+          "pl": "Ustawia ostatnią datę nawożenia na dziś i przelicza następną zalecaną datę.",
+          "ko": "마지막 시비 날짜를 오늘로 설정하고 다음 권장 날짜를 재계산합니다."
+        },
+        "args": [
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }
+        ]
+      },
+      {
+        "id": "mark_fertilised_on_date",
+        "title": {
+          "en": "Mark lawn as fertilised on a specific date",
+          "nl": "Gazon markeren als bemest op specifieke datum",
+          "de": "Rasen als an bestimmtem Datum gedüngt markieren",
+          "fr": "Marquer la pelouse comme fertilisée à une date spécifique",
+          "es": "Marcar el césped como fertilizado en una fecha específica",
+          "it": "Segna il prato come fertilizzato in una data specifica",
+          "sv": "Markera gräsmattan som gödslade på ett specifikt datum",
+          "no": "Merk plenen som gjødslet på en bestemt dato",
+          "da": "Markér plænen som gødsket på en bestemt dato",
+          "ru": "Отметить газон как удобренный в определённую дату",
+          "pl": "Oznacz trawnik jako nawożony w konkretnej dacie",
+          "ko": "특정 날짜에 시비한 것으로 표시"
+        },
+        "titleFormatted": {
+          "en": "Mark lawn as fertilised on [[date]]",
+          "nl": "Gazon markeren als bemest op [[date]]",
+          "de": "Rasen als am [[date]] gedüngt markieren",
+          "fr": "Marquer la pelouse comme fertilisée le [[date]]",
+          "es": "Marcar el césped como fertilizado el [[date]]",
+          "it": "Segna il prato come fertilizzato il [[date]]",
+          "sv": "Markera gräsmattan som gödslade den [[date]]",
+          "no": "Merk plenen som gjødslet den [[date]]",
+          "da": "Markér plænen som gødsket den [[date]]",
+          "ru": "Отметить газон как удобренный [[date]]",
+          "pl": "Oznacz trawnik jako nawożony w dniu [[date]]",
+          "ko": "[[date]]에 시비한 것으로 표시"
+        },
+        "args": [
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" },
+          {
+            "name": "date",
+            "type": "text",
+            "title": {
+              "en": "Date (YYYY-MM-DD)", "nl": "Datum (JJJJ-MM-DD)", "de": "Datum (JJJJ-MM-TT)",
+              "fr": "Date (AAAA-MM-JJ)", "es": "Fecha (AAAA-MM-DD)", "it": "Data (AAAA-MM-GG)",
+              "sv": "Datum (ÅÅÅÅ-MM-DD)", "no": "Dato (ÅÅÅÅ-MM-DD)", "da": "Dato (ÅÅÅÅ-MM-DD)",
+              "ru": "Дата (ГГГГ-ММ-ДД)", "pl": "Data (RRRR-MM-DD)", "ko": "날짜 (YYYY-MM-DD)"
+            },
+            "placeholder": { "en": "2026-05-11" }
+          }
+        ]
+      },
+      {
+        "id": "refresh_fertiliser_schedule",
+        "title": {
+          "en": "Refresh fertiliser schedule",
+          "nl": "Bemestingsplanning vernieuwen",
+          "de": "Düngungsplan aktualisieren",
+          "fr": "Actualiser le calendrier de fertilisation",
+          "es": "Actualizar el calendario de fertilización",
+          "it": "Aggiorna il calendario di fertilizzazione",
+          "sv": "Uppdatera gödningsschema",
+          "no": "Oppdater gjødslingsplan",
+          "da": "Opdater gødningsplan",
+          "ru": "Обновить расписание удобрений",
+          "pl": "Odśwież harmonogram nawożenia",
+          "ko": "시비 일정 새로 고침"
+        },
+        "hint": {
+          "en": "Recalculates the fertiliser schedule based on current soil and weather conditions.",
+          "nl": "Herberekent het bemestingsplan op basis van huidige bodem- en weersomstandigheden.",
+          "de": "Berechnet den Düngungsplan basierend auf den aktuellen Boden- und Wetterbedingungen neu.",
+          "fr": "Recalcule le calendrier de fertilisation en fonction des conditions actuelles de sol et de météo.",
+          "es": "Recalcula el calendario de fertilización basándose en las condiciones actuales de suelo y clima.",
+          "it": "Ricalcola il calendario di fertilizzazione in base alle condizioni attuali di suolo e meteo.",
+          "sv": "Beräknar om gödslingsschemat baserat på aktuella jord- och väderförhållanden.",
+          "no": "Beregner gjødslingsplanen på nytt basert på gjeldende jord- og værforhold.",
+          "da": "Genberegner gødningsplanen baseret på aktuelle jord- og vejrforhold.",
+          "ru": "Пересчитывает расписание удобрений на основе текущих условий почвы и погоды.",
+          "pl": "Przelicza harmonogram nawożenia na podstawie aktualnych warunków glebowych i pogodowych.",
+          "ko": "현재 토양 및 날씨 조건을 기반으로 시비 일정을 재계산합니다."
         },
         "args": [
           { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }

@@ -29,7 +29,19 @@
     "thresholds": "Drempelwaarden",
     "preferred_mowing_min_temp": "Min. temperatuur voor maaien (°C)",
     "preferred_fertilizing_min_temp": "Min. temperatuur voor bemesting (°C)",
-    "watering_threshold_mm_24h": "Gietdrempel – max. neerslag 24 u (mm)"
+    "watering_threshold_mm_24h": "Gietdrempel – max. neerslag 24 u (mm)",
+    "fertiliser_scheduling": "Bemestingsplanning",
+    "last_fertiliser_date": "Laatste bemestingsdatum",
+    "fertiliser_interval_days": "Interval (dagen)",
+    "fertiliser_strategy": "Strategie",
+    "conservative": "Voorzichtig (+14 dagen)",
+    "balanced": "Evenwichtig",
+    "aggressive": "Intensief (−7 dagen)",
+    "fertiliser_season_start_month": "Seizoensstart (maand)",
+    "fertiliser_season_end_month": "Seizoenseinde (maand)",
+    "fertiliser_min_soil_temp": "Min. bodemtemp. voor bemesting (°C)",
+    "fertiliser_rain_window_mm_min": "Ideale neerslag – min. (mm/48 u)",
+    "fertiliser_rain_window_mm_max": "Ideale neerslag – max. (mm/48 u)"
   },
   "capabilities": {
     "measure_temperature": {
@@ -48,7 +60,11 @@
     "fertilizing_recommended": "Bemesting aanbevolen",
     "frost_risk": "Vorstkans",
     "heat_stress_risk": "Hittestress risico",
-    "last_updated": "Laatst bijgewerkt"
+    "last_updated": "Laatst bijgewerkt",
+    "fertiliser_next_date": "Volgende bemestingsdatum",
+    "fertiliser_days_remaining": "Dagen tot volgende bemesting",
+    "fertiliser_due": "Bemesting gereed",
+    "fertiliser_status": "Bemestingsstatus"
   },
   "errors": {
     "invalid_latitude": "Ongeldige breedtegraad. Moet tussen -90 en 90 liggen.",

@@ -29,7 +29,19 @@
     "thresholds": "임계값",
     "preferred_mowing_min_temp": "잔디깎기 최소 온도 (°C)",
     "preferred_fertilizing_min_temp": "시비 최소 온도 (°C)",
-    "watering_threshold_mm_24h": "관수 임계값 – 최대 강수량 24h (mm)"
+    "watering_threshold_mm_24h": "관수 임계값 – 최대 강수량 24h (mm)",
+    "fertiliser_scheduling": "비료 일정",
+    "last_fertiliser_date": "마지막 비료 날짜",
+    "fertiliser_interval_days": "간격 (일)",
+    "fertiliser_strategy": "전략",
+    "conservative": "보수적 (+14일)",
+    "balanced": "균형잡힌",
+    "aggressive": "집중적 (−7일)",
+    "fertiliser_season_start_month": "시즌 시작 (월)",
+    "fertiliser_season_end_month": "시즌 종료 (월)",
+    "fertiliser_min_soil_temp": "비료 시 최소 토양 온도 (°C)",
+    "fertiliser_rain_window_mm_min": "이상적 강수량 – 최소 (mm/48h)",
+    "fertiliser_rain_window_mm_max": "이상적 강수량 – 최대 (mm/48h)"
   },
   "capabilities": {
     "measure_temperature": {
@@ -48,7 +60,11 @@
     "fertilizing_recommended": "시비 권장",
     "frost_risk": "서리 위험",
     "heat_stress_risk": "열 스트레스 위험",
-    "last_updated": "마지막 업데이트"
+    "last_updated": "마지막 업데이트",
+    "fertiliser_next_date": "다음 비료 날짜",
+    "fertiliser_days_remaining": "다음 비료까지 남은 일수",
+    "fertiliser_due": "비료 필요",
+    "fertiliser_status": "비료 상태"
   },
   "errors": {
     "invalid_latitude": "잘못된 위도입니다. -90에서 90 사이여야 합니다.",

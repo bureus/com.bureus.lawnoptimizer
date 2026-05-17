@@ -29,7 +29,19 @@
     "thresholds": "Schwellenwerte",
     "preferred_mowing_min_temp": "Min. Temperatur zum Mähen (°C)",
     "preferred_fertilizing_min_temp": "Min. Temperatur zum Düngen (°C)",
-    "watering_threshold_mm_24h": "Bewässerungsschwelle – Max. Regen 24 h (mm)"
+    "watering_threshold_mm_24h": "Bewässerungsschwelle – Max. Regen 24 h (mm)",
+    "fertiliser_scheduling": "Düngeplanung",
+    "last_fertiliser_date": "Letztes Düngedatum",
+    "fertiliser_interval_days": "Intervall (Tage)",
+    "fertiliser_strategy": "Strategie",
+    "conservative": "Konservativ (+14 Tage)",
+    "balanced": "Ausgewogen",
+    "aggressive": "Intensiv (−7 Tage)",
+    "fertiliser_season_start_month": "Saisonbeginn (Monat)",
+    "fertiliser_season_end_month": "Saisonende (Monat)",
+    "fertiliser_min_soil_temp": "Min. Bodentemp. zum Düngen (°C)",
+    "fertiliser_rain_window_mm_min": "Idealer Regen – Min. (mm/48 h)",
+    "fertiliser_rain_window_mm_max": "Idealer Regen – Max. (mm/48 h)"
   },
   "capabilities": {
     "measure_temperature": {
@@ -48,7 +60,11 @@
     "fertilizing_recommended": "Düngung empfohlen",
     "frost_risk": "Frostgefahr",
     "heat_stress_risk": "Hitzestress-Risiko",
-    "last_updated": "Zuletzt aktualisiert"
+    "last_updated": "Zuletzt aktualisiert",
+    "fertiliser_next_date": "Nächstes Düngedatum",
+    "fertiliser_days_remaining": "Tage bis zur nächsten Düngung",
+    "fertiliser_due": "Düngung fällig",
+    "fertiliser_status": "Düngerstatus"
   },
   "errors": {
     "invalid_latitude": "Ungültiger Breitengrad. Muss zwischen -90 und 90 liegen.",

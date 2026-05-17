@@ -68,6 +68,15 @@ class LawnSoilOptimizerDriver extends Homey.Driver {
           preferred_mowing_min_temp:      8,
           preferred_fertilizing_min_temp: 10,
           watering_threshold_mm_24h:      3,
+          // Fertiliser scheduling defaults
+          last_fertiliser_date:           formData.lastFertiliserDate || '',
+          fertiliser_interval_days:       parseInt(formData.fertiliserIntervalDays, 10) || 42,
+          fertiliser_strategy:            formData.fertiliserStrategy || 'balanced',
+          fertiliser_season_start_month:  parseInt(formData.fertiliserSeasonStart, 10) || 4,
+          fertiliser_season_end_month:    parseInt(formData.fertiliserSeasonEnd, 10) || 10,
+          fertiliser_min_soil_temp:       parseFloat(formData.fertiliserMinTemp) || 10,
+          fertiliser_rain_window_mm_min:  parseFloat(formData.fertiliserRainMin) || 2,
+          fertiliser_rain_window_mm_max:  parseFloat(formData.fertiliserRainMax) || 15,
         },
       };
 
@@ -157,6 +166,36 @@ class LawnSoilOptimizerDriver extends Homey.Driver {
     this.homey.flow
       .getDeviceTriggerCard('lawn_status_changed')
       .trigger(device, { status })
+      .catch(this.error.bind(this));
+  }
+
+  // ─── Fertiliser trigger helpers ────────────────────────────────────────────
+
+  triggerFertiliserDueStarted(device, nextDate) {
+    this.homey.flow
+      .getDeviceTriggerCard('fertiliser_due_started')
+      .trigger(device, { next_date: nextDate || '' })
+      .catch(this.error.bind(this));
+  }
+
+  triggerFertiliserDueCleared(device) {
+    this.homey.flow
+      .getDeviceTriggerCard('fertiliser_due_cleared')
+      .trigger(device)
+      .catch(this.error.bind(this));
+  }
+
+  triggerFertiliserDateChanged(device, nextDate, daysRemaining) {
+    this.homey.flow
+      .getDeviceTriggerCard('fertiliser_date_changed')
+      .trigger(device, { next_date: nextDate || '', days_remaining: daysRemaining ?? 0 })
+      .catch(this.error.bind(this));
+  }
+
+  triggerFertiliserDelayed(device, reason) {
+    this.homey.flow
+      .getDeviceTriggerCard('fertiliser_delayed')
+      .trigger(device, { reason: reason || '' })
       .catch(this.error.bind(this));
   }
 }

@@ -1,11 +1,12 @@
 'use strict';
 
 const Homey = require('homey');
-const OpenMeteoClient    = require('../../lib/OpenMeteoClient');
-const SoilTemperatureModel = require('../../lib/SoilTemperatureModel');
-const LawnScoringService  = require('../../lib/LawnScoringService');
+const OpenMeteoClient         = require('../../lib/OpenMeteoClient');
+const SoilTemperatureModel    = require('../../lib/SoilTemperatureModel');
+const LawnScoringService      = require('../../lib/LawnScoringService');
+const FertiliserScheduleService = require('../../lib/FertiliserScheduleService');
 
-// Store keys used in Homey's persistent device store
+// ── Persistent store keys ──────────────────────────────────────────────────────
 const STORE_ROOT_ZONE      = 'previousRootZone';
 const STORE_PREV_MOWING    = 'prevMowing';
 const STORE_PREV_WATERING  = 'prevWatering';
@@ -16,6 +17,19 @@ const STORE_PREV_STATUS    = 'prevStatus';
 const STORE_PREV_SCORE     = 'prevScore';
 const STORE_PREV_TEMP      = 'prevRootZoneTemp';
 
+// Fertiliser scheduling store keys
+const STORE_PREV_FERT_DUE     = 'prevFertiliserDue';
+const STORE_PREV_FERT_DATE    = 'prevFertiliserNextDate';
+const STORE_PREV_FERT_DELAYED = 'prevFertiliserDelayed';
+const STORE_NOTIF_DUE_DATE    = 'fertiliserNotifDueDate';
+const STORE_NOTIF_DELAY_DATE  = 'fertiliserNotifDelayedDate';
+const STORE_NOTIF_WIN_DATE    = 'fertiliserNotifWindowDate';
+
+// Reason codes that indicate a blocking condition (not "due")
+const BLOCKING_REASONS = new Set([
+  'soil_too_cold', 'low_growth', 'heavy_rain', 'warm_season_cool', 'outside_season',
+]);
+
 class LawnSoilOptimizerDevice extends Homey.Device {
 
   // ─── Lifecycle ─────────────────────────────────────────────────────────────
@@ -25,8 +39,8 @@ class LawnSoilOptimizerDevice extends Homey.Device {
 
     this._pollTimer = null;
     this._client    = new OpenMeteoClient(this.log.bind(this));
+    this._fertiliserService = new FertiliserScheduleService();
 
-    // Kick off the first fetch immediately, then schedule recurring polls
     await this._startPolling();
 
     this.log(`Device "${this.getName()}" ready.`);
@@ -37,10 +51,6 @@ class LawnSoilOptimizerDevice extends Homey.Device {
     this._stopPolling();
   }
 
-  /**
-   * React to settings changes made in the Homey app.
-   * Restart the polling loop with the new interval and refresh immediately.
-   */
   async onSettings({ oldSettings, newSettings, changedKeys }) {
     this.log('Settings changed:', changedKeys.join(', '));
     this._stopPolling();
@@ -50,7 +60,6 @@ class LawnSoilOptimizerDevice extends Homey.Device {
   // ─── Polling ───────────────────────────────────────────────────────────────
 
   async _startPolling() {
-    // Fetch immediately so the device shows data right away
     await this.refreshData();
 
     const intervalMinutes = this.getSetting('update_interval_minutes') || 60;
@@ -72,11 +81,6 @@ class LawnSoilOptimizerDevice extends Homey.Device {
 
   // ─── Core data refresh ─────────────────────────────────────────────────────
 
-  /**
-   * Public: can be called from Flow actions or the repair view.
-   * Fetches weather, calculates temps and scores, updates all capabilities,
-   * and fires relevant flow triggers.
-   */
   async refreshData() {
     const settings = this.getSettings();
     const { latitude, longitude } = settings;
@@ -94,29 +98,52 @@ class LawnSoilOptimizerDevice extends Homey.Device {
       const model   = new SoilTemperatureModel(settings);
       const scoring = new LawnScoringService(settings);
 
-      // Retrieve persistent root zone from last run
       const previousRootZone = this.getStoreValue(STORE_ROOT_ZONE) ?? null;
 
       const temps      = model.calculate(snapshot, previousRootZone);
       const assessment = scoring.assess(temps);
 
-      // Persist new root zone for the next calculation cycle
       await this.setStoreValue(STORE_ROOT_ZONE, temps.rootZone);
 
-      await this._updateCapabilities(temps, assessment);
-      await this._fireTriggers(temps, assessment);
+      // ── Fertiliser schedule ──────────────────────────────────────────────
+      const fertResult = this._calcFertiliserSchedule(snapshot, settings, temps, assessment);
 
-      this.log(`Refresh complete – rootZone: ${temps.rootZone} °C, score: ${assessment.growthScore}`);
+      await this._updateCapabilities(temps, assessment, fertResult);
+      await this._fireTriggers(temps, assessment, fertResult);
+      await this._checkFertiliserNotification(fertResult, settings);
+
+      this.log(`Refresh complete – rootZone: ${temps.rootZone} °C, score: ${assessment.growthScore}, fertDue: ${fertResult.due}`);
     } catch (err) {
-      // Never crash the app on a failed fetch – log and move on
       this.error('Failed to refresh data:', err.message);
     }
   }
 
+  // ─── Fertiliser schedule calculation ──────────────────────────────────────
+
+  _calcFertiliserSchedule(snapshot, settings, temps, assessment) {
+    return this._fertiliserService.calculate({
+      lastFertiliserDate:    settings.last_fertiliser_date || null,
+      intervalDays:          settings.fertiliser_interval_days    ?? 42,
+      strategy:              settings.fertiliser_strategy         || 'balanced',
+      grassType:             settings.grass_type                  || 'cool_season',
+      soilType:              settings.soil_type                   || 'loam',
+      rootZoneTemp:          temps.rootZone,
+      growthScore:           assessment.growthScore,
+      precipitationNext48h:  snapshot.precipitationNext48h        ?? 0,
+      precipitationLast24h:  temps.rain24h                        ?? 0,
+      today:                 null,   // use current date inside service
+      seasonStartMonth:      settings.fertiliser_season_start_month ?? 4,
+      seasonEndMonth:        settings.fertiliser_season_end_month   ?? 10,
+      minSoilTemp:           settings.fertiliser_min_soil_temp      ?? 10,
+      rainWindowMin:         settings.fertiliser_rain_window_mm_min ?? 2,
+      rainWindowMax:         settings.fertiliser_rain_window_mm_max ?? 15,
+    });
+  }
+
   // ─── Capability updates ────────────────────────────────────────────────────
 
-  async _updateCapabilities(temps, assessment) {
-    const now = new Date().toLocaleString('sv-SE', { hour12: false }); // ISO-like local time
+  async _updateCapabilities(temps, assessment, fertResult) {
+    const now = new Date().toLocaleString('sv-SE', { hour12: false });
 
     const updates = [
       ['measure_temperature.soil_surface', temps.soilSurface],
@@ -132,6 +159,11 @@ class LawnSoilOptimizerDevice extends Homey.Device {
       ['frost_risk',                       assessment.frostRisk],
       ['heat_stress_risk',                 assessment.heatStressRisk],
       ['last_updated',                     now],
+      // Fertiliser capabilities
+      ['fertiliser_next_date',      fertResult.nextDate ?? '—'],
+      ['fertiliser_days_remaining', fertResult.daysRemaining ?? 0],
+      ['fertiliser_due',            fertResult.due],
+      ['fertiliser_status',         fertResult.status],
     ];
 
     for (const [cap, value] of updates) {
@@ -146,10 +178,10 @@ class LawnSoilOptimizerDevice extends Homey.Device {
 
   // ─── Flow trigger logic ────────────────────────────────────────────────────
 
-  async _fireTriggers(temps, assessment) {
+  async _fireTriggers(temps, assessment, fertResult) {
     const driver = this.driver;
 
-    // ── Boolean state change triggers ──────────────────────────────────────
+    // ── Existing lawn triggers ─────────────────────────────────────────────
 
     const prevMowing    = this.getStoreValue(STORE_PREV_MOWING);
     const prevWatering  = this.getStoreValue(STORE_PREV_WATERING);
@@ -157,48 +189,28 @@ class LawnSoilOptimizerDevice extends Homey.Device {
     const prevFrost     = this.getStoreValue(STORE_PREV_FROST);
     const prevHeat      = this.getStoreValue(STORE_PREV_HEAT);
     const prevStatus    = this.getStoreValue(STORE_PREV_STATUS);
-    const prevScore     = this.getStoreValue(STORE_PREV_SCORE) ?? 0;
-    const prevTemp      = this.getStoreValue(STORE_PREV_TEMP) ?? null;
 
     const { growthScore, mowingRecommended, wateringRecommended,
             fertilizingRecommended, frostRisk, heatStressRisk, statusText } = assessment;
     const rootZone = temps.rootZone;
 
-    if (prevMowing !== null && prevMowing !== mowingRecommended) {
+    if (prevMowing !== null && prevMowing !== mowingRecommended)
       driver.triggerMowingChanged(this, mowingRecommended);
-    }
-    if (prevWatering !== null && prevWatering !== wateringRecommended) {
+    if (prevWatering !== null && prevWatering !== wateringRecommended)
       driver.triggerWateringChanged(this, wateringRecommended);
-    }
-    if (prevFertilize !== null && prevFertilize !== fertilizingRecommended) {
+    if (prevFertilize !== null && prevFertilize !== fertilizingRecommended)
       driver.triggerFertilizingChanged(this, fertilizingRecommended);
-    }
 
-    // ── Threshold edge triggers (fires once on crossing) ──────────────────
+    if (!prevFrost && frostRisk)      driver.triggerFrostRiskStarted(this);
+    if (!prevHeat  && heatStressRisk) driver.triggerHeatStressStarted(this);
 
-    // Frost: fire only on the rising edge (false → true)
-    if (!prevFrost && frostRisk) {
-      driver.triggerFrostRiskStarted(this);
-    }
-    // Heat stress: fire only on the rising edge
-    if (!prevHeat && heatStressRisk) {
-      driver.triggerHeatStressStarted(this);
-    }
-
-    // soil_temp_above / soil_temp_below – fire on every update; the run
-    // listener in app.js decides whether each individual flow matches.
     driver.triggerSoilTempAbove(this, rootZone);
     driver.triggerSoilTempBelow(this, rootZone);
-
-    // growth_score_above – same pattern
     driver.triggerGrowthScoreAbove(this, growthScore);
 
-    // Status text change
-    if (prevStatus !== null && prevStatus !== statusText) {
+    if (prevStatus !== null && prevStatus !== statusText)
       driver.triggerLawnStatusChanged(this, statusText);
-    }
 
-    // Persist current state for next comparison
     await this.setStoreValue(STORE_PREV_MOWING,    mowingRecommended);
     await this.setStoreValue(STORE_PREV_WATERING,  wateringRecommended);
     await this.setStoreValue(STORE_PREV_FERTILIZE, fertilizingRecommended);
@@ -207,54 +219,133 @@ class LawnSoilOptimizerDevice extends Homey.Device {
     await this.setStoreValue(STORE_PREV_STATUS,    statusText);
     await this.setStoreValue(STORE_PREV_SCORE,     growthScore);
     await this.setStoreValue(STORE_PREV_TEMP,      rootZone);
+
+    // ── Fertiliser triggers ────────────────────────────────────────────────
+
+    const prevFertDue     = this.getStoreValue(STORE_PREV_FERT_DUE);
+    const prevFertDate    = this.getStoreValue(STORE_PREV_FERT_DATE);
+    const prevFertDelayed = this.getStoreValue(STORE_PREV_FERT_DELAYED);
+
+    const { due, nextDate, daysRemaining, reason } = fertResult;
+
+    // Overdue-but-blocked = fertiliser date has passed yet a blocking condition stops it
+    const isDelayed = BLOCKING_REASONS.has(reason) && (daysRemaining !== null && daysRemaining <= 0);
+
+    // Rising edge: false → true
+    if (prevFertDue === false && due === true)
+      driver.triggerFertiliserDueStarted(this, nextDate);
+
+    // Falling edge: true → false
+    if (prevFertDue === true && due === false)
+      driver.triggerFertiliserDueCleared(this);
+
+    // Next date changed (ignore null→value transitions on first run)
+    if (prevFertDate !== null && prevFertDate !== nextDate)
+      driver.triggerFertiliserDateChanged(this, nextDate, daysRemaining);
+
+    // Rising edge on "delayed while overdue"
+    if (!prevFertDelayed && isDelayed)
+      driver.triggerFertiliserDelayed(this, fertResult.status);
+
+    await this.setStoreValue(STORE_PREV_FERT_DUE,     due);
+    await this.setStoreValue(STORE_PREV_FERT_DATE,    nextDate);
+    await this.setStoreValue(STORE_PREV_FERT_DELAYED, isDelayed);
+  }
+
+  // ─── Fertiliser notifications ──────────────────────────────────────────────
+
+  async _checkFertiliserNotification(fertResult, settings) {
+    if (!settings.enable_notifications) return;
+
+    const today = new Date().toISOString().slice(0, 10);
+    const { due, daysRemaining, status, reason } = fertResult;
+
+    /**
+     * Returns true (and stores today's date) only if we haven't already sent
+     * this notification type today.
+     */
+    const shouldNotify = async (storeKey) => {
+      if (this.getStoreValue(storeKey) === today) return false;
+      await this.setStoreValue(storeKey, today);
+      return true;
+    };
+
+    // 1. Fertiliser is due and conditions are good
+    if (due) {
+      if (await shouldNotify(STORE_NOTIF_DUE_DATE)) {
+        await this.homey.notifications.createNotification({
+          excerpt: 'Your lawn is ready for fertiliser. Soil temperature and growth conditions look good.',
+        });
+      }
+      return;
+    }
+
+    // 2. Overdue but blocked by heavy rain
+    const isOverdue = daysRemaining !== null && daysRemaining <= 0;
+    if (isOverdue && reason === 'heavy_rain') {
+      if (await shouldNotify(STORE_NOTIF_DELAY_DATE)) {
+        await this.homey.notifications.createNotification({
+          excerpt: 'Fertiliser is due, but heavy rain is expected. Consider waiting a few days.',
+        });
+      }
+      return;
+    }
+
+    // 3. Upcoming window (1–3 days away)
+    if (daysRemaining !== null && daysRemaining > 0 && daysRemaining <= 3) {
+      if (await shouldNotify(STORE_NOTIF_WIN_DATE)) {
+        await this.homey.notifications.createNotification({
+          excerpt: `Fertiliser window is coming up in ${daysRemaining} day${daysRemaining > 1 ? 's' : ''}.`,
+        });
+      }
+    }
   }
 
   // ─── Flow action handlers ──────────────────────────────────────────────────
 
-  /**
-   * Send a Homey notification with the current lawn status.
-   * Only fires if enable_notifications is true in settings.
-   */
   async sendLawnAdviceNotification() {
     const settings = this.getSettings();
     if (!settings.enable_notifications) return;
 
-    const name   = settings.lawn_name || this.getName();
-    const score  = this.getCapabilityValue('lawn_growth_score') ?? '–';
-    const temp   = this.getCapabilityValue('measure_temperature.root_zone') ?? '–';
-    const mow    = this.getCapabilityValue('mowing_recommended')    ? '✓' : '✗';
-    const water  = this.getCapabilityValue('watering_recommended')  ? '✓' : '✗';
-    const fert   = this.getCapabilityValue('fertilizing_recommended') ? '✓' : '✗';
-    const frost  = this.getCapabilityValue('frost_risk')            ? '⚠ FROST RISK' : '';
-    const heat   = this.getCapabilityValue('heat_stress_risk')      ? '⚠ HEAT STRESS' : '';
+    const name  = settings.lawn_name || this.getName();
+    const score = this.getCapabilityValue('lawn_growth_score') ?? '–';
+    const temp  = this.getCapabilityValue('measure_temperature.root_zone') ?? '–';
+    const mow   = this.getCapabilityValue('mowing_recommended')      ? '✓' : '✗';
+    const water = this.getCapabilityValue('watering_recommended')     ? '✓' : '✗';
+    const fert  = this.getCapabilityValue('fertilizing_recommended')  ? '✓' : '✗';
+    const frost = this.getCapabilityValue('frost_risk')               ? '⚠ FROST RISK' : '';
+    const heat  = this.getCapabilityValue('heat_stress_risk')         ? '⚠ HEAT STRESS' : '';
+    const fertStatus = this.getCapabilityValue('fertiliser_status') || '';
 
     const message = [
       `🌱 ${name}`,
       `Root zone: ${temp} °C  |  Score: ${score}/100`,
       `Mow: ${mow}  Water: ${water}  Fertilize: ${fert}`,
+      fertStatus ? `Fertiliser: ${fertStatus}` : '',
       frost, heat,
     ].filter(Boolean).join('\n');
 
-    // Homey SDK v3: this.homey.notifications.createNotification
     await this.homey.notifications.createNotification({ excerpt: message });
   }
 
-  /**
-   * Clears the persisted root zone temperature so the model starts fresh.
-   * Useful after relocating the device or extreme weather events.
-   */
   async resetModelMemory() {
     this.log('Resetting soil model memory');
-    await this.setStoreValue(STORE_ROOT_ZONE,      null);
-    await this.setStoreValue(STORE_PREV_TEMP,      null);
-    await this.setStoreValue(STORE_PREV_SCORE,     null);
-    await this.setStoreValue(STORE_PREV_MOWING,    null);
-    await this.setStoreValue(STORE_PREV_WATERING,  null);
-    await this.setStoreValue(STORE_PREV_FERTILIZE, null);
-    await this.setStoreValue(STORE_PREV_FROST,     null);
-    await this.setStoreValue(STORE_PREV_HEAT,      null);
-    await this.setStoreValue(STORE_PREV_STATUS,    null);
-    // Trigger an immediate refresh with the cleared state
+    const keys = [
+      STORE_ROOT_ZONE, STORE_PREV_TEMP, STORE_PREV_SCORE,
+      STORE_PREV_MOWING, STORE_PREV_WATERING, STORE_PREV_FERTILIZE,
+      STORE_PREV_FROST, STORE_PREV_HEAT, STORE_PREV_STATUS,
+    ];
+    for (const k of keys) await this.setStoreValue(k, null);
+    await this.refreshData();
+  }
+
+  /** Set the last-fertilised date and immediately recalculate. */
+  async setLastFertiliserDate(dateStr) {
+    const trimmed = (dateStr || '').trim();
+    if (trimmed && !/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) {
+      throw new Error(`Invalid date format "${trimmed}". Expected YYYY-MM-DD.`);
+    }
+    await this.setSettings({ last_fertiliser_date: trimmed });
     await this.refreshData();
   }
 }

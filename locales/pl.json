@@ -29,7 +29,19 @@
     "thresholds": "Progi",
     "preferred_mowing_min_temp": "Min. temp. do koszenia (°C)",
     "preferred_fertilizing_min_temp": "Min. temp. do nawożenia (°C)",
-    "watering_threshold_mm_24h": "Próg podlewania – Maks. deszcz 24 h (mm)"
+    "watering_threshold_mm_24h": "Próg podlewania – Maks. deszcz 24 h (mm)",
+    "fertiliser_scheduling": "Harmonogram nawożenia",
+    "last_fertiliser_date": "Ostatnie nawożenie",
+    "fertiliser_interval_days": "Interwał (dni)",
+    "fertiliser_strategy": "Strategia",
+    "conservative": "Zachowawcza (+14 dni)",
+    "balanced": "Zrównoważona",
+    "aggressive": "Intensywna (−7 dni)",
+    "fertiliser_season_start_month": "Początek sezonu (miesiąc)",
+    "fertiliser_season_end_month": "Koniec sezonu (miesiąc)",
+    "fertiliser_min_soil_temp": "Min. temp. gleby do nawożenia (°C)",
+    "fertiliser_rain_window_mm_min": "Idealny deszcz – min. (mm/48 h)",
+    "fertiliser_rain_window_mm_max": "Idealny deszcz – maks. (mm/48 h)"
   },
   "capabilities": {
     "measure_temperature": {
@@ -48,7 +60,11 @@
     "fertilizing_recommended": "Nawożenie zalecane",
     "frost_risk": "Ryzyko mrozu",
     "heat_stress_risk": "Ryzyko stresu termicznego",
-    "last_updated": "Ostatnia aktualizacja"
+    "last_updated": "Ostatnia aktualizacja",
+    "fertiliser_next_date": "Następna data nawożenia",
+    "fertiliser_days_remaining": "Dni do następnego nawożenia",
+    "fertiliser_due": "Nawożenie do wykonania",
+    "fertiliser_status": "Status nawożenia"
   },
   "errors": {
     "invalid_latitude": "Nieprawidłowa szerokość geograficzna. Musi wynosić od -90 do 90.",
