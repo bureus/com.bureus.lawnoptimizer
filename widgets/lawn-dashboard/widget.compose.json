@@ -1,0 +1,25 @@
+{
+  "name": {
+    "en": "Lawn Dashboard",
+    "nl": "Gazon Dashboard",
+    "de": "Rasen-Dashboard",
+    "fr": "Tableau de bord pelouse",
+    "es": "Panel del césped",
+    "it": "Dashboard prato",
+    "sv": "Gräsmatta Dashboard",
+    "no": "Gressplen Dashboard",
+    "da": "Plæne Dashboard",
+    "ru": "Панель газона",
+    "pl": "Panel trawnika",
+    "ko": "잔디 대시보드"
+  },
+  "height": 220,
+  "transparent": false,
+  "settings": [],
+  "api": {
+    "getData": {
+      "method": "GET",
+      "path": "/"
+    }
+  }
+}

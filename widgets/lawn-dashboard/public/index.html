@@ -9,15 +9,12 @@
 
     html, body {
       width: 100%; height: 100%;
-      /* Hard fallback so the widget is never invisible on an unthemed host */
       background-color: #ffffff;
-      color: #1a1a1a;
-      /* Let Homey theme tokens override when available */
       background-color: var(--homey-color-background, #ffffff);
+      color: #1a1a1a;
       color: var(--homey-color-text, #1a1a1a);
-      font-family: var(--homey-font-family, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       font-size: 13px;
-      line-height: 1.4;
       overflow: hidden;
     }
 
@@ -29,262 +26,172 @@
       height: 100%;
     }
 
-    /* ── Loading / error ── */
-    #stateWrap {
+    /* Loading / error */
+    #msg {
       flex: 1;
       display: flex;
       align-items: center;
       justify-content: center;
+      font-size: 0.85em;
+      color: #888;
       text-align: center;
       padding: 8px;
     }
-    #stateText { font-size: 0.85em; color: #888; }
-    #stateText.is-error {
-      background: #fff3cd;
+    #msg.err {
       color: #856404;
+      background: #fff3cd;
       border-radius: 8px;
-      padding: 8px 12px;
       font-size: 0.8em;
-      line-height: 1.4;
     }
 
-    /* ── Top row: ring + status ── */
-    .top-row { display: flex; align-items: center; gap: 12px; }
+    /* Top row */
+    .top { display: flex; align-items: center; gap: 12px; }
 
-    .ring-wrap {
-      position: relative;
-      width: 58px; height: 58px;
-      flex-shrink: 0;
-    }
+    .ring-wrap { position: relative; width: 58px; height: 58px; flex-shrink: 0; }
     .ring-wrap svg { transform: rotate(-90deg); display: block; }
-    .ring-bg  { fill: none; stroke: #e0e0e0; stroke-width: 6; }
-    .ring-val {
-      fill: none; stroke: #4caf50; stroke-width: 6; stroke-linecap: round;
-      transition: stroke-dashoffset .5s ease, stroke .3s;
-    }
-    .ring-val.amber { stroke: #ff9800; }
-    .ring-val.red   { stroke: #f44336; }
-    .ring-label {
+    .bg  { fill: none; stroke: #e0e0e0; stroke-width: 6; }
+    .val { fill: none; stroke: #4caf50; stroke-width: 6; stroke-linecap: round;
+           transition: stroke-dashoffset .5s ease; }
+    .val.amber { stroke: #ff9800; }
+    .val.red   { stroke: #f44336; }
+    .lbl {
       position: absolute; inset: 0;
       display: flex; align-items: center; justify-content: center;
       font-size: 1.05em; font-weight: 800;
     }
 
-    .status-col { flex: 1; min-width: 0; }
-    .device-name {
-      font-size: 0.7em;
-      color: var(--homey-color-text-light, #888);
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-      margin-bottom: 2px;
-    }
-    .status-text {
-      font-size: 0.92em; font-weight: 700;
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    }
-    .rec-text {
-      font-size: 0.76em;
-      color: var(--homey-color-text-light, #666);
-      margin-top: 2px;
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    }
+    .info { flex: 1; min-width: 0; }
+    .dname { font-size: 0.7em; color: #888; color: var(--homey-color-text-light, #888);
+             white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; }
+    .status { font-size: 0.92em; font-weight: 700;
+              white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .rec    { font-size: 0.76em; color: #666; color: var(--homey-color-text-light, #666);
+              margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-    /* ── Divider ── */
     hr { border: none; border-top: 1px solid #e0e0e0;
          border-color: var(--homey-color-border, #e0e0e0); }
 
-    /* ── Action row ── */
-    .action-row { display: flex; gap: 8px; }
-    .action-cell { flex: 1; min-width: 0; }
-    .action-lbl {
-      font-size: 0.62em; font-weight: 700;
-      text-transform: uppercase; letter-spacing: .05em;
-      color: var(--homey-color-text-light, #999);
-      margin-bottom: 2px;
-    }
-    .action-val {
-      font-size: 0.82em; font-weight: 600;
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    }
+    /* Action row */
+    .actions { display: flex; gap: 8px; }
+    .ac { flex: 1; min-width: 0; }
+    .al { font-size: 0.62em; font-weight: 700; text-transform: uppercase;
+          letter-spacing: .05em; color: #999; color: var(--homey-color-text-light, #999);
+          margin-bottom: 2px; }
+    .av { font-size: 0.82em; font-weight: 600;
+          white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-    /* ── Badges ── */
-    .badge-row { display: flex; flex-wrap: wrap; gap: 4px; }
-    .badge {
-      display: inline-block;
-      padding: 2px 7px; border-radius: 20px;
-      font-size: 0.68em; font-weight: 700;
-      background: #f0f0f0; color: #555;
-    }
-    .badge.green { background: #e8f5e9; color: #2e7d32; }
-    .badge.amber { background: #fff3e0; color: #e65100; }
-    .badge.red   { background: #ffebee; color: #b71c1c; }
+    /* Badges */
+    .badges { display: flex; flex-wrap: wrap; gap: 4px; }
+    .badge  { display: inline-block; padding: 2px 7px; border-radius: 20px;
+               font-size: 0.68em; font-weight: 700; background: #f0f0f0; color: #555; }
+    .badge.g { background: #e8f5e9; color: #2e7d32; }
+    .badge.a { background: #fff3e0; color: #e65100; }
+    .badge.r { background: #ffebee; color: #b71c1c; }
 
     .hidden { display: none !important; }
   </style>
 </head>
 <body>
 <div class="widget">
+  <div id="msg">Loading…</div>
 
-  <div id="stateWrap">
-    <span id="stateText">Loading…</span>
-  </div>
-
-  <div class="top-row hidden" id="topRow">
+  <div class="top hidden" id="top">
     <div class="ring-wrap">
-      <!-- r=22 → circumference ≈ 138.2 -->
       <svg viewBox="0 0 58 58" width="58" height="58">
-        <circle class="ring-bg"  cx="29" cy="29" r="22" />
-        <circle class="ring-val" cx="29" cy="29" r="22"
-                id="ringVal"
-                stroke-dasharray="138.2"
-                stroke-dashoffset="138.2" />
+        <circle class="bg"  cx="29" cy="29" r="22" />
+        <circle class="val" cx="29" cy="29" r="22" id="ring"
+                stroke-dasharray="138.2" stroke-dashoffset="138.2" />
       </svg>
-      <div class="ring-label" id="ringLabel">—</div>
+      <div class="lbl" id="score">—</div>
     </div>
-
-    <div class="status-col">
-      <div class="device-name" id="deviceName"></div>
-      <div class="status-text"  id="statusText">—</div>
-      <div class="rec-text"     id="recText">—</div>
+    <div class="info">
+      <div class="dname"  id="dname"></div>
+      <div class="status" id="status">—</div>
+      <div class="rec"    id="rec">—</div>
     </div>
   </div>
 
   <hr class="hidden" id="hr1" />
 
-  <div class="action-row hidden" id="actionRow">
-    <div class="action-cell">
-      <div class="action-lbl">Next action</div>
-      <div class="action-val" id="nextAction">—</div>
-    </div>
-    <div class="action-cell">
-      <div class="action-lbl">Date</div>
-      <div class="action-val" id="nextDate">—</div>
-    </div>
-    <div class="action-cell">
-      <div class="action-lbl">Deficit</div>
-      <div class="action-val" id="deficit">—</div>
-    </div>
+  <div class="actions hidden" id="actions">
+    <div class="ac"><div class="al">Next action</div><div class="av" id="action">—</div></div>
+    <div class="ac"><div class="al">Date</div>        <div class="av" id="date">—</div></div>
+    <div class="ac"><div class="al">Deficit</div>     <div class="av" id="deficit">—</div></div>
   </div>
 
   <hr class="hidden" id="hr2" />
 
-  <div class="badge-row hidden" id="badgeRow"></div>
-
+  <div class="badges hidden" id="badges"></div>
 </div>
 
 <script>
-  const CIRC = 2 * Math.PI * 22; // ≈ 138.2
-
-  function ringClass(score) {
-    if (score == null || score >= 60) return '';
-    return score >= 35 ? 'amber' : 'red';
-  }
-
-  function statusBadgeClass(s) {
-    if (!s) return 'green';
-    const l = s.toLowerCase();
-    if (l.includes('frost') || l.includes('heat')) return 'red';
-    if (l.includes('water') || l.includes('fertiliser') || l.includes('recovery')) return 'amber';
-    return 'green';
-  }
+  var CIRC = 2 * Math.PI * 22; // 138.2
 
   function show(id) { document.getElementById(id).classList.remove('hidden'); }
 
-  function makeBadge(text, colorClass) {
-    const el = document.createElement('span');
-    el.className = 'badge' + (colorClass ? ' ' + colorClass : '');
+  function setMsg(text, isError) {
+    var el = document.getElementById('msg');
+    el.textContent = text;
+    el.className = isError ? 'err' : '';
+    el.classList.remove('hidden');
+  }
+
+  function badge(text, cls) {
+    var el = document.createElement('span');
+    el.className = 'badge ' + (cls || '');
     el.textContent = text;
     return el;
   }
 
-  function showError(msg) {
-    const el = document.getElementById('stateText');
-    el.textContent = msg;
-    el.className = 'is-error';
-    console.error('[LawnWidget] Error:', msg);
+  function statusCls(s) {
+    if (!s) return 'g';
+    var l = s.toLowerCase();
+    if (l.indexOf('frost') >= 0 || l.indexOf('heat') >= 0) return 'r';
+    if (l.indexOf('water') >= 0 || l.indexOf('fertiliser') >= 0 || l.indexOf('recovery') >= 0) return 'a';
+    return 'g';
   }
 
-  function render(data) {
-    if (!data) {
-      showError('No data returned — is a device paired?');
-      return;
-    }
-    if (data.error) {
-      showError(data.message || data.error);
+  function render(d) {
+    if (!d || d.error) {
+      setMsg(d && d.error ? d.error : 'No data — pair a device first.', true);
       return;
     }
 
-    // Hide the loading placeholder
-    document.getElementById('stateWrap').classList.add('hidden');
+    document.getElementById('msg').classList.add('hidden');
 
-    const score    = data['lawn_overall_score'];
-    const status   = data['lawn_status']            || 'Unknown';
-    const rec      = data['primary_recommendation'] || '—';
-    const action   = data['next_action']            || '—';
-    const date     = data['next_action_date']       || '—';
-    const deficit  = data['water_deficit_mm'];
-    const fertDays = data['fertiliser_days_remaining'];
-
-    // Score ring
-    const pct  = score != null ? Math.max(0, Math.min(100, score)) / 100 : 0;
-    const ring = document.getElementById('ringVal');
+    var sc = d['lawn_overall_score'];
+    var pct = sc != null ? Math.max(0, Math.min(100, sc)) / 100 : 0;
+    var ring = document.getElementById('ring');
     ring.style.strokeDashoffset = String(CIRC * (1 - pct));
-    ring.className = 'ring-val' + (ringClass(score) ? ' ' + ringClass(score) : '');
-    document.getElementById('ringLabel').textContent = score != null ? String(score) : '—';
+    ring.className = 'val' + (sc == null || sc >= 60 ? '' : sc >= 35 ? ' amber' : ' red');
+    document.getElementById('score').textContent  = sc != null ? String(sc) : '—';
+    document.getElementById('dname').textContent  = d.deviceName || '';
+    document.getElementById('status').textContent = d['lawn_status'] || '—';
+    document.getElementById('rec').textContent    = d['primary_recommendation'] || '—';
+    document.getElementById('action').textContent = d['next_action'] || '—';
+    document.getElementById('date').textContent   = d['next_action_date'] || '—';
+    var def = d['water_deficit_mm'];
+    document.getElementById('deficit').textContent = def > 0 ? def + ' mm' : '✓ Met';
 
-    document.getElementById('deviceName').textContent = data.deviceName || '';
-    document.getElementById('statusText').textContent  = status;
-    document.getElementById('recText').textContent     = rec;
-    document.getElementById('nextAction').textContent  = action;
-    document.getElementById('nextDate').textContent    = date;
-    document.getElementById('deficit').textContent     = (deficit > 0) ? deficit + ' mm' : '✓ Met';
-
-    // Badges
-    const row = document.getElementById('badgeRow');
+    var row = document.getElementById('badges');
     row.innerHTML = '';
-    row.appendChild(makeBadge(status, statusBadgeClass(status)));
+    row.appendChild(badge(d['lawn_status'] || 'Unknown', statusCls(d['lawn_status'])));
+    var frost = d['frost_severity'];
+    if (frost && frost !== 'none') row.appendChild(badge('Frost: ' + frost, 'r'));
+    var heat = d['heat_stress_severity'];
+    if (heat && heat !== 'none') row.appendChild(badge('Heat: ' + heat, 'r'));
+    if (d['lawn_recovery_mode']) row.appendChild(badge('Recovery', 'a'));
+    var fd = d['fertiliser_days_remaining'];
+    if (fd != null && fd <= 0) row.appendChild(badge('Fertiliser due', 'a'));
 
-    const frost = data['frost_severity'];
-    if (frost && frost !== 'none') {
-      row.appendChild(makeBadge('Frost: ' + frost, 'red'));
-    }
-    const heat = data['heat_stress_severity'];
-    if (heat && heat !== 'none') {
-      row.appendChild(makeBadge('Heat: ' + heat, 'red'));
-    }
-    if (data['lawn_recovery_mode']) {
-      row.appendChild(makeBadge('Recovery', 'amber'));
-    }
-    if (fertDays != null && fertDays <= 0) {
-      row.appendChild(makeBadge('Fertiliser due', 'amber'));
-    }
-
-    show('topRow'); show('hr1'); show('actionRow'); show('hr2'); show('badgeRow');
+    show('top'); show('hr1'); show('actions'); show('hr2'); show('badges');
   }
 
-  async function load(Homey) {
-    let deviceId;
-    try {
-      const settings = await Homey.getSettings();
-      deviceId = settings && settings.deviceId ? settings.deviceId : undefined;
-    } catch (e) {
-      console.warn('[LawnWidget] getSettings error (non-fatal):', e.message);
-    }
-
-    console.log('[LawnWidget] Requesting data, deviceId:', deviceId || '(first device)');
-    try {
-      const data = await Homey.api('GET', '/', deviceId ? { deviceId } : {});
-      console.log('[LawnWidget] Response:', JSON.stringify(data));
-      render(data);
-    } catch (err) {
-      showError('Could not reach device: ' + (err.message || String(err)));
-    }
-  }
-
-  // Entry point — Homey calls this once the widget runtime is ready.
-  // Call Homey.ready() first so the widget becomes visible, then load data.
   function onHomeyReady(Homey) {
     Homey.ready({ height: 220 });
-    load(Homey);
+    Homey.api('GET', '/', {})
+      .then(function(data) { render(data); })
+      .catch(function(err) { setMsg('Error: ' + (err.message || err), true); });
   }
 </script>
 </body>

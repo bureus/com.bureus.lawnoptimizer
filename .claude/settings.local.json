@@ -16,7 +16,15 @@
       "PowerShell(Move-Item -Force \"C:\\\\Code\\\\com.bureus.lawnoptimizer\\\\widgets\\\\lawn-dashboard\\\\api.js\" \"C:\\\\Code\\\\com.bureus.lawnoptimizer\\\\widgets\\\\0\\\\api.js\")",
       "PowerShell(Move-Item -Force \"C:\\\\Code\\\\com.bureus.lawnoptimizer\\\\widgets\\\\lawn-dashboard\\\\public\\\\index.html\" \"C:\\\\Code\\\\com.bureus.lawnoptimizer\\\\widgets\\\\0\\\\public\\\\index.html\")",
       "PowerShell(Get-ChildItem -Path \"C:\\\\Code\\\\com.bureus.lawnoptimizer\\\\widgets\" -Recurse -Force | ForEach-Object { \"$\\($_.FullName\\) \\($\\($_.Length\\) bytes\\)\" })",
-      "PowerShell(try { $null = Get-Content \"C:\\\\Code\\\\com.bureus.lawnoptimizer\\\\app.json\" -Raw | ConvertFrom-Json; \"JSON valid\" } catch { \"JSON ERROR: $_\" })"
+      "PowerShell(try { $null = Get-Content \"C:\\\\Code\\\\com.bureus.lawnoptimizer\\\\app.json\" -Raw | ConvertFrom-Json; \"JSON valid\" } catch { \"JSON ERROR: $_\" })",
+      "Bash(grep -n \"widget\\\\|api\\\\.js\\\\|Widget\\\\|dashboard\" \"C:\\\\Users\\\\burer\\\\AppData\\\\Local\\\\nvm\\\\v24.5.0\\\\node_modules\\\\homey\\\\lib\\\\App.js\" | head -80)",
+      "Bash(npm root *)",
+      "Bash(ls \"C:\\\\nvm4w\\\\nodejs\\\\node_modules\" | grep -i homey)",
+      "Bash(ls \"C:\\\\Users\\\\burer\\\\AppData\\\\Roaming\\\\npm\\\\node_modules\" 2>/dev/null | grep -i homey || echo \"Not found in Roaming npm\")",
+      "Bash(grep -rn \"widget.compose.json\" \"C:\\\\nvm4w\\\\nodejs\\\\node_modules\\\\homey\\\\\" 2>/dev/null)",
+      "Bash(powershell -command \"Get-ChildItem 'C:\\\\Code\\\\com.bureus.lawnoptimizer\\\\widgets\\\\lawn-dashboard'\")",
+      "Bash(ls /mnt/c/Code/com.bureus.lawnoptimizer/assets/icons/ 2>/dev/null || echo \"Directory does not exist\")",
+      "Bash(ls /mnt/c/Code/com.bureus.lawnoptimizer/ 2>/dev/null)"
     ]
   }
 }

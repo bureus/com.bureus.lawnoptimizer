@@ -606,27 +606,13 @@
       },
       "height": 220,
       "transparent": false,
-      "settings": [
-        {
-          "id": "deviceId",
-          "type": "device",
-          "filter": "driver_id=lawn_soil_optimizer",
-          "label": {
-            "en": "Lawn Device",
-            "nl": "Gazonapparaat",
-            "de": "Rasengerät",
-            "fr": "Appareil pelouse",
-            "es": "Dispositivo de césped",
-            "it": "Dispositivo prato",
-            "sv": "Gräsmattaenhet",
-            "no": "Gresplenenhet",
-            "da": "Plæneenhed",
-            "ru": "Устройство газона",
-            "pl": "Urządzenie trawnikowe",
-            "ko": "잔디 장치"
-          }
+      "settings": [],
+      "api": {
+        "getData": {
+          "method": "GET",
+          "path": "/"
         }
-      ]
+      }
     }
   },
 

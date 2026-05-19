@@ -193,6 +193,7 @@
     },
     "last_updated": {
       "type": "string",
+      "icon": "./assets/icons/clock.svg",
       "title": {
         "en": "Last Updated",
         "nl": "Laatst bijgewerkt",
@@ -215,6 +216,7 @@
 
     "fertiliser_next_date": {
       "type": "string",
+      "icon": "./assets/icons/fertiliser_calendar.svg",
       "title": {
         "en": "Next Fertiliser Date",
         "nl": "Volgende bemestingsdatum",
@@ -237,6 +239,7 @@
 
     "fertiliser_days_remaining": {
       "type": "number",
+      "icon": "./assets/icons/fertiliser_calendar.svg",
       "title": {
         "en": "Days Until Fertiliser",
         "nl": "Dagen tot bemesting",
@@ -288,6 +291,7 @@
 
     "fertiliser_status": {
       "type": "string",
+      "icon": "./assets/icons/fertiliser_status.svg",
       "title": {
         "en": "Fertiliser Status",
         "nl": "Bemestingsstatus",
@@ -310,6 +314,7 @@
 
     "weekly_water_target_mm": {
       "type": "number",
+      "icon": "./assets/icons/water_target.svg",
       "title": { "en": "Weekly Water Target (mm)" },
       "units": { "en": "mm" },
       "min": 0, "max": 200, "decimals": 1,
@@ -318,6 +323,7 @@
 
     "rain_this_week_mm": {
       "type": "number",
+      "icon": "./assets/icons/rain.svg",
       "title": { "en": "Rain This Week (mm)" },
       "units": { "en": "mm" },
       "min": 0, "max": 500, "decimals": 1,
@@ -326,6 +332,7 @@
 
     "irrigation_this_week_mm": {
       "type": "number",
+      "icon": "./assets/icons/sprinkler.svg",
       "title": { "en": "Irrigation This Week (mm)" },
       "units": { "en": "mm" },
       "min": 0, "max": 500, "decimals": 1,
@@ -334,6 +341,7 @@
 
     "total_water_this_week_mm": {
       "type": "number",
+      "icon": "./assets/icons/water_total.svg",
       "title": { "en": "Total Water This Week (mm)" },
       "units": { "en": "mm" },
       "min": 0, "max": 500, "decimals": 1,
@@ -342,6 +350,7 @@
 
     "water_deficit_mm": {
       "type": "number",
+      "icon": "./assets/icons/water_deficit.svg",
       "title": { "en": "Water Deficit (mm)" },
       "units": { "en": "mm" },
       "min": 0, "max": 200, "decimals": 1,
@@ -357,12 +366,14 @@
 
     "next_watering_date": {
       "type": "string",
+      "icon": "./assets/icons/calendar_water.svg",
       "title": { "en": "Next Watering Date" },
       "insights": false, "getable": true, "setable": false, "uiComponent": "sensor"
     },
 
     "next_watering_amount_mm": {
       "type": "number",
+      "icon": "./assets/icons/water_amount.svg",
       "title": { "en": "Next Watering Amount (mm)" },
       "units": { "en": "mm" },
       "min": 0, "max": 100, "decimals": 1,
@@ -371,12 +382,14 @@
 
     "water_schedule_status": {
       "type": "string",
+      "icon": "./assets/icons/water_schedule.svg",
       "title": { "en": "Water Schedule Status" },
       "insights": false, "getable": true, "setable": false, "uiComponent": "sensor"
     },
 
     "lawn_overall_score": {
       "type": "number",
+      "icon": "./assets/icons/lawn_score.svg",
       "title": {
         "en": "Overall Lawn Score",
         "nl": "Algehele Grazonscore",
@@ -398,6 +411,7 @@
 
     "lawn_status": {
       "type": "string",
+      "icon": "./assets/icons/lawn_status_icon.svg",
       "title": {
         "en": "Lawn Status",
         "nl": "Grazonstatus",
@@ -417,6 +431,7 @@
 
     "primary_recommendation": {
       "type": "string",
+      "icon": "./assets/icons/lightbulb.svg",
       "title": {
         "en": "Primary Recommendation",
         "nl": "Primaire aanbeveling",
@@ -436,6 +451,7 @@
 
     "next_action": {
       "type": "string",
+      "icon": "./assets/icons/next_action.svg",
       "title": {
         "en": "Next Action",
         "nl": "Volgende actie",
@@ -455,6 +471,7 @@
 
     "next_action_date": {
       "type": "string",
+      "icon": "./assets/icons/calendar.svg",
       "title": {
         "en": "Next Action Date",
         "nl": "Datum volgende actie",
@@ -474,6 +491,7 @@
 
     "next_action_reason": {
       "type": "string",
+      "icon": "./assets/icons/info.svg",
       "title": {
         "en": "Next Action Reason",
         "nl": "Reden volgende actie",
@@ -493,6 +511,7 @@
 
     "next_mowing_window": {
       "type": "string",
+      "icon": "./assets/icons/mowing_window.svg",
       "title": {
         "en": "Next Mowing Window",
         "nl": "Volgend maamoment",
@@ -512,6 +531,7 @@
 
     "mowing_status": {
       "type": "string",
+      "icon": "./assets/icons/mowing.svg",
       "title": {
         "en": "Mowing Status",
         "nl": "Maastatus",
@@ -531,6 +551,7 @@
 
     "frost_severity": {
       "type": "string",
+      "icon": "./assets/icons/frost_severity.svg",
       "title": {
         "en": "Frost Severity",
         "nl": "Ernst van vorst",
@@ -550,6 +571,7 @@
 
     "heat_stress_severity": {
       "type": "string",
+      "icon": "./assets/icons/heat_severity.svg",
       "title": {
         "en": "Heat Stress Severity",
         "nl": "Ernst van hittestress",
@@ -569,6 +591,7 @@
 
     "lawn_recovery_mode": {
       "type": "boolean",
+      "icon": "./assets/icons/recovery.svg",
       "title": {
         "en": "Recovery Mode",
         "nl": "Herstelmodus",
@@ -606,27 +629,13 @@
       },
       "height": 220,
       "transparent": false,
-      "settings": [
-        {
-          "id": "deviceId",
-          "type": "device",
-          "filter": "driver_id=lawn_soil_optimizer",
-          "label": {
-            "en": "Lawn Device",
-            "nl": "Gazonapparaat",
-            "de": "Rasengerät",
-            "fr": "Appareil pelouse",
-            "es": "Dispositivo de césped",
-            "it": "Dispositivo prato",
-            "sv": "Gräsmattaenhet",
-            "no": "Gresplenenhet",
-            "da": "Plæneenhed",
-            "ru": "Устройство газона",
-            "pl": "Urządzenie trawnikowe",
-            "ko": "잔디 장치"
-          }
+      "settings": [],
+      "api": {
+        "getData": {
+          "method": "GET",
+          "path": "/"
         }
-      ]
+      }
     }
   },
 

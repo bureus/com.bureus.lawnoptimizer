@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Thermometer tube -->
+  <rect x="44" y="12" width="12" height="52" rx="6" fill="none" stroke="#5B9BD5" stroke-width="5"/>
+  <!-- Thermometer bulb -->
+  <circle cx="50" cy="72" r="12" fill="none" stroke="#5B9BD5" stroke-width="5"/>
+  <!-- Mercury fill inside (blue — cold) -->
+  <rect x="47" y="46" width="6" height="26" fill="#90CAF9"/>
+  <circle cx="50" cy="72" r="8" fill="#5B9BD5"/>
+  <!-- Left snowflake arm -->
+  <line x1="14" y1="50" x2="38" y2="50" stroke="#90CAF9" stroke-width="4" stroke-linecap="round"/>
+  <line x1="18" y1="50" x2="22" y2="44" stroke="#90CAF9" stroke-width="3" stroke-linecap="round"/>
+  <line x1="18" y1="50" x2="22" y2="56" stroke="#90CAF9" stroke-width="3" stroke-linecap="round"/>
+  <line x1="30" y1="50" x2="26" y2="44" stroke="#90CAF9" stroke-width="3" stroke-linecap="round"/>
+  <line x1="30" y1="50" x2="26" y2="56" stroke="#90CAF9" stroke-width="3" stroke-linecap="round"/>
+  <!-- Right snowflake arm -->
+  <line x1="62" y1="50" x2="86" y2="50" stroke="#90CAF9" stroke-width="4" stroke-linecap="round"/>
+  <line x1="70" y1="50" x2="74" y2="44" stroke="#90CAF9" stroke-width="3" stroke-linecap="round"/>
+  <line x1="70" y1="50" x2="74" y2="56" stroke="#90CAF9" stroke-width="3" stroke-linecap="round"/>
+  <line x1="82" y1="50" x2="78" y2="44" stroke="#90CAF9" stroke-width="3" stroke-linecap="round"/>
+  <line x1="82" y1="50" x2="78" y2="56" stroke="#90CAF9" stroke-width="3" stroke-linecap="round"/>
+</svg>

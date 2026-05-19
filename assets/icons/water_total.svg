@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Bucket outline (trapezoid: wider at top) -->
+  <path d="M20 28 L28 84 Q28 88 34 88 L66 88 Q72 88 72 84 L80 28 Z" fill="none" stroke="#78909C" stroke-width="5" stroke-linejoin="round"/>
+  <!-- Curved arc handle above bucket -->
+  <path d="M30 28 Q50 10 70 28" fill="none" stroke="#90A4AE" stroke-width="4" stroke-linecap="round"/>
+  <!-- Blue water fill (~60% full) inside bucket -->
+  <path d="M24 60 L30 88 Q30 88 34 88 L66 88 Q70 88 70 88 L76 60 Z" fill="#42A5F5"/>
+  <!-- Wavy water surface line -->
+  <path d="M24 60 Q32 55 40 60 Q48 65 56 60 Q64 55 76 60" fill="none" stroke="#1E88E5" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

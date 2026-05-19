@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Calendar body -->
+  <rect x="10" y="22" width="80" height="68" rx="8" fill="none" stroke="#1E88E5" stroke-width="5"/>
+  <!-- Blue header bar -->
+  <rect x="10" y="22" width="80" height="20" rx="8" fill="#1E88E5"/>
+  <rect x="10" y="34" width="80" height="8" fill="#1E88E5"/>
+  <!-- Binding rings -->
+  <rect x="28" y="12" width="7" height="18" rx="3.5" fill="#1565C0"/>
+  <rect x="65" y="12" width="7" height="18" rx="3.5" fill="#1565C0"/>
+  <!-- Wave line 1 (upper) inside calendar date area -->
+  <path d="M18 54 Q26 48 34 54 Q42 60 50 54 Q58 48 66 54 Q74 60 82 54" fill="none" stroke="#42A5F5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Wave line 2 (lower) -->
+  <path d="M18 70 Q26 64 34 70 Q42 76 50 70 Q58 64 66 70 Q74 76 82 70" fill="none" stroke="#1E88E5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

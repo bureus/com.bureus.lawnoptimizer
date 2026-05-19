@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Bulb outline (pear/teardrop shape) -->
+  <path d="M50 14 Q34 14 26 28 Q18 42 24 56 Q30 66 36 72 L36 78 Q36 82 40 82 L60 82 Q64 82 64 78 L64 72 Q70 66 76 56 Q82 42 74 28 Q66 14 50 14 Z" fill="none" stroke="#F9A825" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Inner glow fill -->
+  <path d="M50 18 Q38 20 32 32 Q26 44 32 56 Q36 64 40 70 L60 70 Q64 64 68 56 Q74 44 68 32 Q62 20 50 18 Z" fill="#FFF9C4" opacity="0.7"/>
+  <!-- Base bands -->
+  <line x1="36" y1="82" x2="64" y2="82" stroke="#90A4AE" stroke-width="4" stroke-linecap="round"/>
+  <line x1="38" y1="88" x2="62" y2="88" stroke="#78909C" stroke-width="4" stroke-linecap="round"/>
+  <!-- Rays -->
+  <line x1="50" y1="8" x2="50" y2="13" stroke="#F9A825" stroke-width="4" stroke-linecap="round"/>
+  <line x1="18" y1="20" x2="22" y2="24" stroke="#F9A825" stroke-width="4" stroke-linecap="round"/>
+  <line x1="82" y1="20" x2="78" y2="24" stroke="#F9A825" stroke-width="4" stroke-linecap="round"/>
+  <line x1="10" y1="46" x2="16" y2="46" stroke="#F9A825" stroke-width="4" stroke-linecap="round"/>
+  <line x1="90" y1="46" x2="84" y2="46" stroke="#F9A825" stroke-width="4" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Arrow shaft -->
+  <line x1="10" y1="50" x2="72" y2="50" stroke="#4CAF50" stroke-width="14" stroke-linecap="round"/>
+  <!-- Arrowhead triangle -->
+  <polygon points="65,30 90,50 65,70" fill="#4CAF50"/>
+</svg>

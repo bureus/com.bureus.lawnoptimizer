@@ -56,17 +56,37 @@ class LawnSoilOptimizerDevice extends Homey.Device {
   async onInit() {
     this.log(`Device "${this.getName()}" initialising…`);
 
-    this._pollTimer      = null;
-    this._client         = new OpenMeteoClient(this.log.bind(this));
+    this._pollTimer         = null;
+    this._client            = new OpenMeteoClient(this.log.bind(this));
     this._fertiliserService = new FertiliserScheduleService();
     this._waterService      = new WaterScheduleService();
     this._stressService     = new LawnStressService();
     this._mowingService     = new MowingWindowService();
     this._dashboardService  = new LawnDashboardService();
 
+    // Ensure new capabilities exist on devices paired before this version
+    await this._ensureCapabilities();
+
     await this._startPolling();
 
     this.log(`Device "${this.getName()}" ready.`);
+  }
+
+  async _ensureCapabilities() {
+    const required = [
+      'next_mowing_window', 'mowing_status',
+      'frost_severity', 'heat_stress_severity', 'lawn_recovery_mode',
+      'lawn_overall_score', 'lawn_status', 'primary_recommendation',
+      'next_action', 'next_action_date', 'next_action_reason',
+    ];
+    for (const cap of required) {
+      if (!this.hasCapability(cap)) {
+        this.log(`Adding missing capability: ${cap}`);
+        await this.addCapability(cap).catch(err =>
+          this.error(`Could not add capability ${cap}:`, err.message),
+        );
+      }
+    }
   }
 
   async onDeleted() {

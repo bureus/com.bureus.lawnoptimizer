@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Ground rectangle -->
+  <rect x="10" y="76" width="80" height="14" rx="6" fill="#8D6E63"/>
+  <!-- Grass stubs above ground -->
+  <path d="M22 76 Q19 66 16 60" stroke="#43A047" stroke-width="4" stroke-linecap="round" fill="none"/>
+  <path d="M34 76 Q34 64 32 58" stroke="#4CAF50" stroke-width="4" stroke-linecap="round" fill="none"/>
+  <path d="M66 76 Q66 64 68 58" stroke="#43A047" stroke-width="4" stroke-linecap="round" fill="none"/>
+  <path d="M78 76 Q81 66 84 60" stroke="#4CAF50" stroke-width="4" stroke-linecap="round" fill="none"/>
+  <!-- Vertical post -->
+  <line x1="50" y1="76" x2="50" y2="46" stroke="#90A4AE" stroke-width="6" stroke-linecap="round"/>
+  <!-- Horizontal nozzle head -->
+  <rect x="34" y="42" width="32" height="9" rx="4.5" fill="#78909C"/>
+  <!-- Water arcs spraying outward -->
+  <path d="M38 46 Q28 36 16 32" stroke="#42A5F5" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+  <path d="M38 46 Q22 42 12 50" stroke="#90CAF9" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <path d="M62 46 Q72 36 84 32" stroke="#42A5F5" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+  <path d="M62 46 Q78 42 88 50" stroke="#90CAF9" stroke-width="3" stroke-linecap="round" fill="none"/>
+</svg>
