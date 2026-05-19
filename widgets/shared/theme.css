@@ -1,0 +1,121 @@
+/*
+ * Lawn Optimizer — Shared Design Tokens
+ * ══════════════════════════════════════════════════════════
+ * Scandinavian minimal, premium smart-home aesthetic.
+ *
+ * Homey injects --homey-color-* variables at runtime; these
+ * are mapped to semantic tokens below.  The @media dark block
+ * provides accurate fallback values when viewed outside Homey
+ * (e.g. during local development).
+ *
+ * Usage — inline this :root block inside each widget's
+ * <style> tag (Homey widgets are self-contained HTML files;
+ * cross-widget file imports are not supported by the SDK).
+ * ══════════════════════════════════════════════════════════
+ */
+
+/* ── Semantic tokens — light mode (default) ─────────────── */
+:root {
+  /* Surfaces */
+  --bg:          var(--homey-color-background,       #f5f5f3);
+  --chip:        var(--homey-color-background-light, #eaeae8);
+
+  /* Typography */
+  --text:        var(--homey-color-text,       #1a1a1a);
+  --text-2:      var(--homey-color-text-light, #6b7280);
+  --text-3:      var(--homey-color-text-light, #9ca3af);
+
+  /* Chrome */
+  --border:      var(--homey-color-border, rgba(0,0,0,0.09));
+  --ring-track:  rgba(0,0,0,0.08);
+
+  /* Status — healthy / success */
+  --ok:          #4caf50;
+  --ok-bg:       #e8f5e9;
+  --ok-txt:      #2e7d32;
+
+  /* Status — warning / caution */
+  --warn:        #ff9800;
+  --warn-bg:     #fff3e0;
+  --warn-txt:    #e65100;
+
+  /* Status — danger / critical */
+  --err:         #f44336;
+  --err-bg:      #ffebee;
+  --err-txt:     #b71c1c;
+
+  /* Status — informational */
+  --info:        #1e88e5;
+  --info-bg:     #e3f2fd;
+  --info-txt:    #1565c0;
+
+  /* Event-type dot colours (calendar widget) */
+  --dot-water:   #1e88e5;
+  --dot-fert:    #ff9800;
+  --dot-mow:     #4caf50;
+  --dot-frost:   #90caf9;
+  --dot-heat:    #ff7043;
+  --dot-recov:   #ffb74d;
+}
+
+/* ── Dark mode overrides ─────────────────────────────────── */
+/* Homey's injected vars adapt automatically; @media dark is
+   the development fallback only.                            */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:          var(--homey-color-background,       #18181b);
+    --chip:        var(--homey-color-background-light, #2e2e33);
+
+    --text:        var(--homey-color-text,       #f4f4f5);
+    --text-2:      var(--homey-color-text-light, #a1a1aa);
+    --text-3:      var(--homey-color-text-light, #71717a);
+
+    --border:      var(--homey-color-border, rgba(255,255,255,0.09));
+    --ring-track:  rgba(255,255,255,0.08);
+
+    --ok-bg:       rgba(76,175,80,0.18);
+    --ok-txt:      #86efac;
+    --warn-bg:     rgba(255,152,0,0.18);
+    --warn-txt:    #fbbf24;
+    --err-bg:      rgba(244,67,54,0.18);
+    --err-txt:     #f87171;
+    --info-bg:     rgba(30,136,229,0.18);
+    --info-txt:    #93c5fd;
+  }
+}
+
+/*
+ * ── Shared utility classes ───────────────────────────────
+ * Copy these into each widget's <style> tag as needed.
+ *
+ * .divider      — horizontal rule
+ * .ok / .warn / .err / .info / .dim   — status text colours
+ * .badge + .badge.ok/.warn/.err/.info — pill badge variants
+ */
+
+/* hr.divider */
+.divider { border: none; border-top: 1px solid var(--border); }
+
+/* Status text */
+.ok   { color: var(--ok);   }
+.warn { color: var(--warn); }
+.err  { color: var(--err);  }
+.info { color: var(--info); }
+.dim  { color: var(--text-3); }
+
+/* Pill badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-size: 0.68em;
+  font-weight: 700;
+  letter-spacing: .03em;
+  background: var(--chip);
+  color: var(--text-2);
+}
+.badge.ok   { background: var(--ok-bg);   color: var(--ok-txt);   }
+.badge.warn { background: var(--warn-bg); color: var(--warn-txt); }
+.badge.err  { background: var(--err-bg);  color: var(--err-txt);  }
+.badge.info { background: var(--info-bg); color: var(--info-txt); }

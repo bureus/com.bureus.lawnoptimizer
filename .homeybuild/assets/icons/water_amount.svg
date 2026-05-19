@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Cylinder/beaker outline -->
+  <path d="M22 18 Q22 12 30 12 L68 12 Q76 12 76 18 L76 86 Q76 90 72 90 L26 90 Q22 90 22 86 Z" fill="none" stroke="#78909C" stroke-width="5"/>
+  <!-- Rounded top opening -->
+  <ellipse cx="49" cy="12" rx="22" ry="5" fill="none" stroke="#78909C" stroke-width="4"/>
+  <!-- Blue fill (~50% full) -->
+  <path d="M22 55 L22 86 Q22 90 26 90 L72 90 Q76 90 76 86 L76 55 Z" fill="#42A5F5"/>
+  <!-- Water level line -->
+  <line x1="22" y1="55" x2="76" y2="55" stroke="#1E88E5" stroke-width="3.5" stroke-linecap="round"/>
+  <!-- Tick marks on right side -->
+  <line x1="68" y1="35" x2="76" y2="35" stroke="#90A4AE" stroke-width="3" stroke-linecap="round"/>
+  <line x1="68" y1="48" x2="76" y2="48" stroke="#90A4AE" stroke-width="3" stroke-linecap="round"/>
+  <line x1="68" y1="62" x2="76" y2="62" stroke="#90A4AE" stroke-width="3" stroke-linecap="round"/>
+  <line x1="68" y1="75" x2="76" y2="75" stroke="#90A4AE" stroke-width="3" stroke-linecap="round"/>
+</svg>

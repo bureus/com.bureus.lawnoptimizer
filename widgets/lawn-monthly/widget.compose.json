@@ -1,0 +1,22 @@
+{
+  "name": {
+    "en": "Monthly Lawn Summary",
+    "nl": "Maandelijkse Grazonsamenvatting",
+    "de": "Monatliche Rasen-Zusammenfassung",
+    "fr": "Résumé mensuel de la pelouse",
+    "es": "Resumen mensual del césped",
+    "it": "Riepilogo mensile del prato",
+    "sv": "Månadssammanfattning gräsmatta",
+    "no": "Månedlig gressplensammendrag",
+    "da": "Månedlig plænesammenfatning"
+  },
+  "height": 260,
+  "transparent": false,
+  "settings": [],
+  "api": {
+    "getData": {
+      "method": "GET",
+      "path": "/"
+    }
+  }
+}

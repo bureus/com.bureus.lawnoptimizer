@@ -5,14 +5,40 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lawn Dashboard</title>
   <style>
+    /* ── Design tokens (inlined from widgets/shared/theme.css) ── */
+    :root {
+      --bg:      var(--homey-color-background,       #f5f5f3);
+      --chip:    var(--homey-color-background-light, #eaeae8);
+      --text:    var(--homey-color-text,       #1a1a1a);
+      --text-2:  var(--homey-color-text-light, #6b7280);
+      --text-3:  var(--homey-color-text-light, #9ca3af);
+      --border:  var(--homey-color-border, rgba(0,0,0,0.09));
+      --ring-track: rgba(0,0,0,0.08);
+      --ok:      #4caf50; --ok-bg:   #e8f5e9; --ok-txt:   #2e7d32;
+      --warn:    #ff9800; --warn-bg: #fff3e0; --warn-txt: #e65100;
+      --err:     #f44336; --err-bg:  #ffebee; --err-txt:  #b71c1c;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg:      var(--homey-color-background,       #18181b);
+        --chip:    var(--homey-color-background-light, #2e2e33);
+        --text:    var(--homey-color-text,       #f4f4f5);
+        --text-2:  var(--homey-color-text-light, #a1a1aa);
+        --text-3:  var(--homey-color-text-light, #71717a);
+        --border:  var(--homey-color-border, rgba(255,255,255,0.09));
+        --ring-track: rgba(255,255,255,0.08);
+        --ok-bg:   rgba(76,175,80,0.18);   --ok-txt:   #86efac;
+        --warn-bg: rgba(255,152,0,0.18);   --warn-txt: #fbbf24;
+        --err-bg:  rgba(244,67,54,0.18);   --err-txt:  #f87171;
+      }
+    }
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     html, body {
       width: 100%; height: 100%;
-      background-color: #ffffff;
-      background-color: var(--homey-color-background, #ffffff);
-      color: #1a1a1a;
-      color: var(--homey-color-text, #1a1a1a);
+      background-color: var(--bg);
+      color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       font-size: 13px;
       overflow: hidden;
@@ -26,67 +52,69 @@
       height: 100%;
     }
 
-    /* Loading / error */
+    /* ── Loading / error ── */
     #msg {
       flex: 1;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 0.85em;
-      color: #888;
+      color: var(--text-3);
       text-align: center;
       padding: 8px;
     }
     #msg.err {
-      color: #856404;
-      background: #fff3cd;
+      color: var(--warn-txt);
+      background: var(--warn-bg);
       border-radius: 8px;
       font-size: 0.8em;
     }
 
-    /* Top row */
+    /* ── Top row ── */
     .top { display: flex; align-items: center; gap: 12px; }
 
     .ring-wrap { position: relative; width: 58px; height: 58px; flex-shrink: 0; }
     .ring-wrap svg { transform: rotate(-90deg); display: block; }
-    .bg  { fill: none; stroke: #e0e0e0; stroke-width: 6; }
-    .val { fill: none; stroke: #4caf50; stroke-width: 6; stroke-linecap: round;
-           transition: stroke-dashoffset .5s ease; }
-    .val.amber { stroke: #ff9800; }
-    .val.red   { stroke: #f44336; }
-    .lbl {
+    .ring-bg  { fill: none; stroke: var(--ring-track); stroke-width: 6; }
+    .ring-val { fill: none; stroke: var(--ok); stroke-width: 6; stroke-linecap: round;
+                transition: stroke-dashoffset .5s ease; }
+    .ring-val.amber { stroke: var(--warn); }
+    .ring-val.red   { stroke: var(--err); }
+    .ring-lbl {
       position: absolute; inset: 0;
       display: flex; align-items: center; justify-content: center;
       font-size: 1.05em; font-weight: 800;
     }
 
     .info { flex: 1; min-width: 0; }
-    .dname { font-size: 0.7em; color: #888; color: var(--homey-color-text-light, #888);
-             white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; }
+    .dname  { font-size: 0.7em; color: var(--text-3);
+              white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; }
     .status { font-size: 0.92em; font-weight: 700;
               white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .rec    { font-size: 0.76em; color: #666; color: var(--homey-color-text-light, #666);
+    .rec    { font-size: 0.76em; color: var(--text-2);
               margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-    hr { border: none; border-top: 1px solid #e0e0e0;
-         border-color: var(--homey-color-border, #e0e0e0); }
+    hr { border: none; border-top: 1px solid var(--border); }
 
-    /* Action row */
-    .actions { display: flex; gap: 8px; }
+    /* ── Action row — 4 columns, first 2× wide ── */
+    .actions { display: flex; gap: 6px; }
     .ac { flex: 1; min-width: 0; }
-    .al { font-size: 0.62em; font-weight: 700; text-transform: uppercase;
-          letter-spacing: .05em; color: #999; color: var(--homey-color-text-light, #999);
-          margin-bottom: 2px; }
-    .av { font-size: 0.82em; font-weight: 600;
+    .ac:first-child { flex: 2; }
+    .al { font-size: 0.6em; font-weight: 700; text-transform: uppercase;
+          letter-spacing: .05em; color: var(--text-3); margin-bottom: 2px; }
+    .av { font-size: 0.8em; font-weight: 600;
           white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-    /* Badges */
+    /* ── Status badges ── */
     .badges { display: flex; flex-wrap: wrap; gap: 4px; }
-    .badge  { display: inline-block; padding: 2px 7px; border-radius: 20px;
-               font-size: 0.68em; font-weight: 700; background: #f0f0f0; color: #555; }
-    .badge.g { background: #e8f5e9; color: #2e7d32; }
-    .badge.a { background: #fff3e0; color: #e65100; }
-    .badge.r { background: #ffebee; color: #b71c1c; }
+    .badge  {
+      display: inline-block; padding: 2px 7px; border-radius: 20px;
+      font-size: 0.68em; font-weight: 700;
+      background: var(--chip); color: var(--text-2);
+    }
+    .badge.g { background: var(--ok-bg);   color: var(--ok-txt);   }
+    .badge.a { background: var(--warn-bg); color: var(--warn-txt); }
+    .badge.r { background: var(--err-bg);  color: var(--err-txt);  }
 
     .hidden { display: none !important; }
   </style>
@@ -98,11 +126,11 @@
   <div class="top hidden" id="top">
     <div class="ring-wrap">
       <svg viewBox="0 0 58 58" width="58" height="58">
-        <circle class="bg"  cx="29" cy="29" r="22" />
-        <circle class="val" cx="29" cy="29" r="22" id="ring"
+        <circle class="ring-bg"  cx="29" cy="29" r="22" />
+        <circle class="ring-val" cx="29" cy="29" r="22" id="ring"
                 stroke-dasharray="138.2" stroke-dashoffset="138.2" />
       </svg>
-      <div class="lbl" id="score">—</div>
+      <div class="ring-lbl" id="score">—</div>
     </div>
     <div class="info">
       <div class="dname"  id="dname"></div>
@@ -117,6 +145,7 @@
     <div class="ac"><div class="al">Next action</div><div class="av" id="action">—</div></div>
     <div class="ac"><div class="al">Date</div>        <div class="av" id="date">—</div></div>
     <div class="ac"><div class="al">Deficit</div>     <div class="av" id="deficit">—</div></div>
+    <div class="ac"><div class="al">Health score</div><div class="av" id="health">—</div></div>
   </div>
 
   <hr class="hidden" id="hr2" />
@@ -159,11 +188,12 @@
 
     document.getElementById('msg').classList.add('hidden');
 
-    var sc = d['lawn_overall_score'];
+    // Ring shows raw growth score — the model's direct output.
+    var sc = d['lawn_growth_score'];
     var pct = sc != null ? Math.max(0, Math.min(100, sc)) / 100 : 0;
     var ring = document.getElementById('ring');
     ring.style.strokeDashoffset = String(CIRC * (1 - pct));
-    ring.className = 'val' + (sc == null || sc >= 60 ? '' : sc >= 35 ? ' amber' : ' red');
+    ring.className = 'ring-val' + (sc == null || sc >= 60 ? '' : sc >= 35 ? ' amber' : ' red');
     document.getElementById('score').textContent  = sc != null ? String(sc) : '—';
     document.getElementById('dname').textContent  = d.deviceName || '';
     document.getElementById('status').textContent = d['lawn_status'] || '—';
@@ -172,6 +202,8 @@
     document.getElementById('date').textContent   = d['next_action_date'] || '—';
     var def = d['water_deficit_mm'];
     document.getElementById('deficit').textContent = def > 0 ? def + ' mm' : '✓ Met';
+    var hs = d['lawn_overall_score'];
+    document.getElementById('health').textContent = hs != null ? hs + ' pts' : '—';
 
     var row = document.getElementById('badges');
     row.innerHTML = '';
@@ -188,7 +220,7 @@
   }
 
   function onHomeyReady(Homey) {
-    Homey.ready({ height: 220 });
+    Homey.ready({ height: 230 });
     Homey.api('GET', '/', {})
       .then(function(data) { render(data); })
       .catch(function(err) { setMsg('Error: ' + (err.message || err), true); });

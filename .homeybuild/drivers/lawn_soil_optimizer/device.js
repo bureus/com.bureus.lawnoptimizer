@@ -9,6 +9,9 @@ const WaterScheduleService      = require('../../lib/WaterScheduleService');
 const LawnStressService         = require('../../lib/LawnStressService');
 const MowingWindowService       = require('../../lib/MowingWindowService');
 const LawnDashboardService      = require('../../lib/LawnDashboardService');
+const LawnHistoryService        = require('../../lib/LawnHistoryService');
+const MonthlySummaryService     = require('../../lib/MonthlySummaryService');
+const LawnCalendarService       = require('../../lib/LawnCalendarService');
 const { getWeekStartDate, formatIsoDate, parseIsoDate } = require('../../lib/DateHelpers');
 
 // ── Persistent store keys ──────────────────────────────────────────────────────
@@ -63,6 +66,9 @@ class LawnSoilOptimizerDevice extends Homey.Device {
     this._stressService     = new LawnStressService();
     this._mowingService     = new MowingWindowService();
     this._dashboardService  = new LawnDashboardService();
+    this._historyService    = new LawnHistoryService();
+    this._summaryService    = new MonthlySummaryService();
+    this._calendarService   = new LawnCalendarService();
 
     // Ensure new capabilities exist on devices paired before this version
     await this._ensureCapabilities();
@@ -78,6 +84,7 @@ class LawnSoilOptimizerDevice extends Homey.Device {
       'frost_severity', 'heat_stress_severity', 'lawn_recovery_mode',
       'lawn_overall_score', 'lawn_status', 'primary_recommendation',
       'next_action', 'next_action_date', 'next_action_reason',
+      'next_lawn_event', 'next_lawn_event_date',
     ];
     for (const cap of required) {
       if (!this.hasCapability(cap)) {
@@ -136,6 +143,7 @@ class LawnSoilOptimizerDevice extends Homey.Device {
     try {
       this.log(`Fetching weather for (${latitude}, ${longitude})…`);
 
+      const today    = new Date().toISOString().slice(0, 10);
       const snapshot = await this._client.fetchCurrentConditions(latitude, longitude);
 
       const model   = new SoilTemperatureModel(settings);
@@ -185,6 +193,8 @@ class LawnSoilOptimizerDevice extends Homey.Device {
       await this._fireTriggers(temps, assessment, fertResult, waterResult);
       await this._checkFertiliserNotification(fertResult, settings);
       await this._checkWaterNotification(waterResult, settings);
+      await this._updateCalendarEvents(today, waterResult, fertResult, mowingResult, stressResult, assessment, settings);
+      await this._updateDailyHistory(temps, assessment, fertResult, waterResult, stressResult, dashboard);
 
       this.log(`Refresh complete – rootZone: ${temps.rootZone} °C, score: ${assessment.growthScore}, fertDue: ${fertResult.due}, waterDue: ${waterResult.wateringDue}`);
       this.log(`Dashboard – score: ${dashboard.overallScore}, status: "${dashboard.lawnStatus}", nextAction: "${dashboard.nextAction}", date: ${dashboard.nextActionDate}`);
@@ -361,6 +371,70 @@ class LawnSoilOptimizerDevice extends Homey.Device {
       } catch (err) {
         this.error(`Failed to set capability "${cap}":`, err.message);
       }
+    }
+  }
+
+  // ─── Daily history tracking ────────────────────────────────────────────────
+
+  async _updateDailyHistory(temps, assessment, fertResult, waterResult, stressResult, dashboard) {
+    try {
+      const today = new Date().toISOString().slice(0, 10);
+
+      const snapshot = {
+        date:        today,
+        score:       dashboard.overallScore,
+        rainMm:      Math.round((temps.rain24h ?? 0) * 10) / 10,
+        wateringDue: waterResult.wateringDue      ?? false,
+        fertDue:     fertResult.due               ?? false,
+        mowingRec:   assessment.mowingRecommended ?? false,
+        frost:       stressResult.frostSeverity      !== 'none',
+        heat:        stressResult.heatStressSeverity !== 'none',
+        status:      dashboard.lawnStatus || '',
+      };
+
+      const stored  = this.getStoreValue(LawnHistoryService.STORE_KEY) ?? [];
+      const history = this._historyService.upsert(
+        this._historyService.parse(stored),
+        snapshot,
+      );
+      await this.setStoreValue(LawnHistoryService.STORE_KEY, history);
+
+      this.log(`Daily history updated – date: ${today}, score: ${snapshot.score}, rain: ${snapshot.rainMm} mm (${history.length} days stored)`);
+    } catch (err) {
+      this.error('Failed to update daily history:', err.message);
+    }
+  }
+
+  // ─── Calendar event generation ─────────────────────────────────────────────
+
+  async _updateCalendarEvents(today, waterResult, fertResult, mowingResult, stressResult, assessment, settings) {
+    try {
+      const events = this._calendarService.generate({
+        today, waterResult, fertResult, mowingResult, stressResult, assessment, settings,
+      });
+
+      await this.setStoreValue(LawnCalendarService.STORE_KEY, events);
+
+      // Update next_lawn_event / next_lawn_event_date capabilities
+      const next = this._calendarService.nextEvent(events);
+      const nextTitle = next
+        ? `${next.title} — ${next.date}`
+        : 'No upcoming events';
+      const nextDate = next ? next.date : '—';
+
+      try {
+        const curTitle = this.getCapabilityValue('next_lawn_event');
+        if (curTitle !== nextTitle) await this.setCapabilityValue('next_lawn_event', nextTitle);
+      } catch (_) { /* capability may not exist on older paired devices yet */ }
+
+      try {
+        const curDate = this.getCapabilityValue('next_lawn_event_date');
+        if (curDate !== nextDate) await this.setCapabilityValue('next_lawn_event_date', nextDate);
+      } catch (_) { /* same */ }
+
+      this.log(`Calendar updated — ${events.length} events, next: "${next ? next.title : 'none'}" on ${next ? next.date : '—'}`);
+    } catch (err) {
+      this.error('Failed to update calendar events:', err.message);
     }
   }
 

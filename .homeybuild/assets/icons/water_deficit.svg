@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Large water drop outline (teardrop: pointed top, round bottom) -->
+  <path d="M50 8 Q50 8 50 8 Q30 30 24 50 Q20 64 28 74 Q36 84 50 84 Q64 84 72 74 Q80 64 76 50 Q70 30 50 8 Z" fill="none" stroke="#FF7043" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Downward arrow inside the drop -->
+  <line x1="50" y1="32" x2="50" y2="64" stroke="#FF7043" stroke-width="5" stroke-linecap="round"/>
+  <!-- Arrowhead (V shape pointing down) -->
+  <line x1="50" y1="64" x2="40" y2="54" stroke="#FF7043" stroke-width="5" stroke-linecap="round"/>
+  <line x1="50" y1="64" x2="60" y2="54" stroke="#FF7043" stroke-width="5" stroke-linecap="round"/>
+</svg>

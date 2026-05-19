@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Heart shape: two arcs meeting at the bottom point -->
+  <path d="M50 82 Q20 64 14 46 Q10 32 20 24 Q30 16 38 20 Q44 22 50 30 Q56 22 62 20 Q70 16 80 24 Q90 32 86 46 Q80 64 50 82 Z" fill="#C8E6C9" stroke="#43A047" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Grass blades inside the heart -->
+  <path d="M50 64 Q47 55 44 48" stroke="#2E7D32" stroke-width="4" stroke-linecap="round" fill="none"/>
+  <path d="M50 64 Q50 53 50 46" stroke="#388E3C" stroke-width="4" stroke-linecap="round" fill="none"/>
+  <path d="M50 64 Q53 55 56 48" stroke="#2E7D32" stroke-width="4" stroke-linecap="round" fill="none"/>
+  <!-- Plus/cross healing symbol (bottom of heart) -->
+  <line x1="50" y1="70" x2="50" y2="82" stroke="#43A047" stroke-width="5" stroke-linecap="round"/>
+  <line x1="44" y1="76" x2="56" y2="76" stroke="#43A047" stroke-width="5" stroke-linecap="round"/>
+</svg>

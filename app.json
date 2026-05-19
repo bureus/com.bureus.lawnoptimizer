@@ -589,6 +589,46 @@
       "insights": false, "getable": true, "setable": false, "uiComponent": "sensor"
     },
 
+    "next_lawn_event": {
+      "type": "string",
+      "icon": "./assets/icons/next_action.svg",
+      "title": {
+        "en": "Next Lawn Event",
+        "nl": "Volgend gazongebeurtenis",
+        "de": "Nächstes Rasenereignis",
+        "fr": "Prochain événement pelouse",
+        "es": "Próximo evento del césped",
+        "it": "Prossimo evento prato",
+        "sv": "Nästa gräsmattahändelse",
+        "no": "Neste gressplenbegivenhet",
+        "da": "Næste plænehændelse",
+        "ru": "Следующее событие газона",
+        "pl": "Następne zdarzenie trawnika",
+        "ko": "다음 잔디 이벤트"
+      },
+      "insights": false, "getable": true, "setable": false, "uiComponent": "sensor"
+    },
+
+    "next_lawn_event_date": {
+      "type": "string",
+      "icon": "./assets/icons/calendar.svg",
+      "title": {
+        "en": "Next Event Date",
+        "nl": "Datum volgend evenement",
+        "de": "Datum nächstes Ereignis",
+        "fr": "Date prochain événement",
+        "es": "Fecha próximo evento",
+        "it": "Data prossimo evento",
+        "sv": "Datum nästa händelse",
+        "no": "Dato neste hendelse",
+        "da": "Dato næste hændelse",
+        "ru": "Дата следующего события",
+        "pl": "Data następnego zdarzenia",
+        "ko": "다음 이벤트 날짜"
+      },
+      "insights": false, "getable": true, "setable": false, "uiComponent": "sensor"
+    },
+
     "lawn_recovery_mode": {
       "type": "boolean",
       "icon": "./assets/icons/recovery.svg",
@@ -627,7 +667,61 @@
         "pl": "Panel trawnika",
         "ko": "잔디 대시보드"
       },
-      "height": 220,
+      "height": 230,
+      "transparent": false,
+      "settings": [],
+      "api": {
+        "getData": {
+          "method": "GET",
+          "path": "/"
+        }
+      }
+    },
+
+    "lawn-calendar": {
+      "id": "lawn-calendar",
+      "name": {
+        "en": "Lawn Calendar",
+        "nl": "Gazonkalender",
+        "de": "Rasenkalender",
+        "fr": "Calendrier pelouse",
+        "es": "Calendario del césped",
+        "it": "Calendario prato",
+        "sv": "Gräsmattakalender",
+        "no": "Gressplenkalender",
+        "da": "Plænekalender",
+        "ru": "Календарь газона",
+        "pl": "Kalendarz trawnika",
+        "ko": "잔디 캘린더"
+      },
+      "height": 280,
+      "transparent": false,
+      "settings": [],
+      "api": {
+        "getData": {
+          "method": "GET",
+          "path": "/"
+        }
+      }
+    },
+
+    "lawn-monthly": {
+      "id": "lawn-monthly",
+      "name": {
+        "en": "Monthly Lawn Summary",
+        "nl": "Maandelijkse Grazonsamenvatting",
+        "de": "Monatliche Rasen-Zusammenfassung",
+        "fr": "Résumé mensuel de la pelouse",
+        "es": "Resumen mensual del césped",
+        "it": "Riepilogo mensile del prato",
+        "sv": "Månadssammanfattning gräsmatta",
+        "no": "Månedlig gressplensammendrag",
+        "da": "Månedlig plænesammenfatning",
+        "ru": "Ежемесячный итог газона",
+        "pl": "Miesięczne podsumowanie trawnika",
+        "ko": "월간 잔디 요약"
+      },
+      "height": 260,
       "transparent": false,
       "settings": [],
       "api": {
@@ -694,7 +788,9 @@
         "mowing_status",
         "frost_severity",
         "heat_stress_severity",
-        "lawn_recovery_mode"
+        "lawn_recovery_mode",
+        "next_lawn_event",
+        "next_lawn_event_date"
       ],
       "capabilitiesOptions": {
         "measure_temperature.soil_surface": {

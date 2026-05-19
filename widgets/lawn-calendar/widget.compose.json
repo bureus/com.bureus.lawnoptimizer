@@ -1,0 +1,22 @@
+{
+  "name": {
+    "en": "Lawn Calendar",
+    "nl": "Gazonkalender",
+    "de": "Rasenkalender",
+    "fr": "Calendrier pelouse",
+    "es": "Calendario del césped",
+    "it": "Calendario prato",
+    "sv": "Gräsmattakalender",
+    "no": "Gressplenkalender",
+    "da": "Plænekalender"
+  },
+  "height": 280,
+  "transparent": false,
+  "settings": [],
+  "api": {
+    "getData": {
+      "method": "GET",
+      "path": "/"
+    }
+  }
+}

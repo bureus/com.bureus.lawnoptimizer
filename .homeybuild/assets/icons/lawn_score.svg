@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- 5-pointed star polygon using computed coordinates -->
+  <polygon points="50,10 59,37 88,38 65,55 74,82 50,66 26,82 35,55 12,38 41,37" fill="#F9A825" stroke="#F57F17" stroke-width="3" stroke-linejoin="round"/>
+  <!-- 3 small green grass-blade strokes in the star center -->
+  <path d="M50 58 Q48 52 46 48" stroke="#2E7D32" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <path d="M50 58 Q50 51 50 47" stroke="#43A047" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <path d="M50 58 Q52 52 54 48" stroke="#2E7D32" stroke-width="3" stroke-linecap="round" fill="none"/>
+</svg>

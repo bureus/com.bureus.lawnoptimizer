@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Monthly Lawn Summary</title>
+  <style>
+    /* ── Design tokens (inlined from widgets/shared/theme.css) ── */
+    :root {
+      --bg:      var(--homey-color-background,       #f5f5f3);
+      --chip:    var(--homey-color-background-light, #eaeae8);
+      --text:    var(--homey-color-text,       #1a1a1a);
+      --text-2:  var(--homey-color-text-light, #6b7280);
+      --text-3:  var(--homey-color-text-light, #9ca3af);
+      --border:  var(--homey-color-border, rgba(0,0,0,0.09));
+      --ok:      #4caf50; --ok-bg:   #e8f5e9; --ok-txt:   #2e7d32;
+      --warn:    #ff9800; --warn-bg: #fff3e0; --warn-txt: #e65100;
+      --err:     #f44336; --err-bg:  #ffebee; --err-txt:  #b71c1c;
+      --info:    #1e88e5; --info-bg: #e3f2fd; --info-txt: #1565c0;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg:      var(--homey-color-background,       #18181b);
+        --chip:    var(--homey-color-background-light, #2e2e33);
+        --text:    var(--homey-color-text,       #f4f4f5);
+        --text-2:  var(--homey-color-text-light, #a1a1aa);
+        --text-3:  var(--homey-color-text-light, #71717a);
+        --border:  var(--homey-color-border, rgba(255,255,255,0.09));
+        --ok-bg:   rgba(76,175,80,0.18);   --ok-txt:   #86efac;
+        --warn-bg: rgba(255,152,0,0.18);   --warn-txt: #fbbf24;
+        --err-bg:  rgba(244,67,54,0.18);   --err-txt:  #f87171;
+        --info-bg: rgba(30,136,229,0.18);  --info-txt: #93c5fd;
+      }
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%; height: 100%;
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 13px;
+      overflow: hidden;
+    }
+
+    .widget {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      padding: 12px 14px;
+      height: 100%;
+    }
+
+    /* ── Loading / error ── */
+    #msg {
+      flex: 1; display: flex; align-items: center; justify-content: center;
+      font-size: 0.85em; color: var(--text-3); text-align: center; padding: 8px;
+    }
+    #msg.err {
+      color: var(--warn-txt); background: var(--warn-bg); border-radius: 8px; font-size: 0.8em;
+    }
+
+    hr { border: none; border-top: 1px solid var(--border); }
+
+    /* ── Header ── */
+    .hdr { display: flex; align-items: baseline; gap: 6px; min-width: 0; }
+    .hdr-month {
+      font-size: 0.9em; font-weight: 800;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .hdr-device {
+      font-size: 0.65em; color: var(--text-3);
+      flex: 1; min-width: 0;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .hdr-days { font-size: 0.65em; color: var(--text-3); white-space: nowrap; flex-shrink: 0; }
+    .no-data-note { font-size: 0.65em; color: var(--text-3); font-style: italic; }
+
+    /* ── Score row ── */
+    .scores { display: flex; }
+    .sc { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 1px; }
+    .sc-lbl {
+      font-size: 0.58em; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .05em; color: var(--text-3);
+    }
+    .sc-val { font-size: 1.35em; font-weight: 800; }
+    .sc-val.g   { color: var(--ok);   }
+    .sc-val.a   { color: var(--warn); }
+    .sc-val.r   { color: var(--err);  }
+    .sc-val.dim { color: var(--text-3); }
+    .sc-unit { font-size: 0.6em; color: var(--text-3); margin-top: -2px; }
+
+    /* ── Rain row ── */
+    .rain-row { display: flex; align-items: center; gap: 6px; }
+    .rain-icon-wrap {
+      width: 26px; height: 26px; border-radius: 50%;
+      background: var(--info-bg); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .rain-icon-wrap svg { display: block; }
+    .rain-body { flex: 1; min-width: 0; }
+    .rain-lbl  { font-size: 0.62em; color: var(--text-2); }
+    .rain-val  { font-size: 0.9em; font-weight: 700; }
+    .rain-delta {
+      font-size: 0.68em; font-weight: 700; padding: 2px 7px;
+      border-radius: 12px; white-space: nowrap; flex-shrink: 0;
+    }
+    .rain-delta.pos { background: var(--ok-bg);   color: var(--ok-txt);   }
+    .rain-delta.neg { background: var(--warn-bg);  color: var(--warn-txt); }
+    .rain-delta.neu { color: var(--text-3); }
+
+    /* ── Events grid ── */
+    .events { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
+    .ev {
+      background: var(--chip);
+      border-radius: 6px;
+      padding: 4px 6px;
+      display: flex; flex-direction: column; align-items: center; gap: 1px;
+    }
+    .ev-lbl {
+      font-size: 0.56em; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .04em; color: var(--text-3);
+    }
+    .ev-val        { font-size: 0.85em; font-weight: 700; color: var(--text); }
+    .ev-val.zero   { color: var(--text-3); }
+    .ev-val.warn   { color: var(--warn); }
+    .ev-val.danger { color: var(--err);  }
+    .ev-val.active { color: var(--ok);   }
+    .ev-val.dim    { color: var(--text-3); }
+
+    /* ── Footer ── */
+    .footer {
+      font-size: 0.6em; color: var(--text-3);
+      text-align: right; margin-top: auto;
+    }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+<div class="widget">
+  <div id="msg">Loading…</div>
+
+  <div id="content" class="hidden" style="display:flex;flex-direction:column;gap:7px;flex:1;">
+
+    <!-- Header -->
+    <div class="hdr">
+      <span class="hdr-month" id="monthLabel">—</span>
+      <span class="hdr-device" id="deviceName"></span>
+      <span class="hdr-days" id="daysLabel"></span>
+    </div>
+    <span class="no-data-note hidden" id="noDataNote">Collecting data — check back soon</span>
+
+    <hr />
+
+    <!-- Score row -->
+    <div class="scores">
+      <div class="sc">
+        <div class="sc-lbl">Avg score</div>
+        <div class="sc-val" id="avgScore">—</div>
+        <div class="sc-unit">pts</div>
+      </div>
+      <div class="sc">
+        <div class="sc-lbl">Best</div>
+        <div class="sc-val g" id="bestScore">—</div>
+        <div class="sc-unit">pts</div>
+      </div>
+      <div class="sc">
+        <div class="sc-lbl">Worst</div>
+        <div class="sc-val r" id="worstScore">—</div>
+        <div class="sc-unit">pts</div>
+      </div>
+    </div>
+
+    <hr />
+
+    <!-- Rain row -->
+    <div class="rain-row">
+      <div class="rain-icon-wrap">
+        <svg width="16" height="16" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <path d="M22 54 Q20 42 32 38 Q34 24 50 24 Q64 24 68 36 Q80 36 80 50 Q80 60 68 60 L32 60 Q22 60 22 54 Z" fill="#90A4AE"/>
+          <line x1="30" y1="66" x2="24" y2="80" stroke="#42A5F5" stroke-width="6" stroke-linecap="round"/>
+          <line x1="48" y1="66" x2="42" y2="80" stroke="#1E88E5" stroke-width="6" stroke-linecap="round"/>
+          <line x1="66" y1="66" x2="60" y2="80" stroke="#42A5F5" stroke-width="6" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="rain-body">
+        <div class="rain-lbl">Total rain this month</div>
+        <div class="rain-val" id="rainVal">— mm</div>
+      </div>
+      <div class="rain-delta neu hidden" id="rainDelta"></div>
+    </div>
+
+    <hr />
+
+    <!-- Events grid -->
+    <div class="events">
+      <div class="ev"><div class="ev-lbl">Watering</div><div class="ev-val" id="evWater">—</div></div>
+      <div class="ev"><div class="ev-lbl">Mowing</div>  <div class="ev-val" id="evMow">—</div></div>
+      <div class="ev"><div class="ev-lbl">Fertiliser</div><div class="ev-val" id="evFert">—</div></div>
+      <div class="ev"><div class="ev-lbl">Frost days</div><div class="ev-val" id="evFrost">—</div></div>
+      <div class="ev"><div class="ev-lbl">Heat stress</div><div class="ev-val" id="evHeat">—</div></div>
+      <div class="ev" id="prevBox" style="background:transparent;">
+        <div class="ev-lbl" id="prevLbl">vs prev</div>
+        <div class="ev-val dim" id="prevScore" style="font-size:0.72em;">—</div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer" id="footer"></div>
+  </div>
+</div>
+
+<script>
+  var MONTHS = [
+    'January','February','March','April','May','June',
+    'July','August','September','October','November','December',
+  ];
+
+  function fmtMonth(ym) {
+    if (!ym) return '—';
+    var p = ym.split('-');
+    return MONTHS[parseInt(p[1], 10) - 1] + ' ' + p[0];
+  }
+
+  function fmtShortMonth(ym) {
+    if (!ym) return '—';
+    return MONTHS[parseInt(ym.split('-')[1], 10) - 1].slice(0, 3);
+  }
+
+  function scoreCls(s) {
+    if (s == null) return 'dim';
+    return s >= 70 ? 'g' : s >= 40 ? 'a' : 'r';
+  }
+
+  function evCls(count, type) {
+    if (count === 0) return 'zero';
+    if (type === 'bad')  return count >= 5 ? 'danger' : 'warn';
+    if (type === 'good') return 'active';
+    return '';
+  }
+
+  function setEl(id, text)  { document.getElementById(id).textContent = text; }
+  function setCls(id, cls)  {
+    var el = document.getElementById(id);
+    el.className = el.className.replace(/\b(g|a|r|dim|zero|warn|danger|active)\b/g, '').trim()
+      + (cls ? ' ' + cls : '');
+  }
+  function show(id) { document.getElementById(id).classList.remove('hidden'); }
+  function hide(id) { document.getElementById(id).classList.add('hidden'); }
+
+  function renderDelta(id, delta, prevYM, label) {
+    if (delta == null) { hide(id); return; }
+    var el = document.getElementById(id);
+    var sign = delta > 0 ? '+' : '';
+    el.textContent = sign + delta + ' ' + label + ' vs ' + fmtShortMonth(prevYM);
+    el.className = 'rain-delta ' + (delta > 0 ? 'pos' : delta < 0 ? 'neg' : 'neu');
+    show(id);
+  }
+
+  function render(data) {
+    if (!data || data.error) {
+      var el = document.getElementById('msg');
+      el.textContent = (data && data.error) ? data.error : 'No data — pair a device first.';
+      el.className = 'err';
+      el.classList.remove('hidden');
+      return;
+    }
+
+    hide('msg');
+    show('content');
+
+    var c = data.current;
+    var p = data.previous;
+
+    setEl('monthLabel', fmtMonth(c.yearMonth));
+    setEl('deviceName', data.deviceName || '');
+
+    if (!c.hasData) {
+      setEl('daysLabel', '');
+      show('noDataNote');
+      setEl('avgScore','—'); setEl('bestScore','—'); setEl('worstScore','—');
+      setEl('rainVal', '— mm');
+      setEl('evWater','—'); setEl('evMow','—'); setEl('evFert','—');
+      setEl('evFrost','—'); setEl('evHeat','—');
+      setEl('footer', '');
+      return;
+    }
+
+    setEl('daysLabel', c.daysWithData + 'd');
+    hide('noDataNote');
+
+    // Scores
+    setEl('avgScore',   c.avgScore   != null ? String(c.avgScore)   : '—');
+    setEl('bestScore',  c.bestScore  != null ? String(c.bestScore)  : '—');
+    setEl('worstScore', c.worstScore != null ? String(c.worstScore) : '—');
+    setCls('avgScore',   scoreCls(c.avgScore));
+    setCls('bestScore',  scoreCls(c.bestScore));
+    setCls('worstScore', scoreCls(c.worstScore));
+
+    // Rain
+    setEl('rainVal', c.totalRainMm != null ? c.totalRainMm + ' mm' : '— mm');
+    if (p && p.hasData) {
+      var rainDelta = Math.round((c.totalRainMm - p.totalRainMm) * 10) / 10;
+      renderDelta('rainDelta', rainDelta, p.yearMonth, 'mm');
+    } else {
+      hide('rainDelta');
+    }
+
+    // Events
+    function setEv(id, count, type) {
+      setEl(id, count != null ? count + 'd' : '—');
+      setCls(id, evCls(count || 0, type));
+    }
+    setEv('evWater', c.wateringDays,   'good');
+    setEv('evMow',   c.mowingDays,     'good');
+    setEv('evFert',  c.fertiliserDays, 'good');
+    setEv('evFrost', c.frostDays,      'bad');
+    setEv('evHeat',  c.heatDays,       'bad');
+
+    // Previous month comparison tile
+    if (p && p.hasData && p.avgScore != null && c.avgScore != null) {
+      var scoreDelta = c.avgScore - p.avgScore;
+      var sign = scoreDelta > 0 ? '+' : '';
+      var prevLbl = document.getElementById('prevLbl');
+      var prevScore = document.getElementById('prevScore');
+      setEl('prevLbl', 'vs ' + fmtShortMonth(p.yearMonth));
+      prevLbl.style.color = '';
+      setEl('prevScore', sign + scoreDelta + ' avg');
+      prevScore.style.color = scoreDelta > 0
+        ? 'var(--ok)' : scoreDelta < 0 ? 'var(--err)' : 'var(--text-3)';
+    } else {
+      setEl('prevLbl', 'vs prev');
+      document.getElementById('prevLbl').style.color = 'var(--text-3)';
+      setEl('prevScore', '—');
+      document.getElementById('prevScore').style.color = 'var(--text-3)';
+    }
+
+    setEl('footer', data.lastUpdated ? 'Updated: ' + data.lastUpdated : '');
+  }
+
+  function onHomeyReady(Homey) {
+    Homey.ready({ height: 260 });
+    Homey.api('GET', '/', {})
+      .then(function(data) { render(data); })
+      .catch(function(err)  {
+        var el = document.getElementById('msg');
+        el.textContent = 'Error: ' + (err.message || err);
+        el.className = 'err';
+      });
+  }
+</script>
+</body>
+</html>

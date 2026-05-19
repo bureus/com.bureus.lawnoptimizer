@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lawn Calendar</title>
+  <style>
+    /* ── Design tokens (inlined from widgets/shared/theme.css) ── */
+    :root {
+      --bg:      var(--homey-color-background,       #f5f5f3);
+      --chip:    var(--homey-color-background-light, #eaeae8);
+      --text:    var(--homey-color-text,       #1a1a1a);
+      --text-2:  var(--homey-color-text-light, #6b7280);
+      --text-3:  var(--homey-color-text-light, #9ca3af);
+      --border:  var(--homey-color-border, rgba(0,0,0,0.09));
+      --ok:      #4caf50; --ok-bg:   #e8f5e9; --ok-txt:   #2e7d32;
+      --warn:    #ff9800; --warn-bg: #fff3e0; --warn-txt: #e65100;
+      --err:     #f44336; --err-bg:  #ffebee; --err-txt:  #b71c1c;
+      --info:    #1e88e5; --info-bg: #e3f2fd; --info-txt: #1565c0;
+      --dot-water: #1e88e5;
+      --dot-fert:  #ff9800;
+      --dot-mow:   #4caf50;
+      --dot-frost: #90caf9;
+      --dot-heat:  #ff7043;
+      --dot-recov: #ffb74d;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg:      var(--homey-color-background,       #18181b);
+        --chip:    var(--homey-color-background-light, #2e2e33);
+        --text:    var(--homey-color-text,       #f4f4f5);
+        --text-2:  var(--homey-color-text-light, #a1a1aa);
+        --text-3:  var(--homey-color-text-light, #71717a);
+        --border:  var(--homey-color-border, rgba(255,255,255,0.09));
+        --ok-bg:   rgba(76,175,80,0.18);   --ok-txt:   #86efac;
+        --warn-bg: rgba(255,152,0,0.18);   --warn-txt: #fbbf24;
+        --err-bg:  rgba(244,67,54,0.18);   --err-txt:  #f87171;
+        --info-bg: rgba(30,136,229,0.18);  --info-txt: #93c5fd;
+        /* dot colours stay vivid in dark mode */
+        --dot-frost: #64b5f6;
+      }
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%; height: 100%;
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 13px;
+      overflow: hidden;
+    }
+
+    .widget {
+      display: flex;
+      flex-direction: column;
+      padding: 12px 14px;
+      height: 100%;
+      gap: 0;
+    }
+
+    /* ── Loading / error ── */
+    #msg {
+      flex: 1; display: flex; align-items: center; justify-content: center;
+      font-size: 0.85em; color: var(--text-3); text-align: center; padding: 8px;
+    }
+    #msg.err { color: var(--warn-txt); background: var(--warn-bg); border-radius: 8px; font-size: 0.8em; }
+
+    /* ── Header ── */
+    .hdr { display: flex; align-items: baseline; gap: 6px; margin-bottom: 8px; }
+    .hdr-title { font-size: 0.9em; font-weight: 800; white-space: nowrap; }
+    .hdr-device {
+      font-size: 0.65em; color: var(--text-3);
+      flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .hdr-count { font-size: 0.65em; color: var(--text-3); white-space: nowrap; flex-shrink: 0; }
+
+    hr { border: none; border-top: 1px solid var(--border); margin-bottom: 7px; }
+
+    /* ── Event list ── */
+    #event-list { flex: 1; display: flex; flex-direction: column; gap: 0; overflow: hidden; }
+
+    /* Date group */
+    .date-grp { margin-bottom: 6px; }
+    .date-label {
+      font-size: 0.6em; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .06em; color: var(--text-3);
+      margin-bottom: 3px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .date-label.today-lbl    { color: var(--ok);   }
+    .date-label.tomorrow-lbl { color: var(--warn); }
+    .date-label::after {
+      content: ''; flex: 1; height: 1px; background: currentColor; opacity: .2;
+    }
+
+    /* Event row */
+    .ev-row { display: flex; align-items: center; gap: 8px; padding: 4px 0; min-width: 0; }
+
+    /* Type dot */
+    .ev-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .ev-dot.watering    { background: var(--dot-water); }
+    .ev-dot.fertiliser  { background: var(--dot-fert);  }
+    .ev-dot.mowing      { background: var(--dot-mow);   }
+    .ev-dot.frost       { background: var(--dot-frost); }
+    .ev-dot.heat_stress { background: var(--dot-heat);  }
+    .ev-dot.recovery    { background: var(--dot-recov); }
+
+    /* Title */
+    .ev-title {
+      flex: 1; font-size: 0.82em; font-weight: 600;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;
+    }
+    .ev-title.overdue { color: var(--warn-txt); }
+
+    /* Right side */
+    .ev-right { display: flex; align-items: center; gap: 5px; flex-shrink: 0; }
+
+    .ev-badge {
+      font-size: 0.6em; font-weight: 700; padding: 1px 6px;
+      border-radius: 10px; white-space: nowrap; text-transform: uppercase; letter-spacing: .04em;
+    }
+    .ev-badge.critical { background: var(--err-bg);  color: var(--err-txt);  }
+    .ev-badge.high     { background: var(--warn-bg); color: var(--warn-txt); }
+    .ev-badge.medium   { background: var(--info-bg); color: var(--info-txt); }
+    .ev-badge.low      { background: var(--ok-bg);   color: var(--ok-txt);   }
+    .ev-badge.overdue  { background: var(--err-bg);  color: var(--err-txt);  }
+
+    .ev-time {
+      font-size: 0.68em; color: var(--text-3); white-space: nowrap;
+    }
+
+    /* ── Empty state ── */
+    #empty {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 6px; text-align: center;
+    }
+    .empty-icon { width: 36px; height: 36px; opacity: .3; }
+    .empty-title { font-size: 0.82em; font-weight: 600; color: var(--text-2); }
+    .empty-sub   { font-size: 0.7em; color: var(--text-3); }
+
+    /* ── Footer ── */
+    .footer { font-size: 0.6em; color: var(--text-3); text-align: right; margin-top: 6px; }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+<div class="widget">
+  <div id="msg">Loading…</div>
+
+  <div id="content" class="hidden" style="display:flex;flex-direction:column;flex:1;">
+
+    <!-- Header -->
+    <div class="hdr">
+      <span class="hdr-title">Lawn Calendar</span>
+      <span class="hdr-device" id="deviceName"></span>
+      <span class="hdr-count" id="evCount"></span>
+    </div>
+
+    <hr />
+
+    <!-- Event list -->
+    <div id="event-list"></div>
+
+    <!-- Empty state -->
+    <div id="empty" class="hidden">
+      <svg class="empty-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <rect x="12" y="22" width="76" height="66" rx="8" fill="none" stroke="#4CAF50" stroke-width="7"/>
+        <rect x="12" y="22" width="76" height="22" rx="8" fill="#4CAF50"/>
+        <rect x="12" y="34" width="76" height="10" fill="#4CAF50"/>
+        <line x1="32" y1="12" x2="32" y2="30" stroke="#2E7D32" stroke-width="6" stroke-linecap="round"/>
+        <line x1="68" y1="12" x2="68" y2="30" stroke="#2E7D32" stroke-width="6" stroke-linecap="round"/>
+        <line x1="36" y1="64" x2="44" y2="74" stroke="#4CAF50" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="44" y1="74" x2="64" y2="54" stroke="#4CAF50" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="empty-title">No lawn actions planned</div>
+      <div class="empty-sub">All clear for the next 14 days</div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer" id="footer"></div>
+  </div>
+</div>
+
+<script>
+  var DAYS   = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var MAX_EVENTS = 5;
+
+  function addDays(dateStr, n) {
+    var d = new Date(dateStr + 'T00:00:00Z');
+    d.setUTCDate(d.getUTCDate() + n);
+    return d.toISOString().slice(0, 10);
+  }
+
+  function fmtDateLabel(dateStr, today) {
+    if (dateStr === today) return 'Today';
+    if (dateStr === addDays(today, 1)) return 'Tomorrow';
+    var d = new Date(dateStr + 'T00:00:00Z');
+    return DAYS[d.getUTCDay()] + ' ' + d.getUTCDate() + ' ' + MONTHS[d.getUTCMonth()];
+  }
+
+  function dateLabelClass(dateStr, today) {
+    if (dateStr === today) return 'date-label today-lbl';
+    if (dateStr === addDays(today, 1)) return 'date-label tomorrow-lbl';
+    return 'date-label';
+  }
+
+  function badgeLabel(ev) {
+    if (ev.status === 'overdue') return 'OVERDUE';
+    if (ev.severity === 'critical') return 'CRITICAL';
+    if (ev.severity === 'high') return 'HIGH';
+    if (ev.severity === 'medium' && (ev.type === 'frost' || ev.type === 'heat_stress')) return 'WARNING';
+    return null;
+  }
+
+  function badgeCls(ev) {
+    if (ev.status === 'overdue') return 'ev-badge overdue';
+    return 'ev-badge ' + ev.severity;
+  }
+
+  function setText(id, txt) { document.getElementById(id).textContent = txt; }
+  function show(id) { document.getElementById(id).classList.remove('hidden'); }
+  function hide(id) { document.getElementById(id).classList.add('hidden'); }
+
+  function render(data) {
+    if (!data || data.error) {
+      var el = document.getElementById('msg');
+      el.textContent = (data && data.error) ? data.error : 'No data — pair a device first.';
+      el.className = 'err';
+      el.classList.remove('hidden');
+      return;
+    }
+
+    hide('msg');
+    show('content');
+
+    var today  = data.today || new Date().toISOString().slice(0, 10);
+    var events = Array.isArray(data.events) ? data.events : [];
+
+    setText('deviceName', data.deviceName || '');
+    setText('evCount', events.length > 0 ? events.length + ' event' + (events.length !== 1 ? 's' : '') : '');
+    setText('footer', data.lastUpdated ? 'Updated: ' + data.lastUpdated : '');
+
+    if (events.length === 0) {
+      hide('event-list');
+      show('empty');
+      return;
+    }
+
+    hide('empty');
+    show('event-list');
+
+    var listEl = document.getElementById('event-list');
+    listEl.innerHTML = '';
+
+    var shown = 0, remaining = 0, currentDate = null, grpEl = null;
+
+    for (var i = 0; i < events.length; i++) {
+      var ev = events[i];
+
+      if (shown >= MAX_EVENTS) { remaining++; continue; }
+
+      if (ev.date !== currentDate) {
+        currentDate = ev.date;
+        grpEl = document.createElement('div');
+        grpEl.className = 'date-grp';
+        var lblEl = document.createElement('div');
+        lblEl.className = dateLabelClass(ev.date, today);
+        lblEl.textContent = fmtDateLabel(ev.date, today);
+        grpEl.appendChild(lblEl);
+        listEl.appendChild(grpEl);
+      }
+
+      var rowEl = document.createElement('div');
+      rowEl.className = 'ev-row';
+
+      var dotEl = document.createElement('div');
+      dotEl.className = 'ev-dot ' + ev.type;
+      rowEl.appendChild(dotEl);
+
+      var titleEl = document.createElement('div');
+      titleEl.className = 'ev-title' + (ev.status === 'overdue' ? ' overdue' : '');
+      titleEl.textContent = ev.title;
+      titleEl.title = ev.reason || '';
+      rowEl.appendChild(titleEl);
+
+      var rightEl = document.createElement('div');
+      rightEl.className = 'ev-right';
+
+      var badge = badgeLabel(ev);
+      if (badge) {
+        var badgeEl = document.createElement('span');
+        badgeEl.className = badgeCls(ev);
+        badgeEl.textContent = badge;
+        rightEl.appendChild(badgeEl);
+      }
+
+      if (ev.time) {
+        var timeEl = document.createElement('span');
+        timeEl.className = 'ev-time';
+        timeEl.textContent = ev.time;
+        rightEl.appendChild(timeEl);
+      }
+
+      rowEl.appendChild(rightEl);
+      grpEl.appendChild(rowEl);
+      shown++;
+    }
+
+    if (remaining > 0) {
+      var moreEl = document.createElement('div');
+      moreEl.style.cssText = 'font-size:0.68em;color:var(--text-3);margin-top:4px;text-align:right;';
+      moreEl.textContent = '+ ' + remaining + ' more event' + (remaining !== 1 ? 's' : '');
+      listEl.appendChild(moreEl);
+    }
+  }
+
+  function onHomeyReady(Homey) {
+    Homey.ready({ height: 280 });
+    Homey.api('GET', '/', {})
+      .then(function(data) { render(data); })
+      .catch(function(err) {
+        var el = document.getElementById('msg');
+        el.textContent = 'Error: ' + (err.message || err);
+        el.className = 'err';
+      });
+  }
+</script>
+</body>
+</html>
