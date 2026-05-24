@@ -13,6 +13,7 @@ const LawnHistoryService        = require('../../lib/LawnHistoryService');
 const MonthlySummaryService     = require('../../lib/MonthlySummaryService');
 const LawnCalendarService       = require('../../lib/LawnCalendarService');
 const { getWeekStartDate, formatIsoDate, parseIsoDate } = require('../../lib/DateHelpers');
+const { calculateLawnOptimization, buildProfileNotification } = require('../../lib/LawnProfileOptimizationService');
 
 // ── Persistent store keys ──────────────────────────────────────────────────────
 const STORE_ROOT_ZONE      = 'previousRootZone';
@@ -52,6 +53,13 @@ const WATER_RAIN_DELAY_REASONS = new Set([
   'rain_expected_24h', 'rain_covers_deficit',
 ]);
 
+// Profile optimization store keys
+const STORE_PREV_PROFILE       = 'prevLawnProfile';
+const STORE_PREV_MOWING_HEIGHT = 'prevRecommendedHeightMm';
+const STORE_PREV_MOWING_FREQ   = 'prevMowingFrequencyDays';
+const STORE_PREV_PROFILE_STATUS = 'prevProfileStatus';
+const STORE_NOTIF_PROFILE_DATE = 'profileNotifDate';
+
 class LawnSoilOptimizerDevice extends Homey.Device {
 
   // ─── Lifecycle ─────────────────────────────────────────────────────────────
@@ -85,6 +93,10 @@ class LawnSoilOptimizerDevice extends Homey.Device {
       'lawn_overall_score', 'lawn_status', 'primary_recommendation',
       'next_action', 'next_action_date', 'next_action_reason',
       'next_lawn_event', 'next_lawn_event_date',
+      // Lawn profile optimization capabilities
+      'current_target_height_mm', 'recommended_mowing_height_mm',
+      'mowing_height_adjustment_reason', 'lawn_profile_active',
+      'lawn_profile_status', 'mowing_frequency_days', 'visual_quality_score',
     ];
     for (const cap of required) {
       if (!this.hasCapability(cap)) {
@@ -189,10 +201,14 @@ class LawnSoilOptimizerDevice extends Homey.Device {
         stressResult,
       });
 
-      await this._updateCapabilities(temps, assessment, fertResult, waterResult, mowingResult, stressResult, dashboard);
-      await this._fireTriggers(temps, assessment, fertResult, waterResult);
+      // ── Lawn profile optimization ─────────────────────────────────────────────
+      const profileResult = this._calcLawnProfileOptimization(settings, temps, assessment, waterResult);
+
+      await this._updateCapabilities(temps, assessment, fertResult, waterResult, mowingResult, stressResult, dashboard, profileResult);
+      await this._fireTriggers(temps, assessment, fertResult, waterResult, profileResult);
       await this._checkFertiliserNotification(fertResult, settings);
       await this._checkWaterNotification(waterResult, settings);
+      await this._checkProfileNotification(profileResult, settings);
       await this._updateCalendarEvents(today, waterResult, fertResult, mowingResult, stressResult, assessment, settings);
       await this._updateDailyHistory(temps, assessment, fertResult, waterResult, stressResult, dashboard);
 
@@ -310,9 +326,35 @@ class LawnSoilOptimizerDevice extends Homey.Device {
     });
   }
 
+  // ─── Lawn profile optimization ─────────────────────────────────────────────
+
+  _calcLawnProfileOptimization(settings, temps, assessment, waterResult) {
+    const month = new Date().getUTCMonth() + 1;
+    const seasonMap = { 3: 'spring', 4: 'spring', 5: 'spring', 6: 'summer', 7: 'summer', 8: 'summer',
+                        9: 'autumn', 10: 'autumn', 11: 'autumn', 12: 'winter', 1: 'winter', 2: 'winter' };
+
+    return calculateLawnOptimization({
+      lawnProfile:             settings.lawn_optimization_profile    ?? 'balanced',
+      targetGrassHeightMm:     settings.target_grass_height_mm       ?? 40,
+      minHeightMm:             settings.minimum_grass_height_mm      ?? 30,
+      maxHeightMm:             settings.maximum_grass_height_mm      ?? 60,
+      rootZoneTemp:            temps.rootZone,
+      growthScore:             assessment.growthScore,
+      heatStressRisk:          assessment.heatStressRisk,
+      frostRisk:               assessment.frostRisk,
+      waterDeficitMm:          waterResult.waterDeficitMm            ?? 0,
+      grassGrowthSpeed:        settings.grass_growth_speed           ?? 'medium',
+      desiredVisualQuality:    settings.desired_visual_quality       ?? 'balanced',
+      soilType:                settings.soil_type                    ?? 'loam',
+      shadeLevel:              settings.shade_level                  ?? 'full_sun',
+      season:                  seasonMap[month] ?? 'summer',
+      mowingFrequencyStrategy: settings.mowing_frequency_strategy    ?? 'adaptive',
+    });
+  }
+
   // ─── Capability updates ────────────────────────────────────────────────────
 
-  async _updateCapabilities(temps, assessment, fertResult, waterResult, mowingResult, stressResult, dashboard) {
+  async _updateCapabilities(temps, assessment, fertResult, waterResult, mowingResult, stressResult, dashboard, profileResult) {
     const now = new Date().toLocaleString('sv-SE', { hour12: false });
 
     const updates = [
@@ -359,6 +401,14 @@ class LawnSoilOptimizerDevice extends Homey.Device {
       ['next_action',               dashboard.nextAction],
       ['next_action_date',          dashboard.nextActionDate],
       ['next_action_reason',        dashboard.nextActionReason],
+      // Lawn profile optimization
+      ['current_target_height_mm',           profileResult.recommendedHeightMm],
+      ['recommended_mowing_height_mm',       profileResult.recommendedHeightMm],
+      ['mowing_height_adjustment_reason',    profileResult.mowingHeightAdjustmentReason],
+      ['lawn_profile_active',                profileResult.profileLabel],
+      ['lawn_profile_status',                profileResult.status],
+      ['mowing_frequency_days',              profileResult.mowingFrequencyDays],
+      ['visual_quality_score',               profileResult.visualQualityScore],
     ];
 
     for (const [cap, value] of updates) {
@@ -440,7 +490,7 @@ class LawnSoilOptimizerDevice extends Homey.Device {
 
   // ─── Flow trigger logic ────────────────────────────────────────────────────
 
-  async _fireTriggers(temps, assessment, fertResult, waterResult) {
+  async _fireTriggers(temps, assessment, fertResult, waterResult, profileResult) {
     const driver = this.driver;
 
     // ── Existing lawn triggers ─────────────────────────────────────────────
@@ -537,6 +587,30 @@ class LawnSoilOptimizerDevice extends Homey.Device {
     await this.setStoreValue(STORE_PREV_WATERING_DUE, wateringDue);
     await this.setStoreValue(STORE_PREV_WATER_STATUS, waterReason);
     await this.setStoreValue(STORE_PREV_DEFICIT,      waterDeficitMm);
+
+    // ── Lawn profile optimization triggers ────────────────────────────────────
+
+    if (profileResult) {
+      const prevProfile      = this.getStoreValue(STORE_PREV_PROFILE);
+      const prevHeightMm     = this.getStoreValue(STORE_PREV_MOWING_HEIGHT);
+      const prevFreqDays     = this.getStoreValue(STORE_PREV_MOWING_FREQ);
+      const currentProfile   = this.getSetting('lawn_optimization_profile') ?? 'balanced';
+
+      if (prevProfile !== null && prevProfile !== currentProfile)
+        driver.triggerLawnProfileChanged(this, currentProfile);
+
+      if (prevHeightMm !== null && prevHeightMm !== profileResult.recommendedHeightMm)
+        driver.triggerMowingHeightAdjustmentRecommended(
+          this, profileResult.recommendedHeightMm, profileResult.mowingHeightAdjustmentReason);
+
+      if (prevFreqDays !== null && Math.abs((prevFreqDays - profileResult.mowingFrequencyDays)) >= 2)
+        driver.triggerMowingFrequencyChanged(this, profileResult.mowingFrequencyDays);
+
+      await this.setStoreValue(STORE_PREV_PROFILE,       currentProfile);
+      await this.setStoreValue(STORE_PREV_MOWING_HEIGHT, profileResult.recommendedHeightMm);
+      await this.setStoreValue(STORE_PREV_MOWING_FREQ,   profileResult.mowingFrequencyDays);
+      await this.setStoreValue(STORE_PREV_PROFILE_STATUS, profileResult.status);
+    }
   }
 
   // ─── Fertiliser notifications ──────────────────────────────────────────────
@@ -620,6 +694,22 @@ class LawnSoilOptimizerDevice extends Homey.Device {
         });
       }
     }
+  }
+
+  // ─── Profile optimization notifications ───────────────────────────────────
+
+  async _checkProfileNotification(profileResult, settings) {
+    if (!settings.enable_notifications || !profileResult) return;
+
+    const today      = new Date().toISOString().slice(0, 10);
+    const prevStatus = this.getStoreValue(STORE_PREV_PROFILE_STATUS);
+    const msg        = buildProfileNotification(profileResult, prevStatus);
+
+    if (!msg) return;
+    if (this.getStoreValue(STORE_NOTIF_PROFILE_DATE) === today) return;
+
+    await this.setStoreValue(STORE_NOTIF_PROFILE_DATE, today);
+    await this.homey.notifications.createNotification({ excerpt: msg });
   }
 
   // ─── Flow action handlers ──────────────────────────────────────────────────

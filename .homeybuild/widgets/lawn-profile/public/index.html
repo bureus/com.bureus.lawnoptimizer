@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lawn Profile Optimizer</title>
+  <style>
+    :root {
+      --bg:      var(--homey-color-background,       #f5f5f3);
+      --chip:    var(--homey-color-background-light, #eaeae8);
+      --text:    var(--homey-color-text,       #1a1a1a);
+      --text-2:  var(--homey-color-text-light, #6b7280);
+      --text-3:  var(--homey-color-text-light, #9ca3af);
+      --border:  var(--homey-color-border, rgba(0,0,0,0.09));
+      --ok:      #4caf50; --ok-bg:   #e8f5e9; --ok-txt:   #2e7d32;
+      --warn:    #ff9800; --warn-bg: #fff3e0; --warn-txt: #e65100;
+      --err:     #f44336; --err-bg:  #ffebee; --err-txt:  #b71c1c;
+      --blue:    #2196f3; --blue-bg: #e3f2fd; --blue-txt: #1565c0;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg:      var(--homey-color-background,       #18181b);
+        --chip:    var(--homey-color-background-light, #2e2e33);
+        --text:    var(--homey-color-text,       #f4f4f5);
+        --text-2:  var(--homey-color-text-light, #a1a1aa);
+        --text-3:  var(--homey-color-text-light, #71717a);
+        --border:  var(--homey-color-border, rgba(255,255,255,0.09));
+        --ok-bg:   rgba(76,175,80,0.18);   --ok-txt:   #86efac;
+        --warn-bg: rgba(255,152,0,0.18);   --warn-txt: #fbbf24;
+        --err-bg:  rgba(244,67,54,0.18);   --err-txt:  #f87171;
+        --blue-bg: rgba(33,150,243,0.18);  --blue-txt: #93c5fd;
+      }
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%; height: 100%;
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 13px;
+      overflow: hidden;
+    }
+
+    .widget {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      padding: 14px;
+      height: 100%;
+    }
+
+    /* ── Loading / error ── */
+    #msg {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85em;
+      color: var(--text-3);
+      text-align: center;
+      padding: 8px;
+    }
+    #msg.err { color: var(--warn-txt); background: var(--warn-bg); border-radius: 8px; font-size: 0.8em; }
+
+    /* ── Header row: profile name + quality ring ── */
+    .header { display: flex; align-items: center; gap: 10px; }
+
+    .ring-wrap { position: relative; width: 52px; height: 52px; flex-shrink: 0; }
+    .ring-wrap svg { transform: rotate(-90deg); display: block; }
+    .ring-bg  { fill: none; stroke: rgba(0,0,0,0.08); stroke-width: 5; }
+    @media (prefers-color-scheme:dark){ .ring-bg { stroke: rgba(255,255,255,0.08); } }
+    .ring-val { fill: none; stroke: var(--ok); stroke-width: 5; stroke-linecap: round;
+                transition: stroke-dashoffset .5s ease; }
+    .ring-val.amber { stroke: var(--warn); }
+    .ring-val.red   { stroke: var(--err); }
+    .ring-lbl {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1em; font-weight: 800;
+    }
+
+    .hinfo { flex: 1; min-width: 0; }
+    .dname   { font-size: 0.68em; color: var(--text-3);
+               white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 1px; }
+    .profile-name { font-size: 0.92em; font-weight: 700;
+                    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .profile-status { font-size: 0.74em; color: var(--text-2);
+                      margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    hr { border: none; border-top: 1px solid var(--border); }
+
+    /* ── Stats row: height + frequency ── */
+    .stats { display: flex; gap: 6px; }
+    .stat { flex: 1; min-width: 0; background: var(--chip); border-radius: 8px; padding: 7px 9px; }
+    .sl { font-size: 0.6em; font-weight: 700; text-transform: uppercase;
+          letter-spacing: .04em; color: var(--text-3); margin-bottom: 2px; }
+    .sv { font-size: 1em; font-weight: 700; line-height: 1; }
+    .su { font-size: 0.68em; color: var(--text-2); margin-top: 1px; }
+
+    /* ── Reason text ── */
+    .reason {
+      font-size: 0.74em;
+      color: var(--text-2);
+      line-height: 1.35;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* ── Badges ── */
+    .badges { display: flex; flex-wrap: wrap; gap: 4px; }
+    .badge {
+      display: inline-block; padding: 2px 7px; border-radius: 20px;
+      font-size: 0.66em; font-weight: 700;
+      background: var(--chip); color: var(--text-2);
+    }
+    .badge.g { background: var(--ok-bg);   color: var(--ok-txt);   }
+    .badge.a { background: var(--warn-bg); color: var(--warn-txt); }
+    .badge.r { background: var(--err-bg);  color: var(--err-txt);  }
+    .badge.b { background: var(--blue-bg); color: var(--blue-txt); }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+<div class="widget">
+  <div id="msg">Loading…</div>
+
+  <div class="header hidden" id="header">
+    <div class="ring-wrap">
+      <svg viewBox="0 0 52 52" width="52" height="52">
+        <circle class="ring-bg"  cx="26" cy="26" r="20" />
+        <circle class="ring-val" cx="26" cy="26" r="20" id="ring"
+                stroke-dasharray="125.7" stroke-dashoffset="125.7" />
+      </svg>
+      <div class="ring-lbl" id="quality">—</div>
+    </div>
+    <div class="hinfo">
+      <div class="dname"         id="dname"></div>
+      <div class="profile-name"  id="profile-name">—</div>
+      <div class="profile-status" id="profile-status">—</div>
+    </div>
+  </div>
+
+  <hr class="hidden" id="hr1" />
+
+  <div class="stats hidden" id="stats">
+    <div class="stat">
+      <div class="sl" id="lbl-height"></div>
+      <div class="sv" id="height">—</div>
+      <div class="su">mm</div>
+    </div>
+    <div class="stat">
+      <div class="sl" id="lbl-freq"></div>
+      <div class="sv" id="freq">—</div>
+      <div class="su" id="lbl-days"></div>
+    </div>
+    <div class="stat">
+      <div class="sl" id="lbl-range"></div>
+      <div class="sv" id="range">—</div>
+      <div class="su">mm</div>
+    </div>
+  </div>
+
+  <div class="reason hidden" id="reason"></div>
+
+  <hr class="hidden" id="hr2" />
+
+  <div class="badges hidden" id="badges"></div>
+</div>
+
+<script>
+  var I18N = {
+    en: {
+      loading:'Loading…', noData:'No data — pair a device first.', error:'Error: ',
+      height:'Mow height', freq:'Mow every', days:'days', range:'Height range',
+      profileStatus:{
+        premium_growth_mode:'Premium growth',
+        spring_growth_mode:'Spring growth',
+        heat_stress_management:'Heat stress',
+        drought_protection:'Drought protection',
+        drought_resistant_mode:'Drought resistant',
+        frost_protection:'Frost protection',
+        low_maintenance_mode:'Low maintenance',
+        slow_growth_mode:'Slow growth',
+        normal:'Normal'
+      },
+      badge:{
+        heat_stress_management:'⚠ Heat stress', drought_protection:'⚠ Drought',
+        frost_protection:'❄ Frost', premium_growth_mode:'★ Premium',
+        spring_growth_mode:'↗ Spring', slow_growth_mode:'↓ Slow growth',
+        recovery:'⟳ Recovery', drought_resistant_mode:'◎ Drought resistant',
+        low_maintenance_mode:'◉ Low maintenance'
+      }
+    },
+    de: {
+      loading:'Laden…', noData:'Keine Daten — Gerät koppeln.', error:'Fehler: ',
+      height:'Höhe', freq:'Intervall', days:'Tage', range:'Höhenbereich',
+      profileStatus:{
+        premium_growth_mode:'Premium', spring_growth_mode:'Frühlingswachstum',
+        heat_stress_management:'Hitzestress', drought_protection:'Trockenheit',
+        drought_resistant_mode:'Dürreresistent', frost_protection:'Frostschutz',
+        low_maintenance_mode:'Geringer Aufwand', slow_growth_mode:'Langsam', normal:'Normal'
+      },
+      badge:{
+        heat_stress_management:'⚠ Hitze', drought_protection:'⚠ Trocken',
+        frost_protection:'❄ Frost', premium_growth_mode:'★ Premium',
+        spring_growth_mode:'↗ Frühling', slow_growth_mode:'↓ Langsam',
+        recovery:'⟳ Erholung', drought_resistant_mode:'◎ Dürresicher',
+        low_maintenance_mode:'◉ Pflegeleicht'
+      }
+    },
+    nl: {
+      loading:'Laden…', noData:'Geen data — apparaat koppelen.', error:'Fout: ',
+      height:'Maaihogte', freq:'Interval', days:'dagen', range:'Hoogtebereik',
+      profileStatus:{
+        premium_growth_mode:'Premium', spring_growth_mode:'Lente groei',
+        heat_stress_management:'Hittestress', drought_protection:'Droogte',
+        drought_resistant_mode:'Droogtebestendig', frost_protection:'Vorstbescherming',
+        low_maintenance_mode:'Laag onderhoud', slow_growth_mode:'Langzame groei', normal:'Normaal'
+      },
+      badge:{
+        heat_stress_management:'⚠ Hitte', drought_protection:'⚠ Droogte',
+        frost_protection:'❄ Vorst', premium_growth_mode:'★ Premium',
+        spring_growth_mode:'↗ Lente', slow_growth_mode:'↓ Langzaam',
+        recovery:'⟳ Herstel', drought_resistant_mode:'◎ Droogte', low_maintenance_mode:'◉ Laag'
+      }
+    },
+    sv: {
+      loading:'Laddar…', noData:'Inga data — para ihop enhet.', error:'Fel: ',
+      height:'Höjd', freq:'Intervall', days:'dagar', range:'Höjdintervall',
+      profileStatus:{
+        premium_growth_mode:'Premium', spring_growth_mode:'Vårväxt',
+        heat_stress_management:'Värmestress', drought_protection:'Torka',
+        drought_resistant_mode:'Torktålig', frost_protection:'Frostskydd',
+        low_maintenance_mode:'Lågt underhåll', slow_growth_mode:'Långsam', normal:'Normal'
+      },
+      badge:{
+        heat_stress_management:'⚠ Värme', drought_protection:'⚠ Torka',
+        frost_protection:'❄ Frost', premium_growth_mode:'★ Premium',
+        spring_growth_mode:'↗ Vår', slow_growth_mode:'↓ Långsam',
+        recovery:'⟳ Återhämtning', drought_resistant_mode:'◎ Torktålig', low_maintenance_mode:'◉ Lågt'
+      }
+    },
+  };
+
+  var CIRC = 2 * Math.PI * 20; // 125.7
+
+  function getLang() {
+    var l = (navigator.language || '').toLowerCase();
+    var code = l.slice(0, 2);
+    if (code === 'nb' || code === 'nn') return 'no';
+    return I18N[code] ? code : 'en';
+  }
+  var t = I18N[getLang()] || I18N.en;
+
+  function show(id) { document.getElementById(id).classList.remove('hidden'); }
+  function setText(id, v) { document.getElementById(id).textContent = v; }
+
+  function setMsg(text, isError) {
+    var el = document.getElementById('msg');
+    el.textContent = text;
+    el.className = isError ? 'err' : '';
+    el.classList.remove('hidden');
+  }
+
+  function badge(text, cls) {
+    var el = document.createElement('span');
+    el.className = 'badge ' + (cls || '');
+    el.textContent = text;
+    return el;
+  }
+
+  function statusColor(status) {
+    if (!status) return 'g';
+    if (status === 'frost_protection')        return 'b';
+    if (status === 'heat_stress_management')  return 'r';
+    if (status === 'drought_protection')      return 'r';
+    if (status === 'premium_growth_mode')     return 'g';
+    if (status === 'spring_growth_mode')      return 'g';
+    if (status.indexOf('maintenance') >= 0)   return 'a';
+    if (status.indexOf('slow') >= 0)          return 'a';
+    return 'g';
+  }
+
+  function render(d) {
+    if (!d || d.error) {
+      setMsg(d && d.error ? d.error : t.noData, true);
+      return;
+    }
+
+    document.getElementById('msg').classList.add('hidden');
+
+    // Quality ring
+    var q = d['visual_quality_score'];
+    var pct = q != null ? Math.max(0, Math.min(100, q)) / 100 : 0;
+    var ring = document.getElementById('ring');
+    ring.style.strokeDashoffset = String(CIRC * (1 - pct));
+    ring.className = 'ring-val' + (q == null || q >= 65 ? '' : q >= 40 ? ' amber' : ' red');
+    setText('quality', q != null ? String(q) : '—');
+
+    // Header
+    setText('dname',          d.deviceName || '');
+    setText('profile-name',   d['lawn_profile_active'] || d.profileLabel || '—');
+    var statusKey = d['lawn_profile_status'];
+    var statusLabel = (t.profileStatus && t.profileStatus[statusKey]) || statusKey || '—';
+    setText('profile-status', statusLabel);
+
+    // Stats
+    setText('lbl-height', t.height);
+    setText('lbl-freq',   t.freq);
+    setText('lbl-days',   t.days);
+    setText('lbl-range',  t.range);
+    var h = d['recommended_mowing_height_mm'];
+    setText('height', h != null ? String(h) : '—');
+    var f = d['mowing_frequency_days'];
+    setText('freq', f != null ? String(f) : '—');
+    setText('range', d.heightRangeLabel || '—');
+
+    // Reason
+    var reason = d['mowing_height_adjustment_reason'];
+    if (reason) {
+      setText('reason', reason);
+      show('reason');
+    }
+
+    // Badges
+    var row = document.getElementById('badges');
+    row.innerHTML = '';
+
+    // Status badge
+    var bdg = t.badge && t.badge[statusKey];
+    if (bdg) {
+      row.appendChild(badge(bdg, statusColor(statusKey)));
+    }
+
+    if (d.hasHeatStress && statusKey !== 'heat_stress_management')
+      row.appendChild(badge(t.badge && t.badge['heat_stress_management'] || '⚠ Heat', 'r'));
+    if (d.hasFrost && statusKey !== 'frost_protection')
+      row.appendChild(badge(t.badge && t.badge['frost_protection'] || '❄ Frost', 'b'));
+    if (d.inRecovery)
+      row.appendChild(badge(t.badge && t.badge['recovery'] || '⟳ Recovery', 'a'));
+
+    if (row.children.length) show('badges');
+
+    show('header'); show('hr1'); show('stats'); show('hr2');
+  }
+
+  function onHomeyReady(Homey) {
+    setText('msg', t.loading);
+    Homey.ready({ height: 260 });
+    Homey.api('GET', '/', {})
+      .then(function(data) { render(data); })
+      .catch(function(err) { setMsg(t.error + (err.message || err), true); });
+  }
+</script>
+</body>
+</html>

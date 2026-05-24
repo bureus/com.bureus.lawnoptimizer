@@ -37,7 +37,10 @@
       "Bash(gh pr create --title 'Add lawn profile optimization system with dynamic mowing height intelligence' --body ' *)",
       "Bash(git ls-remote *)",
       "Bash(Get-ChildItem -Path \"C:\\\\Code\\\\com.bureus.lawnoptimizer\" -Recurse -Directory -Name)",
-      "PowerShell(head -40)"
+      "PowerShell(head -40)",
+      "Bash(Get-ChildItem -Recurse widgets\\\\lawn-profile)",
+      "Bash(Select-Object FullName)",
+      "Bash(find /mnt/c/Code/com.bureus.lawnoptimizer/widgets -type f | sort)"
     ]
   }
 }

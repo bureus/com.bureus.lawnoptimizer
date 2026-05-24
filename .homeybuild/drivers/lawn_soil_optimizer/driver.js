@@ -246,6 +246,29 @@ class LawnSoilOptimizerDriver extends Homey.Driver {
       .catch(this.error.bind(this));
   }
 
+  // ─── Lawn profile optimization trigger helpers ─────────────────────────────
+
+  triggerMowingHeightAdjustmentRecommended(device, heightMm, reason) {
+    this.homey.flow
+      .getDeviceTriggerCard('mowing_height_adjustment_recommended')
+      .trigger(device, { recommended_height_mm: heightMm, reason: reason || '' })
+      .catch(this.error.bind(this));
+  }
+
+  triggerLawnProfileChanged(device, profile) {
+    this.homey.flow
+      .getDeviceTriggerCard('lawn_profile_changed')
+      .trigger(device, { profile: profile || '' })
+      .catch(this.error.bind(this));
+  }
+
+  triggerMowingFrequencyChanged(device, frequencyDays) {
+    this.homey.flow
+      .getDeviceTriggerCard('mowing_frequency_changed')
+      .trigger(device, { frequency_days: frequencyDays })
+      .catch(this.error.bind(this));
+  }
+
   // ─── Fertiliser trigger helpers ────────────────────────────────────────────
 
   triggerFertiliserDueStarted(device, nextDate) {

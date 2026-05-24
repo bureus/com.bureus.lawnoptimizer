@@ -150,26 +150,26 @@
       <span class="hdr-device" id="deviceName"></span>
       <span class="hdr-days" id="daysLabel"></span>
     </div>
-    <span class="no-data-note hidden" id="noDataNote">Collecting data — check back soon</span>
+    <span class="no-data-note hidden" id="noDataNote"></span>
 
     <hr />
 
     <!-- Score row -->
     <div class="scores">
       <div class="sc">
-        <div class="sc-lbl">Avg score</div>
+        <div class="sc-lbl" id="lbl-avg"></div>
         <div class="sc-val" id="avgScore">—</div>
-        <div class="sc-unit">pts</div>
+        <div class="sc-unit" id="lbl-pts-1"></div>
       </div>
       <div class="sc">
-        <div class="sc-lbl">Best</div>
+        <div class="sc-lbl" id="lbl-best"></div>
         <div class="sc-val g" id="bestScore">—</div>
-        <div class="sc-unit">pts</div>
+        <div class="sc-unit" id="lbl-pts-2"></div>
       </div>
       <div class="sc">
-        <div class="sc-lbl">Worst</div>
+        <div class="sc-lbl" id="lbl-worst"></div>
         <div class="sc-val r" id="worstScore">—</div>
-        <div class="sc-unit">pts</div>
+        <div class="sc-unit" id="lbl-pts-3"></div>
       </div>
     </div>
 
@@ -186,8 +186,8 @@
         </svg>
       </div>
       <div class="rain-body">
-        <div class="rain-lbl">Total rain this month</div>
-        <div class="rain-val" id="rainVal">— mm</div>
+        <div class="rain-lbl" id="lbl-rain"></div>
+        <div class="rain-val" id="rainVal">—</div>
       </div>
       <div class="rain-delta neu hidden" id="rainDelta"></div>
     </div>
@@ -196,13 +196,13 @@
 
     <!-- Events grid -->
     <div class="events">
-      <div class="ev"><div class="ev-lbl">Watering</div><div class="ev-val" id="evWater">—</div></div>
-      <div class="ev"><div class="ev-lbl">Mowing</div>  <div class="ev-val" id="evMow">—</div></div>
-      <div class="ev"><div class="ev-lbl">Fertiliser</div><div class="ev-val" id="evFert">—</div></div>
-      <div class="ev"><div class="ev-lbl">Frost days</div><div class="ev-val" id="evFrost">—</div></div>
-      <div class="ev"><div class="ev-lbl">Heat stress</div><div class="ev-val" id="evHeat">—</div></div>
+      <div class="ev"><div class="ev-lbl" id="lbl-water"></div><div class="ev-val" id="evWater">—</div></div>
+      <div class="ev"><div class="ev-lbl" id="lbl-mow"></div>  <div class="ev-val" id="evMow">—</div></div>
+      <div class="ev"><div class="ev-lbl" id="lbl-fert"></div> <div class="ev-val" id="evFert">—</div></div>
+      <div class="ev"><div class="ev-lbl" id="lbl-frost"></div><div class="ev-val" id="evFrost">—</div></div>
+      <div class="ev"><div class="ev-lbl" id="lbl-heat"></div> <div class="ev-val" id="evHeat">—</div></div>
       <div class="ev" id="prevBox" style="background:transparent;">
-        <div class="ev-lbl" id="prevLbl">vs prev</div>
+        <div class="ev-lbl" id="prevLbl"></div>
         <div class="ev-val dim" id="prevScore" style="font-size:0.72em;">—</div>
       </div>
     </div>
@@ -213,20 +213,183 @@
 </div>
 
 <script>
-  var MONTHS = [
-    'January','February','March','April','May','June',
-    'July','August','September','October','November','December',
-  ];
+  var I18N = {
+    en: {
+      loading: 'Loading…',
+      avgScore: 'Avg score', best: 'Best', worst: 'Worst', pts: 'pts',
+      totalRain: 'Total rain this month',
+      watering: 'Watering', mowing: 'Mowing', fertiliser: 'Fertiliser',
+      frostDays: 'Frost days', heatStress: 'Heat stress',
+      vsPrev: 'vs prev', vs: 'vs', avg: 'avg',
+      collectingData: 'Collecting data — check back soon',
+      noData: 'No data — pair a device first.',
+      error: 'Error: ', updated: 'Updated: ', daySuffix: 'd',
+      months: ['January','February','March','April','May','June',
+               'July','August','September','October','November','December'],
+    },
+    de: {
+      loading: 'Wird geladen…',
+      avgScore: 'Ø-Wert', best: 'Bester', worst: 'Schlechtester', pts: 'Pkt.',
+      totalRain: 'Gesamtregen diesen Monat',
+      watering: 'Bewässerung', mowing: 'Mähen', fertiliser: 'Düngung',
+      frostDays: 'Frosttage', heatStress: 'Hitzestress',
+      vsPrev: 'vs. Vormonat', vs: 'vs.', avg: 'Ø',
+      collectingData: 'Daten werden gesammelt — bald verfügbar',
+      noData: 'Keine Daten — zuerst ein Gerät koppeln.',
+      error: 'Fehler: ', updated: 'Aktualisiert: ', daySuffix: 'T',
+      months: ['Januar','Februar','März','April','Mai','Juni',
+               'Juli','August','September','Oktober','November','Dezember'],
+    },
+    nl: {
+      loading: 'Laden…',
+      avgScore: 'Gem. score', best: 'Beste', worst: 'Slechtste', pts: 'pts',
+      totalRain: 'Totale neerslag deze maand',
+      watering: 'Bewatering', mowing: 'Maaien', fertiliser: 'Bemesting',
+      frostDays: 'Vorst dagen', heatStress: 'Hittestress',
+      vsPrev: 'vs vorige', vs: 'vs', avg: 'gem.',
+      collectingData: 'Gegevens verzamelen — kom binnenkort terug',
+      noData: 'Geen data — koppel eerst een apparaat.',
+      error: 'Fout: ', updated: 'Bijgewerkt: ', daySuffix: 'd',
+      months: ['januari','februari','maart','april','mei','juni',
+               'juli','augustus','september','oktober','november','december'],
+    },
+    fr: {
+      loading: 'Chargement…',
+      avgScore: 'Score moy.', best: 'Meilleur', worst: 'Pire', pts: 'pts',
+      totalRain: 'Pluie totale ce mois',
+      watering: 'Arrosage', mowing: 'Tonte', fertiliser: 'Fertilisation',
+      frostDays: 'Jours gel', heatStress: 'Stress therm.',
+      vsPrev: 'vs préc.', vs: 'vs', avg: 'moy.',
+      collectingData: 'Collecte en cours — revenez bientôt',
+      noData: 'Aucune donnée — coupler un appareil d\'abord.',
+      error: 'Erreur : ', updated: 'Mis à jour : ', daySuffix: 'j',
+      months: ['Janvier','Février','Mars','Avril','Mai','Juin',
+               'Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
+    },
+    es: {
+      loading: 'Cargando…',
+      avgScore: 'Punt. media', best: 'Mejor', worst: 'Peor', pts: 'pts',
+      totalRain: 'Lluvia total este mes',
+      watering: 'Riego', mowing: 'Corte', fertiliser: 'Fertilización',
+      frostDays: 'Días helada', heatStress: 'Estrés calórico',
+      vsPrev: 'vs ant.', vs: 'vs', avg: 'media',
+      collectingData: 'Recopilando datos — vuelve pronto',
+      noData: 'Sin datos — empareja un dispositivo primero.',
+      error: 'Error: ', updated: 'Actualizado: ', daySuffix: 'd',
+      months: ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
+               'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+    },
+    it: {
+      loading: 'Caricamento…',
+      avgScore: 'Punteggio med.', best: 'Migliore', worst: 'Peggiore', pts: 'pts',
+      totalRain: 'Pioggia totale questo mese',
+      watering: 'Irrigazione', mowing: 'Taglio', fertiliser: 'Fertilizzazione',
+      frostDays: 'Giorni gelo', heatStress: 'Stress caldo',
+      vsPrev: 'vs prec.', vs: 'vs', avg: 'med.',
+      collectingData: 'Raccolta dati in corso — torna presto',
+      noData: 'Nessun dato — collegare prima un dispositivo.',
+      error: 'Errore: ', updated: 'Aggiornato: ', daySuffix: 'g',
+      months: ['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno',
+               'Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'],
+    },
+    sv: {
+      loading: 'Laddar…',
+      avgScore: 'Medelpoäng', best: 'Bäst', worst: 'Sämst', pts: 'p',
+      totalRain: 'Totalt regn denna månad',
+      watering: 'Bevattning', mowing: 'Klippning', fertiliser: 'Gödsling',
+      frostDays: 'Frostdagar', heatStress: 'Värmestress',
+      vsPrev: 'vs föreg.', vs: 'vs', avg: 'medel',
+      collectingData: 'Samlar data — kom tillbaka snart',
+      noData: 'Inga data — para ihop en enhet först.',
+      error: 'Fel: ', updated: 'Uppdaterad: ', daySuffix: 'd',
+      months: ['Januari','Februari','Mars','April','Maj','Juni',
+               'Juli','Augusti','September','Oktober','November','December'],
+    },
+    no: {
+      loading: 'Laster…',
+      avgScore: 'Gj.snitt', best: 'Best', worst: 'Dårligst', pts: 'p',
+      totalRain: 'Totalt regn denne måneden',
+      watering: 'Vanning', mowing: 'Klipping', fertiliser: 'Gjødsling',
+      frostDays: 'Frostdager', heatStress: 'Varmestress',
+      vsPrev: 'vs forrige', vs: 'vs', avg: 'snitt',
+      collectingData: 'Samler data — kom tilbake snart',
+      noData: 'Ingen data — koble til en enhet først.',
+      error: 'Feil: ', updated: 'Oppdatert: ', daySuffix: 'd',
+      months: ['Januar','Februar','Mars','April','Mai','Juni',
+               'Juli','August','September','Oktober','November','Desember'],
+    },
+    da: {
+      loading: 'Indlæser…',
+      avgScore: 'Gns. score', best: 'Bedste', worst: 'Dårligste', pts: 'pt',
+      totalRain: 'Samlet regn denne måned',
+      watering: 'Vanding', mowing: 'Slåning', fertiliser: 'Gødskning',
+      frostDays: 'Frostdage', heatStress: 'Varmestress',
+      vsPrev: 'vs forrige', vs: 'vs', avg: 'gns.',
+      collectingData: 'Indsamler data — kom tilbage snart',
+      noData: 'Ingen data — tilslut en enhed først.',
+      error: 'Fejl: ', updated: 'Opdateret: ', daySuffix: 'd',
+      months: ['Januar','Februar','Marts','April','Maj','Juni',
+               'Juli','August','September','Oktober','November','December'],
+    },
+    pl: {
+      loading: 'Wczytywanie…',
+      avgScore: 'Śr. wynik', best: 'Najlepszy', worst: 'Najgorszy', pts: 'pkt',
+      totalRain: 'Łączny deszcz w tym miesiącu',
+      watering: 'Podlewanie', mowing: 'Koszenie', fertiliser: 'Nawożenie',
+      frostDays: 'Dni mrozu', heatStress: 'Stres cieplny',
+      vsPrev: 'vs poprz.', vs: 'vs', avg: 'śr.',
+      collectingData: 'Zbieranie danych — wróć wkrótce',
+      noData: 'Brak danych — najpierw połącz urządzenie.',
+      error: 'Błąd: ', updated: 'Zaktualizowano: ', daySuffix: 'd',
+      months: ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec',
+               'Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'],
+    },
+    ru: {
+      loading: 'Загрузка…',
+      avgScore: 'Ср. оценка', best: 'Лучшая', worst: 'Худшая', pts: 'б',
+      totalRain: 'Всего осадков за месяц',
+      watering: 'Полив', mowing: 'Скашивание', fertiliser: 'Удобрение',
+      frostDays: 'Дни мороза', heatStress: 'Тепловой стресс',
+      vsPrev: 'vs пред.', vs: 'vs', avg: 'ср.',
+      collectingData: 'Сбор данных — загляните позже',
+      noData: 'Нет данных — сначала сопрягите устройство.',
+      error: 'Ошибка: ', updated: 'Обновлено: ', daySuffix: 'д',
+      months: ['Январь','Февраль','Март','Апрель','Май','Июнь',
+               'Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'],
+    },
+    ko: {
+      loading: '로딩 중…',
+      avgScore: '평균 점수', best: '최고', worst: '최저', pts: '점',
+      totalRain: '이번 달 총 강수량',
+      watering: '관수', mowing: '잔디깎기', fertiliser: '시비',
+      frostDays: '서리 일수', heatStress: '열 스트레스',
+      vsPrev: '이전 대비', vs: '대비', avg: '평균',
+      collectingData: '데이터 수집 중 — 나중에 다시 확인하세요',
+      noData: '데이터 없음 — 먼저 기기를 연결하세요.',
+      error: '오류: ', updated: '업데이트: ', daySuffix: '일',
+      months: ['1월','2월','3월','4월','5월','6월',
+               '7월','8월','9월','10월','11월','12월'],
+    },
+  };
+
+  function getLang() {
+    var l = (navigator.language || '').toLowerCase();
+    var code = l.slice(0, 2);
+    if (code === 'nb' || code === 'nn') return 'no';
+    return I18N[code] ? code : 'en';
+  }
+
+  var t = I18N[getLang()] || I18N.en;
 
   function fmtMonth(ym) {
     if (!ym) return '—';
     var p = ym.split('-');
-    return MONTHS[parseInt(p[1], 10) - 1] + ' ' + p[0];
+    return t.months[parseInt(p[1], 10) - 1] + ' ' + p[0];
   }
 
   function fmtShortMonth(ym) {
     if (!ym) return '—';
-    return MONTHS[parseInt(ym.split('-')[1], 10) - 1].slice(0, 3);
+    return t.months[parseInt(ym.split('-')[1], 10) - 1].slice(0, 3);
   }
 
   function scoreCls(s) {
@@ -250,11 +413,27 @@
   function show(id) { document.getElementById(id).classList.remove('hidden'); }
   function hide(id) { document.getElementById(id).classList.add('hidden'); }
 
+  function initLabels() {
+    setEl('lbl-avg',   t.avgScore);
+    setEl('lbl-best',  t.best);
+    setEl('lbl-worst', t.worst);
+    setEl('lbl-pts-1', t.pts);
+    setEl('lbl-pts-2', t.pts);
+    setEl('lbl-pts-3', t.pts);
+    setEl('lbl-rain',  t.totalRain);
+    setEl('lbl-water', t.watering);
+    setEl('lbl-mow',   t.mowing);
+    setEl('lbl-fert',  t.fertiliser);
+    setEl('lbl-frost', t.frostDays);
+    setEl('lbl-heat',  t.heatStress);
+    setEl('noDataNote', t.collectingData);
+  }
+
   function renderDelta(id, delta, prevYM, label) {
     if (delta == null) { hide(id); return; }
     var el = document.getElementById(id);
     var sign = delta > 0 ? '+' : '';
-    el.textContent = sign + delta + ' ' + label + ' vs ' + fmtShortMonth(prevYM);
+    el.textContent = sign + delta + ' ' + label + ' ' + t.vs + ' ' + fmtShortMonth(prevYM);
     el.className = 'rain-delta ' + (delta > 0 ? 'pos' : delta < 0 ? 'neg' : 'neu');
     show(id);
   }
@@ -262,7 +441,7 @@
   function render(data) {
     if (!data || data.error) {
       var el = document.getElementById('msg');
-      el.textContent = (data && data.error) ? data.error : 'No data — pair a device first.';
+      el.textContent = (data && data.error) ? data.error : t.noData;
       el.className = 'err';
       el.classList.remove('hidden');
       return;
@@ -288,7 +467,7 @@
       return;
     }
 
-    setEl('daysLabel', c.daysWithData + 'd');
+    setEl('daysLabel', c.daysWithData + t.daySuffix);
     hide('noDataNote');
 
     // Scores
@@ -310,7 +489,7 @@
 
     // Events
     function setEv(id, count, type) {
-      setEl(id, count != null ? count + 'd' : '—');
+      setEl(id, count != null ? count + t.daySuffix : '—');
       setCls(id, evCls(count || 0, type));
     }
     setEv('evWater', c.wateringDays,   'good');
@@ -323,30 +502,30 @@
     if (p && p.hasData && p.avgScore != null && c.avgScore != null) {
       var scoreDelta = c.avgScore - p.avgScore;
       var sign = scoreDelta > 0 ? '+' : '';
-      var prevLbl = document.getElementById('prevLbl');
-      var prevScore = document.getElementById('prevScore');
-      setEl('prevLbl', 'vs ' + fmtShortMonth(p.yearMonth));
-      prevLbl.style.color = '';
-      setEl('prevScore', sign + scoreDelta + ' avg');
-      prevScore.style.color = scoreDelta > 0
+      setEl('prevLbl', t.vs + ' ' + fmtShortMonth(p.yearMonth));
+      document.getElementById('prevLbl').style.color = '';
+      setEl('prevScore', sign + scoreDelta + ' ' + t.avg);
+      document.getElementById('prevScore').style.color = scoreDelta > 0
         ? 'var(--ok)' : scoreDelta < 0 ? 'var(--err)' : 'var(--text-3)';
     } else {
-      setEl('prevLbl', 'vs prev');
+      setEl('prevLbl', t.vsPrev);
       document.getElementById('prevLbl').style.color = 'var(--text-3)';
       setEl('prevScore', '—');
       document.getElementById('prevScore').style.color = 'var(--text-3)';
     }
 
-    setEl('footer', data.lastUpdated ? 'Updated: ' + data.lastUpdated : '');
+    setEl('footer', data.lastUpdated ? t.updated + data.lastUpdated : '');
   }
 
   function onHomeyReady(Homey) {
+    document.getElementById('msg').textContent = t.loading;
+    initLabels();
     Homey.ready({ height: 260 });
     Homey.api('GET', '/', {})
       .then(function(data) { render(data); })
       .catch(function(err)  {
         var el = document.getElementById('msg');
-        el.textContent = 'Error: ' + (err.message || err);
+        el.textContent = t.error + (err.message || err);
         el.className = 'err';
       });
   }

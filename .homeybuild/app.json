@@ -629,6 +629,63 @@
       "insights": false, "getable": true, "setable": false, "uiComponent": "sensor"
     },
 
+    "current_target_height_mm": {
+      "type": "number",
+      "icon": "./assets/icons/mowing.svg",
+      "title": { "en": "Target Mowing Height (mm)" },
+      "units": { "en": "mm" },
+      "min": 10, "max": 120, "decimals": 0,
+      "insights": false, "getable": true, "setable": false, "uiComponent": "sensor"
+    },
+
+    "recommended_mowing_height_mm": {
+      "type": "number",
+      "icon": "./assets/icons/mowing.svg",
+      "title": { "en": "Recommended Mowing Height (mm)" },
+      "units": { "en": "mm" },
+      "min": 10, "max": 120, "decimals": 0,
+      "insights": true, "getable": true, "setable": false, "uiComponent": "sensor"
+    },
+
+    "mowing_height_adjustment_reason": {
+      "type": "string",
+      "icon": "./assets/icons/info.svg",
+      "title": { "en": "Mowing Height Adjustment Reason" },
+      "insights": false, "getable": true, "setable": false, "uiComponent": "sensor"
+    },
+
+    "lawn_profile_active": {
+      "type": "string",
+      "icon": "./assets/icons/lawn_status_icon.svg",
+      "title": { "en": "Lawn Profile" },
+      "insights": false, "getable": true, "setable": false, "uiComponent": "sensor"
+    },
+
+    "lawn_profile_status": {
+      "type": "string",
+      "icon": "./assets/icons/lightbulb.svg",
+      "title": { "en": "Lawn Profile Status" },
+      "insights": false, "getable": true, "setable": false, "uiComponent": "sensor"
+    },
+
+    "mowing_frequency_days": {
+      "type": "number",
+      "icon": "./assets/icons/calendar.svg",
+      "title": { "en": "Mowing Frequency (days)" },
+      "units": { "en": "days" },
+      "min": 1, "max": 90, "decimals": 0,
+      "insights": false, "getable": true, "setable": false, "uiComponent": "sensor"
+    },
+
+    "visual_quality_score": {
+      "type": "number",
+      "icon": "./assets/icons/lawn_score.svg",
+      "title": { "en": "Visual Quality Score" },
+      "units": { "en": "pts" },
+      "min": 0, "max": 100, "decimals": 0,
+      "insights": true, "getable": true, "setable": false, "uiComponent": "sensor"
+    },
+
     "lawn_recovery_mode": {
       "type": "boolean",
       "icon": "./assets/icons/recovery.svg",
@@ -695,6 +752,33 @@
         "ko": "잔디 캘린더"
       },
       "height": 280,
+      "transparent": false,
+      "settings": [],
+      "api": {
+        "getData": {
+          "method": "GET",
+          "path": "/"
+        }
+      }
+    },
+
+    "lawn-profile": {
+      "id": "lawn-profile",
+      "name": {
+        "en": "Lawn Profile Optimizer",
+        "nl": "Gazon Profiel Optimizer",
+        "de": "Rasen-Profil-Optimizer",
+        "fr": "Optimiseur de profil de pelouse",
+        "es": "Optimizador de perfil del césped",
+        "it": "Ottimizzatore profilo prato",
+        "sv": "Gräsmattaprofiloptimering",
+        "no": "Plenprofiloptimalisering",
+        "da": "Plæneprofil-optimering",
+        "ru": "Оптимизатор профиля газона",
+        "pl": "Optymalizator profilu trawnika",
+        "ko": "잔디 프로필 최적화"
+      },
+      "height": 260,
       "transparent": false,
       "settings": [],
       "api": {
@@ -790,7 +874,14 @@
         "heat_stress_severity",
         "lawn_recovery_mode",
         "next_lawn_event",
-        "next_lawn_event_date"
+        "next_lawn_event_date",
+        "current_target_height_mm",
+        "recommended_mowing_height_mm",
+        "mowing_height_adjustment_reason",
+        "lawn_profile_active",
+        "lawn_profile_status",
+        "mowing_frequency_days",
+        "visual_quality_score"
       ],
       "capabilitiesOptions": {
         "measure_temperature.soil_surface": {
@@ -1160,6 +1251,83 @@
                     "ru": "Полная тень", "pl": "Pełny cień", "ko": "완전 음지"
                   }
                 }
+              ]
+            },
+            {
+              "id": "lawn_optimization_profile",
+              "type": "dropdown",
+              "label": { "en": "Lawn Optimization Profile" },
+              "hint": { "en": "Select a preset profile that controls mowing height, watering, fertiliser and stress thresholds." },
+              "value": "balanced",
+              "values": [
+                { "id": "showcase",         "label": { "en": "Showcase Lawn" } },
+                { "id": "balanced",         "label": { "en": "Balanced" } },
+                { "id": "drought_resistant","label": { "en": "Drought Resistant" } },
+                { "id": "low_maintenance",  "label": { "en": "Low Maintenance" } },
+                { "id": "shade_lawn",       "label": { "en": "Shade Lawn" } },
+                { "id": "custom",           "label": { "en": "Custom" } }
+              ]
+            },
+            {
+              "id": "target_grass_height_mm",
+              "type": "number",
+              "label": { "en": "Target Grass Height (mm)" },
+              "hint": { "en": "Desired mowing height in mm. Used as target for the custom profile and as the baseline for built-in profiles." },
+              "value": 40,
+              "min": 15,
+              "max": 100
+            },
+            {
+              "id": "minimum_grass_height_mm",
+              "type": "number",
+              "label": { "en": "Minimum Grass Height (mm)" },
+              "hint": { "en": "The mower will never be recommended below this height." },
+              "value": 30,
+              "min": 10,
+              "max": 80
+            },
+            {
+              "id": "maximum_grass_height_mm",
+              "type": "number",
+              "label": { "en": "Maximum Grass Height (mm)" },
+              "hint": { "en": "During stress events the mower height will not exceed this value." },
+              "value": 60,
+              "min": 20,
+              "max": 120
+            },
+            {
+              "id": "grass_growth_speed",
+              "type": "dropdown",
+              "label": { "en": "Grass Growth Speed" },
+              "hint": { "en": "Observed growth rate. Affects how quickly mowing frequency is adjusted." },
+              "value": "medium",
+              "values": [
+                { "id": "slow",   "label": { "en": "Slow" } },
+                { "id": "medium", "label": { "en": "Medium" } },
+                { "id": "fast",   "label": { "en": "Fast" } }
+              ]
+            },
+            {
+              "id": "mowing_frequency_strategy",
+              "type": "dropdown",
+              "label": { "en": "Mowing Frequency Strategy" },
+              "hint": { "en": "Adaptive adjusts interval based on growth, stress and season. Fixed uses the profile default." },
+              "value": "adaptive",
+              "values": [
+                { "id": "adaptive", "label": { "en": "Adaptive" } },
+                { "id": "fixed",    "label": { "en": "Fixed" } }
+              ]
+            },
+            {
+              "id": "desired_visual_quality",
+              "type": "dropdown",
+              "label": { "en": "Desired Visual Quality" },
+              "hint": { "en": "Influences the visual quality score and certain fertiliser/watering adjustments." },
+              "value": "balanced",
+              "values": [
+                { "id": "premium",    "label": { "en": "Premium" } },
+                { "id": "balanced",   "label": { "en": "Balanced" } },
+                { "id": "functional", "label": { "en": "Functional" } }
               ]
             },
             {
@@ -1938,6 +2106,40 @@
         ]
       },
       {
+        "id": "mowing_height_adjustment_recommended",
+        "title": { "en": "Mowing height adjustment recommended" },
+        "hint": { "en": "Fires when the optimized mowing height changes due to a new profile status (heat stress, drought, spring growth, etc.)." },
+        "args": [
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }
+        ],
+        "tokens": [
+          { "name": "recommended_height_mm", "type": "number", "title": { "en": "Recommended Height (mm)" }, "example": 55 },
+          { "name": "reason", "type": "string", "title": { "en": "Reason" }, "example": "Increase mowing height during heat stress" }
+        ]
+      },
+      {
+        "id": "lawn_profile_changed",
+        "title": { "en": "Lawn optimization profile changed" },
+        "hint": { "en": "Fires when the active lawn profile changes." },
+        "args": [
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }
+        ],
+        "tokens": [
+          { "name": "profile", "type": "string", "title": { "en": "New Profile" }, "example": "drought_resistant" }
+        ]
+      },
+      {
+        "id": "mowing_frequency_changed",
+        "title": { "en": "Recommended mowing frequency changed" },
+        "hint": { "en": "Fires when the recommended mowing interval changes significantly." },
+        "args": [
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }
+        ],
+        "tokens": [
+          { "name": "frequency_days", "type": "number", "title": { "en": "Mowing Interval (days)" }, "example": 10 }
+        ]
+      },
+      {
         "id": "mowing_recommended_changed",
         "title": {
           "en": "Mowing recommendation changed",
@@ -2662,6 +2864,45 @@
         ]
       },
       {
+        "id": "lawn_profile_is",
+        "title": { "en": "Lawn profile !{{is|is not}}" },
+        "titleFormatted": { "en": "Lawn profile !{{is|is not}} [[profile]]" },
+        "args": [
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" },
+          {
+            "name": "profile",
+            "type": "dropdown",
+            "title": { "en": "Profile" },
+            "values": [
+              { "id": "showcase",          "label": { "en": "Showcase Lawn" } },
+              { "id": "balanced",          "label": { "en": "Balanced" } },
+              { "id": "drought_resistant", "label": { "en": "Drought Resistant" } },
+              { "id": "low_maintenance",   "label": { "en": "Low Maintenance" } },
+              { "id": "shade_lawn",        "label": { "en": "Shade Lawn" } },
+              { "id": "custom",            "label": { "en": "Custom" } }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "mowing_height_above",
+        "title": { "en": "Recommended mowing height !{{is|is not}} above" },
+        "titleFormatted": { "en": "Recommended mowing height !{{is|is not}} above [[height_mm]] mm" },
+        "args": [
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" },
+          { "name": "height_mm", "type": "number", "title": { "en": "Height (mm)" }, "placeholder": { "en": "50" } }
+        ]
+      },
+      {
+        "id": "mowing_height_below",
+        "title": { "en": "Recommended mowing height !{{is|is not}} below" },
+        "titleFormatted": { "en": "Recommended mowing height !{{is|is not}} below [[height_mm]] mm" },
+        "args": [
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" },
+          { "name": "height_mm", "type": "number", "title": { "en": "Height (mm)" }, "placeholder": { "en": "40" } }
+        ]
+      },
+      {
         "id": "heat_stress_is_active",
         "title": {
           "en": "Heat stress risk !{{is|is not}} active",
@@ -3033,6 +3274,46 @@
         "title": { "en": "Refresh water schedule" },
         "hint": { "en": "Recalculates the water schedule based on current rainfall, forecast, and settings." },
         "args": [{ "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }]
+      },
+      {
+        "id": "set_lawn_optimization_profile",
+        "title": { "en": "Set lawn optimization profile" },
+        "titleFormatted": { "en": "Set lawn profile to [[profile]]" },
+        "hint": { "en": "Changes the active lawn optimization profile and recalculates all recommendations." },
+        "args": [
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" },
+          {
+            "name": "profile",
+            "type": "dropdown",
+            "title": { "en": "Profile" },
+            "values": [
+              { "id": "showcase",          "label": { "en": "Showcase Lawn" } },
+              { "id": "balanced",          "label": { "en": "Balanced" } },
+              { "id": "drought_resistant", "label": { "en": "Drought Resistant" } },
+              { "id": "low_maintenance",   "label": { "en": "Low Maintenance" } },
+              { "id": "shade_lawn",        "label": { "en": "Shade Lawn" } },
+              { "id": "custom",            "label": { "en": "Custom" } }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "set_target_grass_height",
+        "title": { "en": "Set target grass height" },
+        "titleFormatted": { "en": "Set target grass height to [[height_mm]] mm" },
+        "hint": { "en": "Sets the target mowing height in mm. Most effective with the custom profile." },
+        "args": [
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" },
+          { "name": "height_mm", "type": "number", "title": { "en": "Height (mm)" }, "placeholder": { "en": "40" } }
+        ]
+      },
+      {
+        "id": "reset_lawn_profile_defaults",
+        "title": { "en": "Reset lawn profile to defaults" },
+        "hint": { "en": "Resets lawn optimization profile back to 'Balanced' with default heights." },
+        "args": [
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }
+        ]
       },
       {
         "id": "reset_model_memory",

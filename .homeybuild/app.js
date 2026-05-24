@@ -30,6 +30,11 @@ class LawnSoilOptimizerApp extends Homey.App {
     this.homey.flow.getDeviceTriggerCard('growth_score_above')
       .registerRunListener(async (args, state) => state.score > args.score);
 
+    // Lawn profile optimization triggers
+    this.homey.flow.getDeviceTriggerCard('mowing_height_adjustment_recommended');
+    this.homey.flow.getDeviceTriggerCard('lawn_profile_changed');
+    this.homey.flow.getDeviceTriggerCard('mowing_frequency_changed');
+
     // Edge triggers — no run listener (fire unconditionally on each call)
     this.homey.flow.getDeviceTriggerCard('mowing_recommended_changed');
     this.homey.flow.getDeviceTriggerCard('watering_recommended_changed');
@@ -93,6 +98,25 @@ class LawnSoilOptimizerApp extends Homey.App {
     this.homey.flow.getConditionCard('heat_stress_is_active')
       .registerRunListener(async (args) =>
         args.device.getCapabilityValue('heat_stress_risk') === true);
+
+    // Lawn profile optimization conditions
+    this.homey.flow.getConditionCard('lawn_profile_is')
+      .registerRunListener(async (args) => {
+        const profile = args.device.getSetting('lawn_optimization_profile') ?? 'balanced';
+        return profile === args.profile;
+      });
+
+    this.homey.flow.getConditionCard('mowing_height_above')
+      .registerRunListener(async (args) => {
+        const h = args.device.getCapabilityValue('recommended_mowing_height_mm');
+        return typeof h === 'number' && h > args.height_mm;
+      });
+
+    this.homey.flow.getConditionCard('mowing_height_below')
+      .registerRunListener(async (args) => {
+        const h = args.device.getCapabilityValue('recommended_mowing_height_mm');
+        return typeof h === 'number' && h < args.height_mm;
+      });
 
     // ── Water schedule conditions ──────────────────────────────────────────────
 
@@ -165,6 +189,34 @@ class LawnSoilOptimizerApp extends Homey.App {
 
     this.homey.flow.getActionCard('reset_model_memory')
       .registerRunListener(async (args) => args.device.resetModelMemory());
+
+    // Lawn profile optimization actions
+    this.homey.flow.getActionCard('set_lawn_optimization_profile')
+      .registerRunListener(async (args) => {
+        await args.device.setSettings({ lawn_optimization_profile: args.profile });
+        return args.device.refreshData();
+      });
+
+    this.homey.flow.getActionCard('set_target_grass_height')
+      .registerRunListener(async (args) => {
+        const h = Math.max(15, Math.min(100, Math.round(Number(args.height_mm) || 40)));
+        await args.device.setSettings({ target_grass_height_mm: h });
+        return args.device.refreshData();
+      });
+
+    this.homey.flow.getActionCard('reset_lawn_profile_defaults')
+      .registerRunListener(async (args) => {
+        await args.device.setSettings({
+          lawn_optimization_profile:  'balanced',
+          target_grass_height_mm:     40,
+          minimum_grass_height_mm:    30,
+          maximum_grass_height_mm:    60,
+          grass_growth_speed:         'medium',
+          mowing_frequency_strategy:  'adaptive',
+          desired_visual_quality:     'balanced',
+        });
+        return args.device.refreshData();
+      });
 
     // ── Water schedule actions ─────────────────────────────────────────────────
 
