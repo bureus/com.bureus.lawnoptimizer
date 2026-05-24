@@ -120,5 +120,144 @@
     "invalid_longitude": "Invalid longitude. Must be between -180 and 180.",
     "no_location": "No location set. Please configure latitude and longitude in device settings.",
     "fetch_failed": "Failed to fetch weather data. Will retry on next poll."
+  },
+  "services": {
+    "days": {
+      "sunday": "Sunday",
+      "monday": "Monday",
+      "tuesday": "Tuesday",
+      "wednesday": "Wednesday",
+      "thursday": "Thursday",
+      "friday": "Friday",
+      "saturday": "Saturday"
+    },
+    "scoring": {
+      "frost_risk": "Frost risk – protect your lawn",
+      "heat_stress": "Heat stress – consider watering",
+      "dormant": "Dormant – grass is not growing",
+      "very_slow_growth": "Very slow growth",
+      "early_growth": "Early growth – lawn is waking up",
+      "strong_growth": "Strong growth conditions",
+      "good_growth": "Good growth conditions",
+      "moderate_growth": "Moderate growth conditions"
+    },
+    "water": {
+      "too_cold": "Too cold for watering",
+      "target_reached": "No watering needed — rainfall target reached",
+      "rain_covers_deficit": "No watering needed — enough rain expected this week",
+      "rain_expected_24h": "Delay watering — rain expected tomorrow",
+      "below_minimum": "Water deficit {{amount}} mm — below minimum actionable amount",
+      "heat_stress": "Watering recommended: {{amount}} mm — heat stress, water lightly and repeat",
+      "window": "Watering window: {{day}} {{time}}",
+      "recommended": "Watering recommended: {{amount}} mm needed this week"
+    },
+    "fertiliser": {
+      "no_date": "Set last fertiliser date to enable scheduling.",
+      "outside_season": "Outside fertiliser season",
+      "soil_too_cold_overdue": "Due, but delayed — soil temperature below {{minTemp}} °C",
+      "soil_too_cold": "Too early — soil temperature below {{minTemp}} °C",
+      "low_growth_overdue": "Due, but delayed — lawn not growing actively enough",
+      "low_growth": "Too early — lawn not growing actively enough",
+      "warm_season_cool_overdue": "Due, but delayed — soil too cool for warm-season grass",
+      "warm_season_cool": "Waiting — soil too cool for warm-season grass",
+      "heavy_rain_overdue": "Due, but delayed — heavy rain expected",
+      "heavy_rain": "Delay — heavy rain expected",
+      "due_light_rain": "Due now — light rain expected, ideal timing",
+      "due_no_rain": "Due now — no rain expected, water after applying",
+      "due_good": "Due now — conditions look good",
+      "due_tomorrow": "Due tomorrow",
+      "recommended_in_days": "Recommended in {{days}} days",
+      "next_in_days": "Next fertiliser in {{days}} days",
+      "next_date": "Next fertiliser date: {{date}}"
+    },
+    "mowing": {
+      "too_cold": "Too cold to mow",
+      "not_suitable": "Growth conditions not suitable for mowing",
+      "window": "Mowing window: {{day}}",
+      "today": "Today",
+      "recommended_now": "Mowing recommended now"
+    },
+    "dashboard": {
+      "frost_risk": "Frost risk",
+      "frost_recommendation": "Frost detected ({{severity}}) — protect your lawn",
+      "frost_action": "Avoid mowing",
+      "heat_stress": "Heat stress",
+      "heat_recommendation": "Water lightly to cool the root zone",
+      "heat_action_amount": "Water {{amount}} mm",
+      "heat_action_light": "Water lightly",
+      "needs_water": "Needs water",
+      "water_recommendation": "Apply {{amount}} mm on next watering day",
+      "water_action": "Water {{amount}} mm",
+      "water_reason": "Water deficit: {{amount}} mm remaining this week",
+      "fertiliser_due": "Fertiliser due",
+      "fertiliser_recommendation": "Apply fertiliser now — conditions are good",
+      "fertiliser_action": "Apply fertiliser",
+      "fertiliser_reason": "Fertiliser interval reached",
+      "mowing_soon": "Mowing window soon",
+      "mow_action": "Mow {{window}}",
+      "mow_action_ready": "Mow when ready",
+      "mow_reason": "Growth conditions are good for mowing",
+      "recovery_mode": "Recovery mode",
+      "recovery_recommendation": "Lawn is recovering — avoid heavy disturbance",
+      "recovery_action": "Avoid mowing",
+      "recovery_reason": "Low growth score — grass is recovering",
+      "healthy": "Healthy",
+      "rain_recommendation": "Rain expected — no watering needed",
+      "no_action": "No action needed",
+      "wait_for_rain": "Wait for rain",
+      "all_good": "All conditions are good"
+    },
+    "profile": {
+      "labels": {
+        "showcase": "Showcase Lawn",
+        "balanced": "Balanced",
+        "drought_resistant": "Drought Resistant",
+        "low_maintenance": "Low Maintenance",
+        "shade_lawn": "Shade Lawn",
+        "custom": "Custom"
+      },
+      "reasons": {
+        "heat_stress": "Increase mowing height during heat stress",
+        "frost": "Maintain maximum height during frost",
+        "drought": "Delay mowing to improve drought resistance",
+        "spring": "Lower mowing height gradually for spring growth",
+        "shade": "Maintain higher grass height for shade"
+      },
+      "recs": {
+        "frost_protection": "Frost protection mode — avoid mowing. Raise mower to {{height}} mm.",
+        "heat_stress_raise": "Heat stress detected — raise mowing height to {{height}} mm.",
+        "drought_active": "Drought protection mode active — reduce mowing frequency.",
+        "increase_watering": "Increase watering by {{pct}}%.",
+        "drought_risk": "Drought risk — delay mowing to improve drought resistance.",
+        "spring_growth": "Spring growth accelerating — lower mowing height gradually to {{height}} mm.",
+        "increase_frequency": "Increase mowing frequency to every {{days}} days.",
+        "premium_growth": "Premium growth mode active — maintain mowing height at {{height}} mm.",
+        "drought_resistant_mode": "Drought resistant mode active — mow every {{days}} days at {{height}} mm.",
+        "low_maintenance_mode": "Low maintenance mode — mow every {{days}} days.",
+        "slow_growth": "Reduce mowing frequency due to slow growth — next mow in {{days}} days.",
+        "fertiliser_blocked": "Fertiliser blocked — conditions not suitable.",
+        "increase_fertiliser": "Increase fertiliser application by {{pct}}%.",
+        "reduce_fertiliser": "Reduce fertiliser application by {{pct}}%.",
+        "nominal": "{{profile}} — conditions nominal."
+      },
+      "notifications": {
+        "heat_stress": "Heat stress detected — raise mowing height to {{height}} mm.",
+        "drought_protection": "Drought protection mode active. Raise mowing height to {{height}} mm.",
+        "frost_protection": "Frost risk — avoid mowing. Mower height set to {{height}} mm.",
+        "premium_growth": "Premium growth mode active.",
+        "drought_resistant": "Drought resistant mode active.",
+        "spring_growth": "Spring growth accelerating — lower mowing height gradually to {{height}} mm.",
+        "slow_growth": "Slow growth — reducing mowing frequency."
+      }
+    },
+    "notifications": {
+      "fertiliser_due": "Your lawn is ready for fertiliser. Soil temperature and growth conditions look good.",
+      "fertiliser_heavy_rain": "Fertiliser is due, but heavy rain is expected. Consider waiting a few days.",
+      "fertiliser_upcoming_one": "Fertiliser window is coming up in 1 day.",
+      "fertiliser_upcoming": "Fertiliser window is coming up in {{days}} days.",
+      "water_needed": "Your lawn needs water: {{amount}} mm remaining this week.",
+      "water_rain_delay": "Watering delayed — rain expected within 24 hours.",
+      "water_target_reached": "Weekly water target reached. No watering needed."
+    }
   }
 }

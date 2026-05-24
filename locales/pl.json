@@ -120,5 +120,144 @@
     "invalid_longitude": "Nieprawidłowa długość geograficzna. Musi wynosić od -180 do 180.",
     "no_location": "Nie ustawiono lokalizacji. Skonfiguruj szerokość i długość geograficzną w ustawieniach urządzenia.",
     "fetch_failed": "Nie udało się pobrać danych pogodowych. Ponowna próba przy następnym odpytaniu."
+  },
+  "services": {
+    "days": {
+      "sunday": "Niedziela",
+      "monday": "Poniedziałek",
+      "tuesday": "Wtorek",
+      "wednesday": "Środa",
+      "thursday": "Czwartek",
+      "friday": "Piątek",
+      "saturday": "Sobota"
+    },
+    "scoring": {
+      "frost_risk": "Ryzyko mrozu – chroń swój trawnik",
+      "heat_stress": "Stres termiczny – rozważ podlewanie",
+      "dormant": "Uśpienie – trawa nie rośnie",
+      "very_slow_growth": "Bardzo powolny wzrost",
+      "early_growth": "Wczesny wzrost – trawnik się budzi",
+      "strong_growth": "Silne warunki wzrostu",
+      "good_growth": "Dobre warunki wzrostu",
+      "moderate_growth": "Umiarkowane warunki wzrostu"
+    },
+    "water": {
+      "too_cold": "Za zimno do podlewania",
+      "target_reached": "Podlewanie nie jest potrzebne — tygodniowy cel opadów osiągnięty",
+      "rain_covers_deficit": "Podlewanie nie jest potrzebne — wystarczające opady oczekiwane w tym tygodniu",
+      "rain_expected_24h": "Odłóż podlewanie — deszcz oczekiwany jutro",
+      "below_minimum": "Niedobór wody {{amount}} mm — poniżej minimalnej ilości",
+      "heat_stress": "Zalecane podlewanie: {{amount}} mm — stres termiczny, podlewać lekko i powtarzać",
+      "window": "Okno podlewania: {{day}} {{time}}",
+      "recommended": "Zalecane podlewanie: {{amount}} mm potrzebne w tym tygodniu"
+    },
+    "fertiliser": {
+      "no_date": "Wprowadź ostatnią datę nawożenia, aby aktywować planowanie.",
+      "outside_season": "Poza sezonem nawożenia",
+      "soil_too_cold_overdue": "Zaległy, ale opóźniony — temperatura gleby poniżej {{minTemp}} °C",
+      "soil_too_cold": "Za wcześnie — temperatura gleby poniżej {{minTemp}} °C",
+      "low_growth_overdue": "Zaległy, ale opóźniony — trawnik nie rośnie wystarczająco aktywnie",
+      "low_growth": "Za wcześnie — trawnik nie rośnie wystarczająco aktywnie",
+      "warm_season_cool_overdue": "Zaległy, ale opóźniony — gleba za zimna dla trawy ciepłego sezonu",
+      "warm_season_cool": "Oczekiwanie — gleba za zimna dla trawy ciepłego sezonu",
+      "heavy_rain_overdue": "Zaległy, ale opóźniony — oczekiwane intensywne opady",
+      "heavy_rain": "Opóźnij — oczekiwane intensywne opady",
+      "due_light_rain": "Termin teraz — oczekiwany lekki deszcz, idealny moment",
+      "due_no_rain": "Termin teraz — brak oczekiwanych opadów, podlej po aplikacji",
+      "due_good": "Termin teraz — warunki wyglądają dobrze",
+      "due_tomorrow": "Termin jutro",
+      "recommended_in_days": "Zalecane za {{days}} dni",
+      "next_in_days": "Następne nawożenie za {{days}} dni",
+      "next_date": "Następna data nawożenia: {{date}}"
+    },
+    "mowing": {
+      "too_cold": "Za zimno do koszenia",
+      "not_suitable": "Warunki wzrostu nieodpowiednie do koszenia",
+      "window": "Okno koszenia: {{day}}",
+      "today": "Dzisiaj",
+      "recommended_now": "Koszenie zalecane teraz"
+    },
+    "dashboard": {
+      "frost_risk": "Ryzyko mrozu",
+      "frost_recommendation": "Wykryto mróz ({{severity}}) — chroń swój trawnik",
+      "frost_action": "Unikaj koszenia",
+      "heat_stress": "Stres termiczny",
+      "heat_recommendation": "Podlewaj lekko, aby schłodzić strefę korzeniową",
+      "heat_action_amount": "Podlej {{amount}} mm",
+      "heat_action_light": "Podlej lekko",
+      "needs_water": "Potrzebuje wody",
+      "water_recommendation": "Zastosuj {{amount}} mm w następnym dniu podlewania",
+      "water_action": "Podlej {{amount}} mm",
+      "water_reason": "Niedobór wody: {{amount}} mm pozostałe w tym tygodniu",
+      "fertiliser_due": "Nawożenie zaległe",
+      "fertiliser_recommendation": "Nawóź teraz — warunki są dobre",
+      "fertiliser_action": "Zastosuj nawóz",
+      "fertiliser_reason": "Interwał nawożenia osiągnięty",
+      "mowing_soon": "Okno koszenia wkrótce",
+      "mow_action": "Kosz {{window}}",
+      "mow_action_ready": "Kosz gdy gotowy",
+      "mow_reason": "Warunki wzrostu dobre do koszenia",
+      "recovery_mode": "Tryb regeneracji",
+      "recovery_recommendation": "Trawnik się regeneruje — unikaj intensywnych zakłóceń",
+      "recovery_action": "Unikaj koszenia",
+      "recovery_reason": "Niski wskaźnik wzrostu — trawa się regeneruje",
+      "healthy": "Zdrowy",
+      "rain_recommendation": "Oczekiwany deszcz — podlewanie nie jest potrzebne",
+      "no_action": "Nie jest wymagana żadna akcja",
+      "wait_for_rain": "Czekaj na deszcz",
+      "all_good": "Wszystkie warunki są dobre"
+    },
+    "profile": {
+      "labels": {
+        "showcase": "Trawnik pokazowy",
+        "balanced": "Zrównoważony",
+        "drought_resistant": "Odporny na suszę",
+        "low_maintenance": "Niskie utrzymanie",
+        "shade_lawn": "Trawnik cieniowy",
+        "custom": "Niestandardowy"
+      },
+      "reasons": {
+        "heat_stress": "Zwiększ wysokość koszenia podczas stresu termicznego",
+        "frost": "Utrzymuj maksymalną wysokość podczas mrozu",
+        "drought": "Opóźnij koszenie dla lepszej odporności na suszę",
+        "spring": "Stopniowo obniżaj wysokość koszenia podczas wiosennego wzrostu",
+        "shade": "Utrzymuj wyższą wysokość trawy w cieniu"
+      },
+      "recs": {
+        "frost_protection": "Tryb ochrony przed mrozem — unikaj koszenia. Podnieś kosiarkę do {{height}} mm.",
+        "heat_stress_raise": "Wykryto stres termiczny — zwiększ wysokość koszenia do {{height}} mm.",
+        "drought_active": "Tryb ochrony przed suszą aktywny — zmniejsz częstotliwość koszenia.",
+        "increase_watering": "Zwiększ podlewanie o {{pct}}%.",
+        "drought_risk": "Ryzyko suszy — opóźnij koszenie dla lepszej odporności.",
+        "spring_growth": "Wiosenny wzrost przyspiesza — stopniowo obniżaj do {{height}} mm.",
+        "increase_frequency": "Zwiększ częstotliwość koszenia do co {{days}} dni.",
+        "premium_growth": "Tryb wzrostu premium aktywny — utrzymuj wysokość koszenia na {{height}} mm.",
+        "drought_resistant_mode": "Tryb odporności na suszę aktywny — kosz co {{days}} dni na {{height}} mm.",
+        "low_maintenance_mode": "Tryb niskiego utrzymania — kosz co {{days}} dni.",
+        "slow_growth": "Zmniejsz częstotliwość koszenia z powodu powolnego wzrostu — następne koszenie za {{days}} dni.",
+        "fertiliser_blocked": "Nawożenie zablokowane — warunki nieodpowiednie.",
+        "increase_fertiliser": "Zwiększ nawożenie o {{pct}}%.",
+        "reduce_fertiliser": "Zmniejsz nawożenie o {{pct}}%.",
+        "nominal": "{{profile}} — warunki normalne."
+      },
+      "notifications": {
+        "heat_stress": "Wykryto stres termiczny — zwiększ wysokość koszenia do {{height}} mm.",
+        "drought_protection": "Tryb ochrony przed suszą aktywny. Zwiększ wysokość koszenia do {{height}} mm.",
+        "frost_protection": "Ryzyko mrozu — unikaj koszenia. Wysokość koszenia ustawiona na {{height}} mm.",
+        "premium_growth": "Tryb wzrostu premium aktywny.",
+        "drought_resistant": "Tryb odporności na suszę aktywny.",
+        "spring_growth": "Wiosenny wzrost przyspiesza — stopniowo obniżaj do {{height}} mm.",
+        "slow_growth": "Powolny wzrost — zmniejszanie częstotliwości koszenia."
+      }
+    },
+    "notifications": {
+      "fertiliser_due": "Twój trawnik jest gotowy do nawożenia. Temperatura gleby i warunki wzrostu są dobre.",
+      "fertiliser_heavy_rain": "Nawożenie jest zaległe, ale oczekiwane są intensywne opady. Rozważ odczekanie kilku dni.",
+      "fertiliser_upcoming_one": "Okno nawożenia za 1 dzień.",
+      "fertiliser_upcoming": "Okno nawożenia za {{days}} dni.",
+      "water_needed": "Twój trawnik potrzebuje wody: {{amount}} mm pozostałe w tym tygodniu.",
+      "water_rain_delay": "Podlewanie opóźnione — deszcz oczekiwany w ciągu 24 godzin.",
+      "water_target_reached": "Tygodniowy cel wodny osiągnięty. Podlewanie nie jest potrzebne."
+    }
   }
 }

@@ -40,7 +40,9 @@
       "PowerShell(head -40)",
       "Bash(Get-ChildItem -Recurse widgets\\\\lawn-profile)",
       "Bash(Select-Object FullName)",
-      "Bash(find /mnt/c/Code/com.bureus.lawnoptimizer/widgets -type f | sort)"
+      "Bash(find /mnt/c/Code/com.bureus.lawnoptimizer/widgets -type f | sort)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Code\\\\com.bureus.lawnoptimizer\" -Directory)",
+      "Bash(Select-Object Name)"
     ]
   }
 }

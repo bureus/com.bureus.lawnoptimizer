@@ -120,5 +120,144 @@
     "invalid_longitude": "Ugyldig længdegrad. Skal være mellem -180 og 180.",
     "no_location": "Ingen placering angivet. Konfigurer bredde- og længdegrad i enhedsindstillingerne.",
     "fetch_failed": "Kunne ikke hente vejrdata. Forsøges igen ved næste afspørring."
+  },
+  "services": {
+    "days": {
+      "sunday": "Søndag",
+      "monday": "Mandag",
+      "tuesday": "Tirsdag",
+      "wednesday": "Onsdag",
+      "thursday": "Torsdag",
+      "friday": "Fredag",
+      "saturday": "Lørdag"
+    },
+    "scoring": {
+      "frost_risk": "Frostrisiko – beskyt din plæne",
+      "heat_stress": "Varmestress – overvej vanding",
+      "dormant": "Dvale – græsset vokser ikke",
+      "very_slow_growth": "Meget langsom vækst",
+      "early_growth": "Tidlig vækst – græsset vågner",
+      "strong_growth": "Stærk vækst",
+      "good_growth": "Gode vækstforhold",
+      "moderate_growth": "Moderate vækstforhold"
+    },
+    "water": {
+      "too_cold": "For koldt til vanding",
+      "target_reached": "Ingen vanding nødvendig — ugens regnmål nået",
+      "rain_covers_deficit": "Ingen vanding nødvendig — nok regn forventet denne uge",
+      "rain_expected_24h": "Forsink vanding — regn forventet i morgen",
+      "below_minimum": "Vandunderskud {{amount}} mm — under mindste handlingsmæssige mængde",
+      "heat_stress": "Vanding anbefales: {{amount}} mm — varmestress, vand lidt og gentag",
+      "window": "Vandingsvindue: {{day}} {{time}}",
+      "recommended": "Vanding anbefales: {{amount}} mm nødvendigt denne uge"
+    },
+    "fertiliser": {
+      "no_date": "Angiv seneste gødningsdato for at aktivere planlægning.",
+      "outside_season": "Uden for gødningssæsonen",
+      "soil_too_cold_overdue": "Forfalden, men forsinket — jordtemperatur under {{minTemp}} °C",
+      "soil_too_cold": "For tidligt — jordtemperatur under {{minTemp}} °C",
+      "low_growth_overdue": "Forfalden, men forsinket — græsset vokser ikke aktivt nok",
+      "low_growth": "For tidligt — græsset vokser ikke aktivt nok",
+      "warm_season_cool_overdue": "Forfalden, men forsinket — jord for kold til varm-sæsons græs",
+      "warm_season_cool": "Venter — jord for kold til varm-sæsons græs",
+      "heavy_rain_overdue": "Forfalden, men forsinket — kraftigt regn forventet",
+      "heavy_rain": "Forsink — kraftigt regn forventet",
+      "due_light_rain": "Forfalden nu — let regn forventet, ideelt tidspunkt",
+      "due_no_rain": "Forfalden nu — intet regn forventet, vand efter påføring",
+      "due_good": "Forfalden nu — forholdene ser gode ud",
+      "due_tomorrow": "Forfalder i morgen",
+      "recommended_in_days": "Anbefales om {{days}} dage",
+      "next_in_days": "Næste gødning om {{days}} dage",
+      "next_date": "Næste gødningsdato: {{date}}"
+    },
+    "mowing": {
+      "too_cold": "For koldt til slåning",
+      "not_suitable": "Vækstforhold ikke egnet til slåning",
+      "window": "Slåningsvindue: {{day}}",
+      "today": "I dag",
+      "recommended_now": "Slåning anbefales nu"
+    },
+    "dashboard": {
+      "frost_risk": "Frostrisiko",
+      "frost_recommendation": "Frost registreret ({{severity}}) — beskyt din plæne",
+      "frost_action": "Undgå slåning",
+      "heat_stress": "Varmestress",
+      "heat_recommendation": "Vand lidt for at køle rodzonen",
+      "heat_action_amount": "Vand {{amount}} mm",
+      "heat_action_light": "Vand lidt",
+      "needs_water": "Trænger til vand",
+      "water_recommendation": "Påfør {{amount}} mm på næste vandingsdag",
+      "water_action": "Vand {{amount}} mm",
+      "water_reason": "Vandunderskud: {{amount}} mm tilbage denne uge",
+      "fertiliser_due": "Gødning forfaldet",
+      "fertiliser_recommendation": "Gødsk nu — forholdene er gode",
+      "fertiliser_action": "Påfør gødning",
+      "fertiliser_reason": "Gødningsinterval nået",
+      "mowing_soon": "Slåningsvindue snart",
+      "mow_action": "Slå {{window}}",
+      "mow_action_ready": "Slå når klar",
+      "mow_reason": "Vækstforhold gode til slåning",
+      "recovery_mode": "Genopretningsmode",
+      "recovery_recommendation": "Plænen er ved at komme sig — undgå kraftige forstyrrelser",
+      "recovery_action": "Undgå slåning",
+      "recovery_reason": "Lav vækstpoint — græsset er ved at komme sig",
+      "healthy": "Sund",
+      "rain_recommendation": "Regn forventet — ingen vanding nødvendig",
+      "no_action": "Ingen handling nødvendig",
+      "wait_for_rain": "Vent på regn",
+      "all_good": "Alle forhold er gode"
+    },
+    "profile": {
+      "labels": {
+        "showcase": "Udstillingsplæne",
+        "balanced": "Afbalanceret",
+        "drought_resistant": "Tørketolerant",
+        "low_maintenance": "Lavt vedligehold",
+        "shade_lawn": "Skyggeplæne",
+        "custom": "Tilpasset"
+      },
+      "reasons": {
+        "heat_stress": "Hæv slåningshøjden ved varmestress",
+        "frost": "Bevar maksimal højde ved frost",
+        "drought": "Forsink slåning for at forbedre tørketolerance",
+        "spring": "Sænk slåningshøjden gradvist under forårsvækst",
+        "shade": "Bevar højere græshøjde i skygge"
+      },
+      "recs": {
+        "frost_protection": "Frostbeskyttelsesmode — undgå slåning. Hæv plæneklipperen til {{height}} mm.",
+        "heat_stress_raise": "Varmestress registreret — hæv slåningshøjden til {{height}} mm.",
+        "drought_active": "Tørrebeskyttelsesmode aktiv — reducer slåningsfrekvens.",
+        "increase_watering": "Øg vanding med {{pct}}%.",
+        "drought_risk": "Tørrisiko — forsink slåning for at forbedre tørketolerance.",
+        "spring_growth": "Forårsvækst accelererer — sænk slåningshøjden gradvist til {{height}} mm.",
+        "increase_frequency": "Øg slåningsfrekvensen til hver {{days}} dag.",
+        "premium_growth": "Premium-vækstmode aktiv — bevar slåningshøjden på {{height}} mm.",
+        "drought_resistant_mode": "Tørretolerant mode aktiv — slå hver {{days}} dag på {{height}} mm.",
+        "low_maintenance_mode": "Lavt-vedligehold-mode — slå hver {{days}} dag.",
+        "slow_growth": "Reducer slåningsfrekvens pga. langsom vækst — næste slåning om {{days}} dage.",
+        "fertiliser_blocked": "Gødning blokeret — forholdene er ikke egnede.",
+        "increase_fertiliser": "Øg gødning med {{pct}}%.",
+        "reduce_fertiliser": "Reducer gødning med {{pct}}%.",
+        "nominal": "{{profile}} — forholdene er normale."
+      },
+      "notifications": {
+        "heat_stress": "Varmestress registreret — hæv slåningshøjden til {{height}} mm.",
+        "drought_protection": "Tørrebeskyttelsesmode aktiv. Hæv slåningshøjden til {{height}} mm.",
+        "frost_protection": "Frostrisiko — undgå slåning. Slåningshøjde sat til {{height}} mm.",
+        "premium_growth": "Premium-vækstmode aktiv.",
+        "drought_resistant": "Tørretolerant mode aktiv.",
+        "spring_growth": "Forårsvækst accelererer — sænk slåningshøjden gradvist til {{height}} mm.",
+        "slow_growth": "Langsom vækst — reducer slåningsfrekvens."
+      }
+    },
+    "notifications": {
+      "fertiliser_due": "Din plæne er klar til gødning. Jordtemperatur og vækstforhold ser gode ud.",
+      "fertiliser_heavy_rain": "Gødning er forfaldet, men kraftigt regn forventes. Overvej at vente et par dage.",
+      "fertiliser_upcoming_one": "Gødningsvindue om 1 dag.",
+      "fertiliser_upcoming": "Gødningsvindue om {{days}} dage.",
+      "water_needed": "Din plæne trænger til vand: {{amount}} mm tilbage denne uge.",
+      "water_rain_delay": "Vanding forsinket — regn forventet inden for 24 timer.",
+      "water_target_reached": "Ugens vandingsmål nået. Ingen vanding nødvendig."
+    }
   }
 }

@@ -120,5 +120,144 @@
     "invalid_longitude": "Ongeldige lengtegraad. Moet tussen -180 en 180 liggen.",
     "no_location": "Geen locatie ingesteld. Configureer breedtegraad en lengtegraad in de apparaatinstellingen.",
     "fetch_failed": "Ophalen van weerdata mislukt. Wordt opnieuw geprobeerd bij volgende peiling."
+  },
+  "services": {
+    "days": {
+      "sunday": "Zondag",
+      "monday": "Maandag",
+      "tuesday": "Dinsdag",
+      "wednesday": "Woensdag",
+      "thursday": "Donderdag",
+      "friday": "Vrijdag",
+      "saturday": "Zaterdag"
+    },
+    "scoring": {
+      "frost_risk": "Vorstrisico – bescherm uw gazon",
+      "heat_stress": "Hittestress – overweeg beregening",
+      "dormant": "Slaapstand – gras groeit niet",
+      "very_slow_growth": "Zeer langzame groei",
+      "early_growth": "Vroege groei – gazon ontwaakt",
+      "strong_growth": "Sterke groeiomstandigheden",
+      "good_growth": "Goede groeiomstandigheden",
+      "moderate_growth": "Matige groeiomstandigheden"
+    },
+    "water": {
+      "too_cold": "Te koud voor beregening",
+      "target_reached": "Geen beregening nodig — weekdoel voor regen bereikt",
+      "rain_covers_deficit": "Geen beregening nodig — genoeg regen verwacht deze week",
+      "rain_expected_24h": "Beregening uitstellen — regen verwacht morgen",
+      "below_minimum": "Watertekort {{amount}} mm — onder minimale actiedrempel",
+      "heat_stress": "Beregening aanbevolen: {{amount}} mm — hittestress, licht beregenen en herhalen",
+      "window": "Beregeningsvenster: {{day}} {{time}}",
+      "recommended": "Beregening aanbevolen: {{amount}} mm nodig deze week"
+    },
+    "fertiliser": {
+      "no_date": "Voer de laatste bemestingsdatum in om planning te activeren.",
+      "outside_season": "Buiten bemestingsseizoen",
+      "soil_too_cold_overdue": "Vervallen, maar vertraagd — bodemtemperatuur onder {{minTemp}} °C",
+      "soil_too_cold": "Te vroeg — bodemtemperatuur onder {{minTemp}} °C",
+      "low_growth_overdue": "Vervallen, maar vertraagd — gazon groeit niet actief genoeg",
+      "low_growth": "Te vroeg — gazon groeit niet actief genoeg",
+      "warm_season_cool_overdue": "Vervallen, maar vertraagd — bodem te koud voor warmseizoen gras",
+      "warm_season_cool": "Wachten — bodem te koud voor warmseizoen gras",
+      "heavy_rain_overdue": "Vervallen, maar vertraagd — zware regen verwacht",
+      "heavy_rain": "Uitstellen — zware regen verwacht",
+      "due_light_rain": "Nu vervallen — lichte regen verwacht, ideaal moment",
+      "due_no_rain": "Nu vervallen — geen regen verwacht, beregenen na toepassing",
+      "due_good": "Nu vervallen — omstandigheden zien er goed uit",
+      "due_tomorrow": "Morgen vervallen",
+      "recommended_in_days": "Aanbevolen over {{days}} dagen",
+      "next_in_days": "Volgende bemesting over {{days}} dagen",
+      "next_date": "Volgende bemestingsdatum: {{date}}"
+    },
+    "mowing": {
+      "too_cold": "Te koud om te maaien",
+      "not_suitable": "Groeiomstandigheden niet geschikt voor maaien",
+      "window": "Maaivenster: {{day}}",
+      "today": "Vandaag",
+      "recommended_now": "Maaien nu aanbevolen"
+    },
+    "dashboard": {
+      "frost_risk": "Vorstrisico",
+      "frost_recommendation": "Vorst gedetecteerd ({{severity}}) — bescherm uw gazon",
+      "frost_action": "Maaien vermijden",
+      "heat_stress": "Hittestress",
+      "heat_recommendation": "Licht beregenen om de wortelzone te koelen",
+      "heat_action_amount": "{{amount}} mm beregenen",
+      "heat_action_light": "Licht beregenen",
+      "needs_water": "Water nodig",
+      "water_recommendation": "{{amount}} mm toepassen op de volgende beregeningsdag",
+      "water_action": "{{amount}} mm beregenen",
+      "water_reason": "Watertekort: {{amount}} mm resterend deze week",
+      "fertiliser_due": "Bemesting vervallen",
+      "fertiliser_recommendation": "Nu bemesten — omstandigheden zijn goed",
+      "fertiliser_action": "Meststof toepassen",
+      "fertiliser_reason": "Bemestingsinterval bereikt",
+      "mowing_soon": "Maaivenster binnenkort",
+      "mow_action": "Maaien {{window}}",
+      "mow_action_ready": "Maaien wanneer klaar",
+      "mow_reason": "Groeiomstandigheden goed voor maaien",
+      "recovery_mode": "Herstelmodus",
+      "recovery_recommendation": "Gazon herstelt zich — zware verstoring vermijden",
+      "recovery_action": "Maaien vermijden",
+      "recovery_reason": "Lage groeiscore — gras herstelt zich",
+      "healthy": "Gezond",
+      "rain_recommendation": "Regen verwacht — geen beregening nodig",
+      "no_action": "Geen actie nodig",
+      "wait_for_rain": "Wachten op regen",
+      "all_good": "Alle omstandigheden zijn goed"
+    },
+    "profile": {
+      "labels": {
+        "showcase": "Showgazon",
+        "balanced": "Gebalanceerd",
+        "drought_resistant": "Droogtebestendig",
+        "low_maintenance": "Weinig onderhoud",
+        "shade_lawn": "Schaduwgazon",
+        "custom": "Aangepast"
+      },
+      "reasons": {
+        "heat_stress": "Maaihogte verhogen bij hittestress",
+        "frost": "Maximale hoogte handhaven bij vorst",
+        "drought": "Maaien uitstellen voor betere droogtebestendigheid",
+        "spring": "Maaihogte geleidelijk verlagen bij voorjaargroei",
+        "shade": "Hogere grashoogte handhaven in schaduw"
+      },
+      "recs": {
+        "frost_protection": "Vorstbeschermingsmodus — maaien vermijden. Maaier instellen op {{height}} mm.",
+        "heat_stress_raise": "Hittestress gedetecteerd — maaihogte verhogen naar {{height}} mm.",
+        "drought_active": "Droogtebeschermingsmodus actief — maaifrequentie verminderen.",
+        "increase_watering": "Beregening verhogen met {{pct}}%.",
+        "drought_risk": "Droogterisico — maaien uitstellen voor betere droogtebestendigheid.",
+        "spring_growth": "Voorjaarsgroei versnelt — maaihogte geleidelijk verlagen naar {{height}} mm.",
+        "increase_frequency": "Maaifrequentie verhogen naar elke {{days}} dagen.",
+        "premium_growth": "Premium groeimodus actief — maaihogte op {{height}} mm houden.",
+        "drought_resistant_mode": "Droogtebestendig modus actief — elke {{days}} dagen maaien op {{height}} mm.",
+        "low_maintenance_mode": "Weinig-onderhoud-modus — elke {{days}} dagen maaien.",
+        "slow_growth": "Maaifrequentie verminderen vanwege langzame groei — volgende maaibeurt over {{days}} dagen.",
+        "fertiliser_blocked": "Bemesting geblokkeerd — omstandigheden niet geschikt.",
+        "increase_fertiliser": "Bemesting verhogen met {{pct}}%.",
+        "reduce_fertiliser": "Bemesting verminderen met {{pct}}%.",
+        "nominal": "{{profile}} — omstandigheden normaal."
+      },
+      "notifications": {
+        "heat_stress": "Hittestress gedetecteerd — maaihogte verhogen naar {{height}} mm.",
+        "drought_protection": "Droogtebeschermingsmodus actief. Maaihogte verhogen naar {{height}} mm.",
+        "frost_protection": "Vorstrisico — maaien vermijden. Maaihogte ingesteld op {{height}} mm.",
+        "premium_growth": "Premium groeimodus actief.",
+        "drought_resistant": "Droogtebestendig modus actief.",
+        "spring_growth": "Voorjaarsgroei versnelt — maaihogte geleidelijk verlagen naar {{height}} mm.",
+        "slow_growth": "Langzame groei — maaifrequentie wordt verminderd."
+      }
+    },
+    "notifications": {
+      "fertiliser_due": "Uw gazon is klaar voor bemesting. Bodemtemperatuur en groeiomstandigheden zien er goed uit.",
+      "fertiliser_heavy_rain": "Bemesting is vervallen, maar zware regen wordt verwacht. Overweeg een paar dagen te wachten.",
+      "fertiliser_upcoming_one": "Bemestingsvenster over 1 dag.",
+      "fertiliser_upcoming": "Bemestingsvenster over {{days}} dagen.",
+      "water_needed": "Uw gazon heeft water nodig: {{amount}} mm resterend deze week.",
+      "water_rain_delay": "Beregening vertraagd — regen verwacht binnen 24 uur.",
+      "water_target_reached": "Wekelijks waterdoel bereikt. Geen beregening nodig."
+    }
   }
 }

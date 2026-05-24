@@ -120,5 +120,144 @@
     "invalid_longitude": "Ugyldig lengdegrad. Må være mellom -180 og 180.",
     "no_location": "Ingen plassering angitt. Konfigurer bredde- og lengdegrad i enhetsinnstillingene.",
     "fetch_failed": "Kunne ikke hente værvarsler. Prøver igjen ved neste avlesning."
+  },
+  "services": {
+    "days": {
+      "sunday": "Søndag",
+      "monday": "Mandag",
+      "tuesday": "Tirsdag",
+      "wednesday": "Onsdag",
+      "thursday": "Torsdag",
+      "friday": "Fredag",
+      "saturday": "Lørdag"
+    },
+    "scoring": {
+      "frost_risk": "Frostrisiko – beskytt plenen din",
+      "heat_stress": "Varmestress – vurder vanning",
+      "dormant": "Hvile – gresset vokser ikke",
+      "very_slow_growth": "Svært langsom vekst",
+      "early_growth": "Tidlig vekst – gresset våkner",
+      "strong_growth": "Sterk vekst",
+      "good_growth": "Gode vekstforhold",
+      "moderate_growth": "Moderate vekstforhold"
+    },
+    "water": {
+      "too_cold": "For kaldt for vanning",
+      "target_reached": "Ingen vanning nødvendig — ukens regnmål nådd",
+      "rain_covers_deficit": "Ingen vanning nødvendig — nok regn forventet denne uken",
+      "rain_expected_24h": "Utsett vanning — regn forventet i morgen",
+      "below_minimum": "Vannunderskudd {{amount}} mm — under minste handlingsmengde",
+      "heat_stress": "Vanning anbefalt: {{amount}} mm — varmestress, vann litt og gjenta",
+      "window": "Vanningsvindu: {{day}} {{time}}",
+      "recommended": "Vanning anbefalt: {{amount}} mm trengs denne uken"
+    },
+    "fertiliser": {
+      "no_date": "Angi siste gjødslingsdato for å aktivere planlegging.",
+      "outside_season": "Utenfor gjødslingssesong",
+      "soil_too_cold_overdue": "Forfalt, men forsinket — jordtemperatur under {{minTemp}} °C",
+      "soil_too_cold": "For tidlig — jordtemperatur under {{minTemp}} °C",
+      "low_growth_overdue": "Forfalt, men forsinket — gresset vokser ikke aktivt nok",
+      "low_growth": "For tidlig — gresset vokser ikke aktivt nok",
+      "warm_season_cool_overdue": "Forfalt, men forsinket — jord for kald for varm-sesong gress",
+      "warm_season_cool": "Venter — jord for kald for varm-sesong gress",
+      "heavy_rain_overdue": "Forfalt, men forsinket — kraftig regn forventet",
+      "heavy_rain": "Utsett — kraftig regn forventet",
+      "due_light_rain": "Forfalt nå — lett regn forventet, ideelt tidspunkt",
+      "due_no_rain": "Forfalt nå — intet regn forventet, vann etter påføring",
+      "due_good": "Forfalt nå — forholdene ser gode ut",
+      "due_tomorrow": "Forfaller i morgen",
+      "recommended_in_days": "Anbefalt om {{days}} dager",
+      "next_in_days": "Neste gjødsling om {{days}} dager",
+      "next_date": "Neste gjødslingsdato: {{date}}"
+    },
+    "mowing": {
+      "too_cold": "For kaldt for klipping",
+      "not_suitable": "Vekstforhold ikke egnet for klipping",
+      "window": "Klippevindu: {{day}}",
+      "today": "I dag",
+      "recommended_now": "Klipping anbefalt nå"
+    },
+    "dashboard": {
+      "frost_risk": "Frostrisiko",
+      "frost_recommendation": "Frost registrert ({{severity}}) — beskytt plenen din",
+      "frost_action": "Unngå klipping",
+      "heat_stress": "Varmestress",
+      "heat_recommendation": "Vann litt for å kjøle rotsonen",
+      "heat_action_amount": "Vann {{amount}} mm",
+      "heat_action_light": "Vann litt",
+      "needs_water": "Trenger vann",
+      "water_recommendation": "Påfør {{amount}} mm neste vanningsdag",
+      "water_action": "Vann {{amount}} mm",
+      "water_reason": "Vannunderskudd: {{amount}} mm igjen denne uken",
+      "fertiliser_due": "Gjødsling forfalt",
+      "fertiliser_recommendation": "Gjødsl nå — forholdene er gode",
+      "fertiliser_action": "Påfør gjødsel",
+      "fertiliser_reason": "Gjødslingsintervall nådd",
+      "mowing_soon": "Klippevindu snart",
+      "mow_action": "Klipp {{window}}",
+      "mow_action_ready": "Klipp når klar",
+      "mow_reason": "Vekstforhold gode for klipping",
+      "recovery_mode": "Restitusjonsmode",
+      "recovery_recommendation": "Plenen restituerer seg — unngå kraftige forstyrrelser",
+      "recovery_action": "Unngå klipping",
+      "recovery_reason": "Lav vekstpoeng — gresset restituerer seg",
+      "healthy": "Sunn",
+      "rain_recommendation": "Regn forventet — ingen vanning nødvendig",
+      "no_action": "Ingen handling nødvendig",
+      "wait_for_rain": "Vent på regn",
+      "all_good": "Alle forhold er gode"
+    },
+    "profile": {
+      "labels": {
+        "showcase": "Utstillingsplen",
+        "balanced": "Balansert",
+        "drought_resistant": "Tørketolerant",
+        "low_maintenance": "Lavt vedlikehold",
+        "shade_lawn": "Skyggeplen",
+        "custom": "Tilpasset"
+      },
+      "reasons": {
+        "heat_stress": "Hev klippehøyden ved varmestress",
+        "frost": "Bevar maksimal høyde ved frost",
+        "drought": "Utsett klipping for å forbedre tørketoleranse",
+        "spring": "Senk klippehøyden gradvis under vårens vekst",
+        "shade": "Bevar høyere gresshøyde i skygge"
+      },
+      "recs": {
+        "frost_protection": "Frostbeskyttelsesmode — unngå klipping. Hev gressklipperen til {{height}} mm.",
+        "heat_stress_raise": "Varmestress registrert — hev klippehøyden til {{height}} mm.",
+        "drought_active": "Tørrebeskyttelsesmode aktiv — reduser klippefrekvens.",
+        "increase_watering": "Øk vanning med {{pct}}%.",
+        "drought_risk": "Tørkerisiko — utsett klipping for å forbedre tørketoleranse.",
+        "spring_growth": "Vårens vekst akselererer — senk klippehøyden gradvis til {{height}} mm.",
+        "increase_frequency": "Øk klippefrekvensen til hver {{days}} dag.",
+        "premium_growth": "Premium-vekstmode aktiv — hold klippehøyden på {{height}} mm.",
+        "drought_resistant_mode": "Tørketolerant mode aktiv — klipp hver {{days}} dag på {{height}} mm.",
+        "low_maintenance_mode": "Lavt-vedlikehold-mode — klipp hver {{days}} dag.",
+        "slow_growth": "Reduser klippefrekvens pga. langsom vekst — neste klipping om {{days}} dager.",
+        "fertiliser_blocked": "Gjødsling blokkert — forholdene er ikke egnet.",
+        "increase_fertiliser": "Øk gjødsling med {{pct}}%.",
+        "reduce_fertiliser": "Reduser gjødsling med {{pct}}%.",
+        "nominal": "{{profile}} — forholdene er normale."
+      },
+      "notifications": {
+        "heat_stress": "Varmestress registrert — hev klippehøyden til {{height}} mm.",
+        "drought_protection": "Tørrebeskyttelsesmode aktiv. Hev klippehøyden til {{height}} mm.",
+        "frost_protection": "Frostrisiko — unngå klipping. Klippehøyde satt til {{height}} mm.",
+        "premium_growth": "Premium-vekstmode aktiv.",
+        "drought_resistant": "Tørketolerant mode aktiv.",
+        "spring_growth": "Vårens vekst akselererer — senk klippehøyden gradvis til {{height}} mm.",
+        "slow_growth": "Langsom vekst — reduserer klippefrekvens."
+      }
+    },
+    "notifications": {
+      "fertiliser_due": "Plenen din er klar for gjødsel. Jordtemperatur og vekstforhold ser bra ut.",
+      "fertiliser_heavy_rain": "Gjødsling er forfalt, men kraftig regn forventes. Vurder å vente noen dager.",
+      "fertiliser_upcoming_one": "Gjødslingsvindu om 1 dag.",
+      "fertiliser_upcoming": "Gjødslingsvindu om {{days}} dager.",
+      "water_needed": "Plenen din trenger vann: {{amount}} mm igjen denne uken.",
+      "water_rain_delay": "Vanning forsinket — regn forventet innen 24 timer.",
+      "water_target_reached": "Ukentlig vannmål nådd. Ingen vanning nødvendig."
+    }
   }
 }

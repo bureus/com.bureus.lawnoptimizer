@@ -120,5 +120,144 @@
     "invalid_longitude": "잘못된 경도입니다. -180에서 180 사이여야 합니다.",
     "no_location": "위치가 설정되지 않았습니다. 기기 설정에서 위도와 경도를 구성해 주세요.",
     "fetch_failed": "날씨 데이터를 가져오지 못했습니다. 다음 폴링 시 다시 시도합니다."
+  },
+  "services": {
+    "days": {
+      "sunday": "일요일",
+      "monday": "월요일",
+      "tuesday": "화요일",
+      "wednesday": "수요일",
+      "thursday": "목요일",
+      "friday": "금요일",
+      "saturday": "토요일"
+    },
+    "scoring": {
+      "frost_risk": "서리 위험 – 잔디밭을 보호하세요",
+      "heat_stress": "열 스트레스 – 관수를 고려하세요",
+      "dormant": "휴면 – 잔디가 자라지 않습니다",
+      "very_slow_growth": "매우 느린 성장",
+      "early_growth": "초기 성장 – 잔디가 깨어나고 있습니다",
+      "strong_growth": "강한 성장 조건",
+      "good_growth": "좋은 성장 조건",
+      "moderate_growth": "보통의 성장 조건"
+    },
+    "water": {
+      "too_cold": "관수하기에 너무 춥습니다",
+      "target_reached": "관수 불필요 — 주간 강수 목표 달성",
+      "rain_covers_deficit": "관수 불필요 — 이번 주 충분한 비가 예상됩니다",
+      "rain_expected_24h": "관수 연기 — 내일 비가 예상됩니다",
+      "below_minimum": "수분 부족 {{amount}} mm — 최소 조치량 이하",
+      "heat_stress": "관수 권장: {{amount}} mm — 열 스트레스, 소량씩 반복 관수",
+      "window": "관수 시간: {{day}} {{time}}",
+      "recommended": "관수 권장: 이번 주 {{amount}} mm 필요"
+    },
+    "fertiliser": {
+      "no_date": "일정을 활성화하려면 마지막 비료 날짜를 입력하세요.",
+      "outside_season": "비료 시즌 외",
+      "soil_too_cold_overdue": "기한 초과, 하지만 지연 — 토양 온도 {{minTemp}} °C 이하",
+      "soil_too_cold": "너무 이릅니다 — 토양 온도 {{minTemp}} °C 이하",
+      "low_growth_overdue": "기한 초과, 하지만 지연 — 잔디가 충분히 활발하게 성장하지 않습니다",
+      "low_growth": "너무 이릅니다 — 잔디가 충분히 활발하게 성장하지 않습니다",
+      "warm_season_cool_overdue": "기한 초과, 하지만 지연 — 토양이 난지형 잔디에 너무 차갑습니다",
+      "warm_season_cool": "대기 중 — 토양이 난지형 잔디에 너무 차갑습니다",
+      "heavy_rain_overdue": "기한 초과, 하지만 지연 — 많은 비가 예상됩니다",
+      "heavy_rain": "연기 — 많은 비가 예상됩니다",
+      "due_light_rain": "지금 기한 — 가벼운 비 예상, 이상적인 타이밍",
+      "due_no_rain": "지금 기한 — 비 없음 예상, 시비 후 관수",
+      "due_good": "지금 기한 — 조건이 좋습니다",
+      "due_tomorrow": "내일 기한",
+      "recommended_in_days": "{{days}}일 후 권장",
+      "next_in_days": "{{days}}일 후 다음 시비",
+      "next_date": "다음 시비 날짜: {{date}}"
+    },
+    "mowing": {
+      "too_cold": "예초하기에 너무 춥습니다",
+      "not_suitable": "성장 조건이 예초에 적합하지 않습니다",
+      "window": "예초 시간: {{day}}",
+      "today": "오늘",
+      "recommended_now": "지금 예초 권장"
+    },
+    "dashboard": {
+      "frost_risk": "서리 위험",
+      "frost_recommendation": "서리 감지됨 ({{severity}}) — 잔디밭을 보호하세요",
+      "frost_action": "예초 자제",
+      "heat_stress": "열 스트레스",
+      "heat_recommendation": "뿌리 부근을 식히기 위해 가볍게 관수하세요",
+      "heat_action_amount": "{{amount}} mm 관수",
+      "heat_action_light": "가볍게 관수",
+      "needs_water": "물 필요",
+      "water_recommendation": "다음 관수일에 {{amount}} mm 적용",
+      "water_action": "{{amount}} mm 관수",
+      "water_reason": "수분 부족: 이번 주 {{amount}} mm 남음",
+      "fertiliser_due": "시비 기한",
+      "fertiliser_recommendation": "지금 시비하세요 — 조건이 좋습니다",
+      "fertiliser_action": "비료 적용",
+      "fertiliser_reason": "시비 간격 도달",
+      "mowing_soon": "예초 시간이 곧 옵니다",
+      "mow_action": "{{window}} 예초",
+      "mow_action_ready": "준비되면 예초",
+      "mow_reason": "예초하기 좋은 성장 조건",
+      "recovery_mode": "회복 모드",
+      "recovery_recommendation": "잔디밭이 회복 중 — 과도한 방해 자제",
+      "recovery_action": "예초 자제",
+      "recovery_reason": "낮은 성장 점수 — 잔디가 회복 중",
+      "healthy": "건강함",
+      "rain_recommendation": "비 예상 — 관수 불필요",
+      "no_action": "조치 불필요",
+      "wait_for_rain": "비를 기다리세요",
+      "all_good": "모든 조건이 좋습니다"
+    },
+    "profile": {
+      "labels": {
+        "showcase": "전시용 잔디밭",
+        "balanced": "균형 잡힌",
+        "drought_resistant": "가뭄 저항성",
+        "low_maintenance": "저관리",
+        "shade_lawn": "그늘 잔디밭",
+        "custom": "사용자 정의"
+      },
+      "reasons": {
+        "heat_stress": "열 스트레스 시 예초 높이 높이기",
+        "frost": "서리 시 최대 높이 유지",
+        "drought": "가뭄 저항성 향상을 위해 예초 지연",
+        "spring": "봄철 성장 시 예초 높이 점진적 낮추기",
+        "shade": "그늘에서 더 높은 잔디 높이 유지"
+      },
+      "recs": {
+        "frost_protection": "서리 보호 모드 — 예초 자제. 잔디깎기를 {{height}} mm로 올리세요.",
+        "heat_stress_raise": "열 스트레스 감지 — 예초 높이를 {{height}} mm로 올리세요.",
+        "drought_active": "가뭄 보호 모드 활성 — 예초 빈도 줄이기.",
+        "increase_watering": "관수 {{pct}}% 증가.",
+        "drought_risk": "가뭄 위험 — 예초를 지연하여 가뭄 저항성 향상.",
+        "spring_growth": "봄철 성장 가속 — 예초 높이를 {{height}} mm로 점진적으로 낮추세요.",
+        "increase_frequency": "예초 빈도를 {{days}}일마다로 늘리세요.",
+        "premium_growth": "프리미엄 성장 모드 활성 — 예초 높이 {{height}} mm 유지.",
+        "drought_resistant_mode": "가뭄 저항성 모드 활성 — {{days}}일마다 {{height}} mm로 예초.",
+        "low_maintenance_mode": "저관리 모드 — {{days}}일마다 예초.",
+        "slow_growth": "느린 성장으로 예초 빈도 줄이기 — 다음 예초 {{days}}일 후.",
+        "fertiliser_blocked": "시비 차단됨 — 조건이 적합하지 않습니다.",
+        "increase_fertiliser": "시비 {{pct}}% 증가.",
+        "reduce_fertiliser": "시비 {{pct}}% 감소.",
+        "nominal": "{{profile}} — 조건 정상."
+      },
+      "notifications": {
+        "heat_stress": "열 스트레스 감지 — 예초 높이를 {{height}} mm로 올리세요.",
+        "drought_protection": "가뭄 보호 모드 활성. 예초 높이를 {{height}} mm로 올리세요.",
+        "frost_protection": "서리 위험 — 예초 자제. 예초 높이 {{height}} mm로 설정됨.",
+        "premium_growth": "프리미엄 성장 모드 활성.",
+        "drought_resistant": "가뭄 저항성 모드 활성.",
+        "spring_growth": "봄철 성장 가속 — 예초 높이를 {{height}} mm로 점진적으로 낮추세요.",
+        "slow_growth": "느린 성장 — 예초 빈도 줄이는 중."
+      }
+    },
+    "notifications": {
+      "fertiliser_due": "잔디밭이 시비 준비가 되었습니다. 토양 온도와 성장 조건이 좋습니다.",
+      "fertiliser_heavy_rain": "시비 기한이 지났지만 많은 비가 예상됩니다. 며칠 기다리는 것을 고려하세요.",
+      "fertiliser_upcoming_one": "1일 후 시비 기회.",
+      "fertiliser_upcoming": "{{days}}일 후 시비 기회.",
+      "water_needed": "잔디밭에 물이 필요합니다: 이번 주 {{amount}} mm 남음.",
+      "water_rain_delay": "관수 지연 — 24시간 이내 비 예상.",
+      "water_target_reached": "주간 수분 목표 달성. 관수 불필요."
+    }
   }
 }

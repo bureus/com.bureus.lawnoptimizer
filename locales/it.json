@@ -120,5 +120,144 @@
     "invalid_longitude": "Longitudine non valida. Deve essere compresa tra -180 e 180.",
     "no_location": "Nessuna posizione impostata. Configura latitudine e longitudine nelle impostazioni del dispositivo.",
     "fetch_failed": "Impossibile recuperare i dati meteo. Verrà riprovato al prossimo ciclo."
+  },
+  "services": {
+    "days": {
+      "sunday": "Domenica",
+      "monday": "Lunedì",
+      "tuesday": "Martedì",
+      "wednesday": "Mercoledì",
+      "thursday": "Giovedì",
+      "friday": "Venerdì",
+      "saturday": "Sabato"
+    },
+    "scoring": {
+      "frost_risk": "Rischio gelo – proteggi il tuo prato",
+      "heat_stress": "Stress da calore – considera l'irrigazione",
+      "dormant": "Dormiente – il prato non cresce",
+      "very_slow_growth": "Crescita molto lenta",
+      "early_growth": "Crescita precoce – il prato si risveglia",
+      "strong_growth": "Condizioni di crescita forti",
+      "good_growth": "Buone condizioni di crescita",
+      "moderate_growth": "Condizioni di crescita moderate"
+    },
+    "water": {
+      "too_cold": "Troppo freddo per irrigare",
+      "target_reached": "Irrigazione non necessaria — obiettivo pioggia settimanale raggiunto",
+      "rain_covers_deficit": "Irrigazione non necessaria — pioggia sufficiente prevista questa settimana",
+      "rain_expected_24h": "Ritardare l'irrigazione — pioggia prevista domani",
+      "below_minimum": "Deficit idrico {{amount}} mm — sotto la soglia minima",
+      "heat_stress": "Irrigazione consigliata: {{amount}} mm — stress da calore, irrigare poco e ripetere",
+      "window": "Finestra di irrigazione: {{day}} {{time}}",
+      "recommended": "Irrigazione consigliata: {{amount}} mm necessari questa settimana"
+    },
+    "fertiliser": {
+      "no_date": "Inserisci l'ultima data di concimazione per attivare la pianificazione.",
+      "outside_season": "Fuori stagione di concimazione",
+      "soil_too_cold_overdue": "Scaduto, ma ritardato — temperatura del suolo sotto {{minTemp}} °C",
+      "soil_too_cold": "Troppo presto — temperatura del suolo sotto {{minTemp}} °C",
+      "low_growth_overdue": "Scaduto, ma ritardato — il prato non cresce abbastanza attivamente",
+      "low_growth": "Troppo presto — il prato non cresce abbastanza attivamente",
+      "warm_season_cool_overdue": "Scaduto, ma ritardato — suolo troppo freddo per erba stagione calda",
+      "warm_season_cool": "In attesa — suolo troppo freddo per erba stagione calda",
+      "heavy_rain_overdue": "Scaduto, ma ritardato — pioggia intensa prevista",
+      "heavy_rain": "Ritardare — pioggia intensa prevista",
+      "due_light_rain": "Scaduto ora — pioggia leggera prevista, tempistica ideale",
+      "due_no_rain": "Scaduto ora — nessuna pioggia prevista, irrigare dopo l'applicazione",
+      "due_good": "Scaduto ora — le condizioni sono buone",
+      "due_tomorrow": "Scade domani",
+      "recommended_in_days": "Consigliato tra {{days}} giorni",
+      "next_in_days": "Prossima concimazione tra {{days}} giorni",
+      "next_date": "Prossima data di concimazione: {{date}}"
+    },
+    "mowing": {
+      "too_cold": "Troppo freddo per tagliare",
+      "not_suitable": "Condizioni di crescita non adatte per il taglio",
+      "window": "Finestra di taglio: {{day}}",
+      "today": "Oggi",
+      "recommended_now": "Taglio consigliato ora"
+    },
+    "dashboard": {
+      "frost_risk": "Rischio gelo",
+      "frost_recommendation": "Gelo rilevato ({{severity}}) — proteggi il tuo prato",
+      "frost_action": "Evitare il taglio",
+      "heat_stress": "Stress da calore",
+      "heat_recommendation": "Irrigare leggermente per raffreddare la zona radicale",
+      "heat_action_amount": "Irrigare {{amount}} mm",
+      "heat_action_light": "Irrigare leggermente",
+      "needs_water": "Necessita acqua",
+      "water_recommendation": "Applicare {{amount}} mm nel prossimo giorno di irrigazione",
+      "water_action": "Irrigare {{amount}} mm",
+      "water_reason": "Deficit idrico: {{amount}} mm rimanenti questa settimana",
+      "fertiliser_due": "Concimazione scaduta",
+      "fertiliser_recommendation": "Concimare ora — le condizioni sono buone",
+      "fertiliser_action": "Applicare concime",
+      "fertiliser_reason": "Intervallo di concimazione raggiunto",
+      "mowing_soon": "Finestra di taglio presto",
+      "mow_action": "Tagliare {{window}}",
+      "mow_action_ready": "Tagliare quando pronto",
+      "mow_reason": "Condizioni di crescita buone per il taglio",
+      "recovery_mode": "Modalità recupero",
+      "recovery_recommendation": "Il prato si sta riprendendo — evitare disturbi intensi",
+      "recovery_action": "Evitare il taglio",
+      "recovery_reason": "Punteggio di crescita basso — il prato si sta riprendendo",
+      "healthy": "Sano",
+      "rain_recommendation": "Pioggia prevista — irrigazione non necessaria",
+      "no_action": "Nessuna azione necessaria",
+      "wait_for_rain": "Attendere la pioggia",
+      "all_good": "Tutte le condizioni sono buone"
+    },
+    "profile": {
+      "labels": {
+        "showcase": "Prato di rappresentanza",
+        "balanced": "Bilanciato",
+        "drought_resistant": "Resistente alla siccità",
+        "low_maintenance": "Bassa manutenzione",
+        "shade_lawn": "Prato d'ombra",
+        "custom": "Personalizzato"
+      },
+      "reasons": {
+        "heat_stress": "Aumentare l'altezza di taglio durante lo stress da calore",
+        "frost": "Mantenere l'altezza massima durante il gelo",
+        "drought": "Ritardare il taglio per migliorare la resistenza alla siccità",
+        "spring": "Abbassare gradualmente l'altezza di taglio durante la crescita primaverile",
+        "shade": "Mantenere un'altezza maggiore all'ombra"
+      },
+      "recs": {
+        "frost_protection": "Modalità protezione gelo — evitare il taglio. Alzare il tosaerba a {{height}} mm.",
+        "heat_stress_raise": "Stress da calore rilevato — alzare l'altezza di taglio a {{height}} mm.",
+        "drought_active": "Modalità protezione siccità attiva — ridurre la frequenza di taglio.",
+        "increase_watering": "Aumentare l'irrigazione del {{pct}}%.",
+        "drought_risk": "Rischio siccità — ritardare il taglio per migliorare la resistenza.",
+        "spring_growth": "Crescita primaverile in accelerazione — abbassare gradualmente a {{height}} mm.",
+        "increase_frequency": "Aumentare la frequenza di taglio a ogni {{days}} giorni.",
+        "premium_growth": "Modalità crescita premium attiva — mantenere l'altezza di taglio a {{height}} mm.",
+        "drought_resistant_mode": "Modalità resistente alla siccità attiva — tagliare ogni {{days}} giorni a {{height}} mm.",
+        "low_maintenance_mode": "Modalità bassa manutenzione — tagliare ogni {{days}} giorni.",
+        "slow_growth": "Ridurre la frequenza di taglio per crescita lenta — prossimo taglio tra {{days}} giorni.",
+        "fertiliser_blocked": "Concimazione bloccata — condizioni non adatte.",
+        "increase_fertiliser": "Aumentare la concimazione del {{pct}}%.",
+        "reduce_fertiliser": "Ridurre la concimazione del {{pct}}%.",
+        "nominal": "{{profile}} — condizioni normali."
+      },
+      "notifications": {
+        "heat_stress": "Stress da calore rilevato — alzare l'altezza di taglio a {{height}} mm.",
+        "drought_protection": "Modalità protezione siccità attiva. Alzare l'altezza di taglio a {{height}} mm.",
+        "frost_protection": "Rischio gelo — evitare il taglio. Altezza di taglio impostata a {{height}} mm.",
+        "premium_growth": "Modalità crescita premium attiva.",
+        "drought_resistant": "Modalità resistente alla siccità attiva.",
+        "spring_growth": "Crescita primaverile in accelerazione — abbassare gradualmente a {{height}} mm.",
+        "slow_growth": "Crescita lenta — riduzione della frequenza di taglio."
+      }
+    },
+    "notifications": {
+      "fertiliser_due": "Il tuo prato è pronto per la concimazione. La temperatura del suolo e le condizioni di crescita sono buone.",
+      "fertiliser_heavy_rain": "La concimazione è scaduta, ma si prevede pioggia intensa. Considera di aspettare qualche giorno.",
+      "fertiliser_upcoming_one": "Finestra di concimazione tra 1 giorno.",
+      "fertiliser_upcoming": "Finestra di concimazione tra {{days}} giorni.",
+      "water_needed": "Il tuo prato ha bisogno di acqua: {{amount}} mm rimanenti questa settimana.",
+      "water_rain_delay": "Irrigazione ritardata — pioggia prevista nelle prossime 24 ore.",
+      "water_target_reached": "Obiettivo idrico settimanale raggiunto. Irrigazione non necessaria."
+    }
   }
 }
