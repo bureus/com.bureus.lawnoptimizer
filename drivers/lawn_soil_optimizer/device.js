@@ -113,6 +113,16 @@ class LawnSoilOptimizerDevice extends Homey.Device {
     this._stopPolling();
   }
 
+  // ─── Translation helper ────────────────────────────────────────────────────
+
+  _t(key, params) {
+    let str = this.homey.__(key);
+    if (params && typeof str === 'string') {
+      str = str.replace(/\{\{(\w+)\}\}/g, (_, k) => (params[k] !== undefined ? params[k] : `{{${k}}}`));
+    }
+    return str;
+  }
+
   async onSettings({ oldSettings, newSettings, changedKeys }) {
     this.log('Settings changed:', changedKeys.join(', '));
     this._stopPolling();
@@ -163,7 +173,7 @@ class LawnSoilOptimizerDevice extends Homey.Device {
 
       const previousRootZone = this.getStoreValue(STORE_ROOT_ZONE) ?? null;
 
-      const __ = (key, params) => this.homey.__(key, params);
+      const __ = (key, params) => this._t(key, params);
 
       const temps      = model.calculate(snapshot, previousRootZone);
       const assessment = scoring.assess(temps, __);
@@ -637,7 +647,7 @@ class LawnSoilOptimizerDevice extends Homey.Device {
     if (due) {
       if (await shouldNotify(STORE_NOTIF_DUE_DATE)) {
         await this.homey.notifications.createNotification({
-          excerpt: this.homey.__('services.notifications.fertiliser_due'),
+          excerpt: this._t('services.notifications.fertiliser_due'),
         });
       }
       return;
@@ -647,7 +657,7 @@ class LawnSoilOptimizerDevice extends Homey.Device {
     if (isOverdue && reason === 'heavy_rain') {
       if (await shouldNotify(STORE_NOTIF_DELAY_DATE)) {
         await this.homey.notifications.createNotification({
-          excerpt: this.homey.__('services.notifications.fertiliser_heavy_rain'),
+          excerpt: this._t('services.notifications.fertiliser_heavy_rain'),
         });
       }
       return;
@@ -657,7 +667,7 @@ class LawnSoilOptimizerDevice extends Homey.Device {
       if (await shouldNotify(STORE_NOTIF_WIN_DATE)) {
         const key = daysRemaining === 1 ? 'services.notifications.fertiliser_upcoming_one' : 'services.notifications.fertiliser_upcoming';
         await this.homey.notifications.createNotification({
-          excerpt: this.homey.__(key, { days: daysRemaining }),
+          excerpt: this._t(key, { days: daysRemaining }),
         });
       }
     }
@@ -680,7 +690,7 @@ class LawnSoilOptimizerDevice extends Homey.Device {
     if (wateringDue && waterDeficitMm > 0) {
       if (await shouldNotify()) {
         await this.homey.notifications.createNotification({
-          excerpt: this.homey.__('services.notifications.water_needed', { amount: waterDeficitMm }),
+          excerpt: this._t('services.notifications.water_needed', { amount: waterDeficitMm }),
         });
       }
       return;
@@ -689,7 +699,7 @@ class LawnSoilOptimizerDevice extends Homey.Device {
     if (reason === 'rain_expected_24h') {
       if (await shouldNotify()) {
         await this.homey.notifications.createNotification({
-          excerpt: this.homey.__('services.notifications.water_rain_delay'),
+          excerpt: this._t('services.notifications.water_rain_delay'),
         });
       }
       return;
@@ -698,7 +708,7 @@ class LawnSoilOptimizerDevice extends Homey.Device {
     if (reason === 'target_reached') {
       if (await shouldNotify()) {
         await this.homey.notifications.createNotification({
-          excerpt: this.homey.__('services.notifications.water_target_reached'),
+          excerpt: this._t('services.notifications.water_target_reached'),
         });
       }
     }
@@ -711,7 +721,7 @@ class LawnSoilOptimizerDevice extends Homey.Device {
 
     const today      = new Date().toISOString().slice(0, 10);
     const prevStatus = this.getStoreValue(STORE_PREV_PROFILE_STATUS);
-    const msg        = buildProfileNotification(profileResult, prevStatus, (key, params) => this.homey.__(key, params));
+    const msg        = buildProfileNotification(profileResult, prevStatus, (key, params) => this._t(key, params));
 
     if (!msg) return;
     if (this.getStoreValue(STORE_NOTIF_PROFILE_DATE) === today) return;

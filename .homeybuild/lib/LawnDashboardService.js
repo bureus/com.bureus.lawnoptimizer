@@ -26,7 +26,7 @@ class LawnDashboardService {
    * @param {import('./LawnStressService').StressAssessment}   p.stressResult
    * @returns {DashboardState}
    */
-  compute({ scoringResult, waterResult, fertResult, mowingWindowResult, stressResult }) {
+  compute({ scoringResult, waterResult, fertResult, mowingWindowResult, stressResult, __ = null }) {
     const {
       growthScore,
       frostRisk,
@@ -57,61 +57,63 @@ class LawnDashboardService {
     let lawnStatus, primaryRecommendation, nextAction, nextActionDate, nextActionReason;
 
     if (frostSeverity !== 'none') {
-      lawnStatus            = 'Frost risk';
-      primaryRecommendation = `Frost detected (${frostSeverity}) — protect your lawn`;
-      nextAction            = 'Avoid mowing';
+      lawnStatus            = __ ? __('services.dashboard.frost_risk') : 'Frost risk';
+      primaryRecommendation = __ ? __('services.dashboard.frost_recommendation', { severity: frostSeverity }) : `Frost detected (${frostSeverity}) — protect your lawn`;
+      nextAction            = __ ? __('services.dashboard.frost_action') : 'Avoid mowing';
       nextActionDate        = '—';
       nextActionReason      = `Frost severity: ${frostSeverity}`;
 
     } else if (heatStressSeverity !== 'none') {
-      lawnStatus            = 'Heat stress';
-      primaryRecommendation = 'Water lightly to cool the root zone';
+      lawnStatus            = __ ? __('services.dashboard.heat_stress') : 'Heat stress';
+      primaryRecommendation = __ ? __('services.dashboard.heat_recommendation') : 'Water lightly to cool the root zone';
       nextAction            = nextWateringAmountMm > 0
-        ? `Water ${nextWateringAmountMm} mm`
-        : 'Water lightly';
+        ? (__ ? __('services.dashboard.heat_action_amount', { amount: nextWateringAmountMm }) : `Water ${nextWateringAmountMm} mm`)
+        : (__ ? __('services.dashboard.heat_action_light') : 'Water lightly');
       nextActionDate        = nextWateringDate || '—';
       nextActionReason      = `Heat stress: ${heatStressSeverity}`;
 
     } else if (wateringDue) {
-      lawnStatus            = 'Needs water';
-      primaryRecommendation = `Apply ${nextWateringAmountMm} mm on next watering day`;
-      nextAction            = `Water ${nextWateringAmountMm} mm`;
+      lawnStatus            = __ ? __('services.dashboard.needs_water') : 'Needs water';
+      primaryRecommendation = __ ? __('services.dashboard.water_recommendation', { amount: nextWateringAmountMm }) : `Apply ${nextWateringAmountMm} mm on next watering day`;
+      nextAction            = __ ? __('services.dashboard.water_action', { amount: nextWateringAmountMm }) : `Water ${nextWateringAmountMm} mm`;
       nextActionDate        = nextWateringDate || '—';
-      nextActionReason      = `Water deficit: ${waterDeficitMm} mm remaining this week`;
+      nextActionReason      = __ ? __('services.dashboard.water_reason', { amount: waterDeficitMm }) : `Water deficit: ${waterDeficitMm} mm remaining this week`;
 
     } else if (fertDue) {
-      lawnStatus            = 'Fertiliser due';
-      primaryRecommendation = 'Apply fertiliser now — conditions are good';
-      nextAction            = 'Apply fertiliser';
+      lawnStatus            = __ ? __('services.dashboard.fertiliser_due') : 'Fertiliser due';
+      primaryRecommendation = __ ? __('services.dashboard.fertiliser_recommendation') : 'Apply fertiliser now — conditions are good';
+      nextAction            = __ ? __('services.dashboard.fertiliser_action') : 'Apply fertiliser';
       nextActionDate        = fertNextDate || '—';
-      nextActionReason      = fertStatus || 'Fertiliser interval reached';
+      nextActionReason      = fertStatus || (__ ? __('services.dashboard.fertiliser_reason') : 'Fertiliser interval reached');
 
     } else if (mowingRecommended) {
-      lawnStatus            = 'Mowing window soon';
+      lawnStatus            = __ ? __('services.dashboard.mowing_soon') : 'Mowing window soon';
       primaryRecommendation = mowingStatus;
       nextAction            = nextMowingWindow !== '—'
-        ? `Mow ${nextMowingWindow}`
-        : 'Mow when ready';
+        ? (__ ? __('services.dashboard.mow_action', { window: nextMowingWindow }) : `Mow ${nextMowingWindow}`)
+        : (__ ? __('services.dashboard.mow_action_ready') : 'Mow when ready');
       nextActionDate        = '—';
-      nextActionReason      = 'Growth conditions are good for mowing';
+      nextActionReason      = __ ? __('services.dashboard.mow_reason') : 'Growth conditions are good for mowing';
 
     } else if (recoveryMode) {
-      lawnStatus            = 'Recovery mode';
-      primaryRecommendation = 'Lawn is recovering — avoid heavy disturbance';
-      nextAction            = 'Avoid mowing';
+      lawnStatus            = __ ? __('services.dashboard.recovery_mode') : 'Recovery mode';
+      primaryRecommendation = __ ? __('services.dashboard.recovery_recommendation') : 'Lawn is recovering — avoid heavy disturbance';
+      nextAction            = __ ? __('services.dashboard.recovery_action') : 'Avoid mowing';
       nextActionDate        = '—';
-      nextActionReason      = 'Low growth score — grass is recovering';
+      nextActionReason      = __ ? __('services.dashboard.recovery_reason') : 'Low growth score — grass is recovering';
 
     } else {
       // Healthy — check if rain is covering the watering need
       const rainCovering = waterReason === 'rain_covers_deficit' || waterReason === 'rain_expected_24h';
-      lawnStatus            = 'Healthy';
+      lawnStatus            = __ ? __('services.dashboard.healthy') : 'Healthy';
       primaryRecommendation = rainCovering
-        ? 'Rain expected — no watering needed'
-        : 'No action needed';
-      nextAction            = rainCovering ? 'Wait for rain' : 'No action needed';
+        ? (__ ? __('services.dashboard.rain_recommendation') : 'Rain expected — no watering needed')
+        : (__ ? __('services.dashboard.no_action') : 'No action needed');
+      nextAction            = rainCovering
+        ? (__ ? __('services.dashboard.wait_for_rain') : 'Wait for rain')
+        : (__ ? __('services.dashboard.no_action') : 'No action needed');
       nextActionDate        = '—';
-      nextActionReason      = rainCovering ? waterStatus : 'All conditions are good';
+      nextActionReason      = rainCovering ? waterStatus : (__ ? __('services.dashboard.all_good') : 'All conditions are good');
     }
 
     const overallScore = this._calcOverallScore(

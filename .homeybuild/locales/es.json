@@ -120,5 +120,144 @@
     "invalid_longitude": "Longitud no válida. Debe estar entre -180 y 180.",
     "no_location": "No se ha establecido ninguna ubicación. Configura la latitud y longitud en los ajustes del dispositivo.",
     "fetch_failed": "Error al obtener los datos meteorológicos. Se reintentará en el próximo ciclo."
+  },
+  "services": {
+    "days": {
+      "sunday": "Domingo",
+      "monday": "Lunes",
+      "tuesday": "Martes",
+      "wednesday": "Miércoles",
+      "thursday": "Jueves",
+      "friday": "Viernes",
+      "saturday": "Sábado"
+    },
+    "scoring": {
+      "frost_risk": "Riesgo de helada – protege tu césped",
+      "heat_stress": "Estrés por calor – considera el riego",
+      "dormant": "Dormante – el césped no crece",
+      "very_slow_growth": "Crecimiento muy lento",
+      "early_growth": "Crecimiento temprano – el césped se despierta",
+      "strong_growth": "Condiciones de crecimiento fuertes",
+      "good_growth": "Buenas condiciones de crecimiento",
+      "moderate_growth": "Condiciones de crecimiento moderadas"
+    },
+    "water": {
+      "too_cold": "Demasiado frío para regar",
+      "target_reached": "No se necesita riego — objetivo de lluvia semanal alcanzado",
+      "rain_covers_deficit": "No se necesita riego — lluvia suficiente esperada esta semana",
+      "rain_expected_24h": "Retrasar el riego — lluvia esperada mañana",
+      "below_minimum": "Déficit de agua {{amount}} mm — por debajo del mínimo accionable",
+      "heat_stress": "Riego recomendado: {{amount}} mm — estrés por calor, regar poco y repetir",
+      "window": "Ventana de riego: {{day}} {{time}}",
+      "recommended": "Riego recomendado: {{amount}} mm necesarios esta semana"
+    },
+    "fertiliser": {
+      "no_date": "Establece la última fecha de abonado para activar la planificación.",
+      "outside_season": "Fuera de la temporada de abonado",
+      "soil_too_cold_overdue": "Vencido, pero retrasado — temperatura del suelo por debajo de {{minTemp}} °C",
+      "soil_too_cold": "Demasiado pronto — temperatura del suelo por debajo de {{minTemp}} °C",
+      "low_growth_overdue": "Vencido, pero retrasado — el césped no crece lo suficientemente activo",
+      "low_growth": "Demasiado pronto — el césped no crece lo suficientemente activo",
+      "warm_season_cool_overdue": "Vencido, pero retrasado — suelo demasiado frío para césped de temporada cálida",
+      "warm_season_cool": "Esperando — suelo demasiado frío para césped de temporada cálida",
+      "heavy_rain_overdue": "Vencido, pero retrasado — lluvia intensa esperada",
+      "heavy_rain": "Retrasar — lluvia intensa esperada",
+      "due_light_rain": "Vence ahora — lluvia ligera esperada, momento ideal",
+      "due_no_rain": "Vence ahora — no se espera lluvia, regar después de aplicar",
+      "due_good": "Vence ahora — las condiciones son buenas",
+      "due_tomorrow": "Vence mañana",
+      "recommended_in_days": "Recomendado en {{days}} días",
+      "next_in_days": "Próximo abonado en {{days}} días",
+      "next_date": "Próxima fecha de abonado: {{date}}"
+    },
+    "mowing": {
+      "too_cold": "Demasiado frío para cortar",
+      "not_suitable": "Condiciones de crecimiento no adecuadas para cortar",
+      "window": "Ventana de corte: {{day}}",
+      "today": "Hoy",
+      "recommended_now": "Corte recomendado ahora"
+    },
+    "dashboard": {
+      "frost_risk": "Riesgo de helada",
+      "frost_recommendation": "Helada detectada ({{severity}}) — protege tu césped",
+      "frost_action": "Evitar cortar",
+      "heat_stress": "Estrés por calor",
+      "heat_recommendation": "Regar ligeramente para enfriar la zona radicular",
+      "heat_action_amount": "Regar {{amount}} mm",
+      "heat_action_light": "Regar ligeramente",
+      "needs_water": "Necesita agua",
+      "water_recommendation": "Aplicar {{amount}} mm en el próximo día de riego",
+      "water_action": "Regar {{amount}} mm",
+      "water_reason": "Déficit de agua: {{amount}} mm restantes esta semana",
+      "fertiliser_due": "Abonado pendiente",
+      "fertiliser_recommendation": "Abonar ahora — las condiciones son buenas",
+      "fertiliser_action": "Aplicar abono",
+      "fertiliser_reason": "Intervalo de abonado alcanzado",
+      "mowing_soon": "Ventana de corte próxima",
+      "mow_action": "Cortar {{window}}",
+      "mow_action_ready": "Cortar cuando esté listo",
+      "mow_reason": "Condiciones de crecimiento buenas para cortar",
+      "recovery_mode": "Modo recuperación",
+      "recovery_recommendation": "El césped se está recuperando — evitar perturbaciones intensas",
+      "recovery_action": "Evitar cortar",
+      "recovery_reason": "Puntuación de crecimiento baja — el césped se está recuperando",
+      "healthy": "Saludable",
+      "rain_recommendation": "Lluvia esperada — no se necesita riego",
+      "no_action": "No se requiere acción",
+      "wait_for_rain": "Esperar la lluvia",
+      "all_good": "Todas las condiciones son buenas"
+    },
+    "profile": {
+      "labels": {
+        "showcase": "Césped de exposición",
+        "balanced": "Equilibrado",
+        "drought_resistant": "Resistente a la sequía",
+        "low_maintenance": "Bajo mantenimiento",
+        "shade_lawn": "Césped de sombra",
+        "custom": "Personalizado"
+      },
+      "reasons": {
+        "heat_stress": "Aumentar la altura de corte durante el estrés por calor",
+        "frost": "Mantener la altura máxima durante la helada",
+        "drought": "Retrasar el corte para mejorar la resistencia a la sequía",
+        "spring": "Reducir gradualmente la altura de corte en el crecimiento primaveral",
+        "shade": "Mantener mayor altura de césped en la sombra"
+      },
+      "recs": {
+        "frost_protection": "Modo protección contra heladas — evitar cortar. Subir cortadora a {{height}} mm.",
+        "heat_stress_raise": "Estrés por calor detectado — subir altura de corte a {{height}} mm.",
+        "drought_active": "Modo protección contra sequía activo — reducir frecuencia de corte.",
+        "increase_watering": "Aumentar riego un {{pct}}%.",
+        "drought_risk": "Riesgo de sequía — retrasar el corte para mejorar la resistencia.",
+        "spring_growth": "Crecimiento primaveral acelerando — reducir altura de corte gradualmente a {{height}} mm.",
+        "increase_frequency": "Aumentar frecuencia de corte a cada {{days}} días.",
+        "premium_growth": "Modo crecimiento premium activo — mantener altura de corte en {{height}} mm.",
+        "drought_resistant_mode": "Modo resistente a la sequía activo — cortar cada {{days}} días a {{height}} mm.",
+        "low_maintenance_mode": "Modo bajo mantenimiento — cortar cada {{days}} días.",
+        "slow_growth": "Reducir frecuencia de corte por crecimiento lento — próximo corte en {{days}} días.",
+        "fertiliser_blocked": "Abonado bloqueado — condiciones no adecuadas.",
+        "increase_fertiliser": "Aumentar abonado un {{pct}}%.",
+        "reduce_fertiliser": "Reducir abonado un {{pct}}%.",
+        "nominal": "{{profile}} — condiciones normales."
+      },
+      "notifications": {
+        "heat_stress": "Estrés por calor detectado — subir altura de corte a {{height}} mm.",
+        "drought_protection": "Modo protección contra sequía activo. Subir altura de corte a {{height}} mm.",
+        "frost_protection": "Riesgo de helada — evitar cortar. Altura de corte establecida en {{height}} mm.",
+        "premium_growth": "Modo crecimiento premium activo.",
+        "drought_resistant": "Modo resistente a la sequía activo.",
+        "spring_growth": "Crecimiento primaveral acelerando — reducir altura de corte gradualmente a {{height}} mm.",
+        "slow_growth": "Crecimiento lento — reduciendo la frecuencia de corte."
+      }
+    },
+    "notifications": {
+      "fertiliser_due": "Tu césped está listo para abonar. La temperatura del suelo y las condiciones de crecimiento son buenas.",
+      "fertiliser_heavy_rain": "El abonado está vencido, pero se espera lluvia intensa. Considera esperar unos días.",
+      "fertiliser_upcoming_one": "Ventana de abonado en 1 día.",
+      "fertiliser_upcoming": "Ventana de abonado en {{days}} días.",
+      "water_needed": "Tu césped necesita agua: {{amount}} mm restantes esta semana.",
+      "water_rain_delay": "Riego retrasado — se espera lluvia en 24 horas.",
+      "water_target_reached": "Objetivo semanal de agua alcanzado. No se necesita riego."
+    }
   }
 }

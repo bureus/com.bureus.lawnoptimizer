@@ -172,6 +172,7 @@ function calculateLawnOptimization({
   shadeLevel            = 'full_sun',
   season                = null,
   mowingFrequencyStrategy = 'adaptive',
+  __                    = null,
 }) {
   const profile = PROFILES[lawnProfile] ?? PROFILES.balanced;
 
@@ -190,34 +191,35 @@ function calculateLawnOptimization({
 
   if (heatStressRisk) {
     recommendedHeightMm += profile.heatMowingHeightBump;
-    reasons.push(`Increase mowing height during heat stress`);
+    reasons.push(__ ? __('services.profile.reasons.heat_stress') : 'Increase mowing height during heat stress');
   }
 
   if (frostRisk) {
     recommendedHeightMm = Math.max(recommendedHeightMm, baseMaxMm);
-    reasons.push('Maintain maximum height during frost');
+    reasons.push(__ ? __('services.profile.reasons.frost') : 'Maintain maximum height during frost');
   }
 
   if (waterDeficitMm > 10) {
     recommendedHeightMm += profile.droughtMowingHeightBump;
-    reasons.push('Delay mowing to improve drought resistance');
+    reasons.push(__ ? __('services.profile.reasons.drought') : 'Delay mowing to improve drought resistance');
   }
 
   if (growthScore >= 70 && resolvedSeason === 'spring') {
     recommendedHeightMm = Math.max(baseMinMm, recommendedHeightMm - 5);
-    reasons.push('Lower mowing height gradually for spring growth');
+    reasons.push(__ ? __('services.profile.reasons.spring') : 'Lower mowing height gradually for spring growth');
   }
 
   if (shadeLevel === 'shade' || shadeLevel === 'partial_shade') {
     recommendedHeightMm = Math.max(recommendedHeightMm, baseTargetMm + 8);
-    reasons.push('Maintain higher grass height for shade');
+    reasons.push(__ ? __('services.profile.reasons.shade') : 'Maintain higher grass height for shade');
   }
 
   recommendedHeightMm = Math.round(Math.max(baseMinMm, Math.min(baseMaxMm, recommendedHeightMm)));
 
+  const localizedLabel = __ ? __(`services.profile.labels.${lawnProfile}`) : profile.label;
   const mowingHeightAdjustmentReason = reasons.length > 0
     ? reasons.join('. ')
-    : `${profile.label} mode active`;
+    : `${localizedLabel} mode active`;
 
   // ── Mowing frequency ───────────────────────────────────────────────────────
 
@@ -307,6 +309,7 @@ function calculateLawnOptimization({
   const recommendations = _buildRecommendations({
     status,
     lawnProfile,
+    localizedLabel,
     recommendedHeightMm,
     mowingFrequencyDays,
     wateringAdjustmentPercent,
@@ -317,6 +320,7 @@ function calculateLawnOptimization({
     growthScore,
     resolvedSeason,
     grassGrowthSpeed,
+    __,
   });
 
   return {
@@ -328,7 +332,7 @@ function calculateLawnOptimization({
     visualQualityScore,
     status,
     mowingHeightAdjustmentReason,
-    profileLabel: profile.label,
+    profileLabel: localizedLabel,
     recommendations,
   };
 }
@@ -338,6 +342,7 @@ function calculateLawnOptimization({
 function _buildRecommendations({
   status,
   lawnProfile,
+  localizedLabel,
   recommendedHeightMm,
   mowingFrequencyDays,
   wateringAdjustmentPercent,
@@ -348,52 +353,55 @@ function _buildRecommendations({
   growthScore,
   resolvedSeason,
   grassGrowthSpeed,
+  __ = null,
 }) {
   const recs = [];
+  const pct  = wateringAdjustmentPercent > 0 ? `+${wateringAdjustmentPercent}` : String(wateringAdjustmentPercent);
 
   if (frostRisk) {
-    recs.push(`Frost protection mode — avoid mowing. Raise mower to ${recommendedHeightMm} mm.`);
+    recs.push(__ ? __('services.profile.recs.frost_protection', { height: recommendedHeightMm }) : `Frost protection mode — avoid mowing. Raise mower to ${recommendedHeightMm} mm.`);
   } else if (heatStressRisk && waterDeficitMm > 10) {
-    recs.push(`Heat stress detected — raise mowing height to ${recommendedHeightMm} mm.`);
-    recs.push('Drought protection mode active — reduce mowing frequency.');
-    recs.push(`Increase watering by ${wateringAdjustmentPercent > 0 ? '+' : ''}${wateringAdjustmentPercent}%.`);
+    recs.push(__ ? __('services.profile.recs.heat_stress_raise', { height: recommendedHeightMm }) : `Heat stress detected — raise mowing height to ${recommendedHeightMm} mm.`);
+    recs.push(__ ? __('services.profile.recs.drought_active') : 'Drought protection mode active — reduce mowing frequency.');
+    recs.push(__ ? __('services.profile.recs.increase_watering', { pct }) : `Increase watering by ${pct}%.`);
   } else if (heatStressRisk) {
-    recs.push(`Heat stress detected — raise mowing height to ${recommendedHeightMm} mm.`);
+    recs.push(__ ? __('services.profile.recs.heat_stress_raise', { height: recommendedHeightMm }) : `Heat stress detected — raise mowing height to ${recommendedHeightMm} mm.`);
   } else if (waterDeficitMm > 10) {
-    recs.push(`Drought risk — delay mowing to improve drought resistance.`);
+    recs.push(__ ? __('services.profile.recs.drought_risk') : 'Drought risk — delay mowing to improve drought resistance.');
   }
 
   if (status === 'spring_growth_mode') {
-    recs.push(`Spring growth accelerating — lower mowing height gradually to ${recommendedHeightMm} mm.`);
-    recs.push(`Increase mowing frequency to every ${mowingFrequencyDays} days.`);
+    recs.push(__ ? __('services.profile.recs.spring_growth', { height: recommendedHeightMm }) : `Spring growth accelerating — lower mowing height gradually to ${recommendedHeightMm} mm.`);
+    recs.push(__ ? __('services.profile.recs.increase_frequency', { days: mowingFrequencyDays }) : `Increase mowing frequency to every ${mowingFrequencyDays} days.`);
   }
 
   if (lawnProfile === 'showcase' && !heatStressRisk && !frostRisk) {
-    recs.push(`Premium growth mode active — maintain mowing height at ${recommendedHeightMm} mm.`);
+    recs.push(__ ? __('services.profile.recs.premium_growth', { height: recommendedHeightMm }) : `Premium growth mode active — maintain mowing height at ${recommendedHeightMm} mm.`);
   }
 
   if (lawnProfile === 'drought_resistant') {
-    recs.push(`Drought resistant mode active — mow every ${mowingFrequencyDays} days at ${recommendedHeightMm} mm.`);
+    recs.push(__ ? __('services.profile.recs.drought_resistant_mode', { days: mowingFrequencyDays, height: recommendedHeightMm }) : `Drought resistant mode active — mow every ${mowingFrequencyDays} days at ${recommendedHeightMm} mm.`);
   }
 
   if (lawnProfile === 'low_maintenance') {
-    recs.push(`Low maintenance mode — mow every ${mowingFrequencyDays} days.`);
+    recs.push(__ ? __('services.profile.recs.low_maintenance_mode', { days: mowingFrequencyDays }) : `Low maintenance mode — mow every ${mowingFrequencyDays} days.`);
   }
 
   if (grassGrowthSpeed === 'slow' && !heatStressRisk && !frostRisk) {
-    recs.push(`Reduce mowing frequency due to slow growth — next mow in ${mowingFrequencyDays} days.`);
+    recs.push(__ ? __('services.profile.recs.slow_growth', { days: mowingFrequencyDays }) : `Reduce mowing frequency due to slow growth — next mow in ${mowingFrequencyDays} days.`);
   }
 
   if (fertiliserAdjustmentPercent === -100) {
-    recs.push('Fertiliser blocked — conditions not suitable.');
+    recs.push(__ ? __('services.profile.recs.fertiliser_blocked') : 'Fertiliser blocked — conditions not suitable.');
   } else if (fertiliserAdjustmentPercent > 0) {
-    recs.push(`Increase fertiliser application by ${fertiliserAdjustmentPercent}%.`);
+    recs.push(__ ? __('services.profile.recs.increase_fertiliser', { pct: fertiliserAdjustmentPercent }) : `Increase fertiliser application by ${fertiliserAdjustmentPercent}%.`);
   } else if (fertiliserAdjustmentPercent < -20) {
-    recs.push(`Reduce fertiliser application by ${Math.abs(fertiliserAdjustmentPercent)}%.`);
+    recs.push(__ ? __('services.profile.recs.reduce_fertiliser', { pct: Math.abs(fertiliserAdjustmentPercent) }) : `Reduce fertiliser application by ${Math.abs(fertiliserAdjustmentPercent)}%.`);
   }
 
   if (recs.length === 0) {
-    recs.push(`${PROFILES[lawnProfile]?.label ?? 'Balanced'} — conditions nominal.`);
+    const label = localizedLabel ?? (__ ? __('services.profile.labels.balanced') : 'Balanced');
+    recs.push(__ ? __('services.profile.recs.nominal', { profile: label }) : `${label} — conditions nominal.`);
   }
 
   return recs;
@@ -405,10 +413,24 @@ function _buildRecommendations({
  * Returns a short notification string based on optimization status.
  * Returns null when no notification is warranted.
  */
-function buildProfileNotification(optimizationResult, prevStatus) {
-  const { status, recommendedHeightMm, lawnProfile } = optimizationResult;
+function buildProfileNotification(optimizationResult, prevStatus, __ = null) {
+  const { status, recommendedHeightMm } = optimizationResult;
 
   if (status === prevStatus) return null;
+
+  if (__) {
+    const keyMap = {
+      heat_stress_management: ['services.profile.notifications.heat_stress',        { height: recommendedHeightMm }],
+      drought_protection:     ['services.profile.notifications.drought_protection',  { height: recommendedHeightMm }],
+      frost_protection:       ['services.profile.notifications.frost_protection',    { height: recommendedHeightMm }],
+      premium_growth_mode:    ['services.profile.notifications.premium_growth',      {}],
+      drought_resistant_mode: ['services.profile.notifications.drought_resistant',   {}],
+      spring_growth_mode:     ['services.profile.notifications.spring_growth',       { height: recommendedHeightMm }],
+      slow_growth_mode:       ['services.profile.notifications.slow_growth',         {}],
+    };
+    const entry = keyMap[status];
+    return entry ? __(entry[0], entry[1]) : null;
+  }
 
   const msgs = {
     heat_stress_management: `Heat stress detected — raise mowing height to ${recommendedHeightMm} mm.`,

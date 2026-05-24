@@ -120,5 +120,144 @@
     "invalid_longitude": "Ungültiger Längengrad. Muss zwischen -180 und 180 liegen.",
     "no_location": "Kein Standort festgelegt. Bitte Breiten- und Längengrad in den Geräteeinstellungen konfigurieren.",
     "fetch_failed": "Wetterdaten konnten nicht abgerufen werden. Wird beim nächsten Abruf erneut versucht."
+  },
+  "services": {
+    "days": {
+      "sunday": "Sonntag",
+      "monday": "Montag",
+      "tuesday": "Dienstag",
+      "wednesday": "Mittwoch",
+      "thursday": "Donnerstag",
+      "friday": "Freitag",
+      "saturday": "Samstag"
+    },
+    "scoring": {
+      "frost_risk": "Frostgefahr – schützen Sie Ihren Rasen",
+      "heat_stress": "Hitzestress – Bewässerung erwägen",
+      "dormant": "Ruhephase – Gras wächst nicht",
+      "very_slow_growth": "Sehr langsames Wachstum",
+      "early_growth": "Frühes Wachstum – Rasen erwacht",
+      "strong_growth": "Starke Wachstumsbedingungen",
+      "good_growth": "Gute Wachstumsbedingungen",
+      "moderate_growth": "Mäßige Wachstumsbedingungen"
+    },
+    "water": {
+      "too_cold": "Zu kalt für Bewässerung",
+      "target_reached": "Keine Bewässerung nötig — Wochenziel für Regen erreicht",
+      "rain_covers_deficit": "Keine Bewässerung nötig — genug Regen diese Woche erwartet",
+      "rain_expected_24h": "Bewässerung verzögern — Regen morgen erwartet",
+      "below_minimum": "Wasserdefizit {{amount}} mm — unter Mindestmenge",
+      "heat_stress": "Bewässerung empfohlen: {{amount}} mm — Hitzestress, leicht gießen und wiederholen",
+      "window": "Bewässerungsfenster: {{day}} {{time}}",
+      "recommended": "Bewässerung empfohlen: {{amount}} mm diese Woche benötigt"
+    },
+    "fertiliser": {
+      "no_date": "Letztes Düngedatum eingeben, um Planung zu aktivieren.",
+      "outside_season": "Außerhalb der Düngesaison",
+      "soil_too_cold_overdue": "Fällig, aber verzögert — Bodentemperatur unter {{minTemp}} °C",
+      "soil_too_cold": "Zu früh — Bodentemperatur unter {{minTemp}} °C",
+      "low_growth_overdue": "Fällig, aber verzögert — Rasen wächst nicht aktiv genug",
+      "low_growth": "Zu früh — Rasen wächst nicht aktiv genug",
+      "warm_season_cool_overdue": "Fällig, aber verzögert — Boden zu kalt für Warmwüchser",
+      "warm_season_cool": "Warten — Boden zu kalt für Warmwüchser",
+      "heavy_rain_overdue": "Fällig, aber verzögert — starker Regen erwartet",
+      "heavy_rain": "Verzögern — starker Regen erwartet",
+      "due_light_rain": "Jetzt fällig — leichter Regen erwartet, ideales Timing",
+      "due_no_rain": "Jetzt fällig — kein Regen erwartet, nach Ausbringen bewässern",
+      "due_good": "Jetzt fällig — Bedingungen sehen gut aus",
+      "due_tomorrow": "Morgen fällig",
+      "recommended_in_days": "Empfohlen in {{days}} Tagen",
+      "next_in_days": "Nächste Düngung in {{days}} Tagen",
+      "next_date": "Nächstes Düngedatum: {{date}}"
+    },
+    "mowing": {
+      "too_cold": "Zu kalt zum Mähen",
+      "not_suitable": "Wachstumsbedingungen nicht geeignet zum Mähen",
+      "window": "Mähfenster: {{day}}",
+      "today": "Heute",
+      "recommended_now": "Mähen jetzt empfohlen"
+    },
+    "dashboard": {
+      "frost_risk": "Frostgefahr",
+      "frost_recommendation": "Frost erkannt ({{severity}}) — schützen Sie Ihren Rasen",
+      "frost_action": "Mähen vermeiden",
+      "heat_stress": "Hitzestress",
+      "heat_recommendation": "Leicht bewässern, um die Wurzelzone zu kühlen",
+      "heat_action_amount": "{{amount}} mm gießen",
+      "heat_action_light": "Leicht gießen",
+      "needs_water": "Braucht Wasser",
+      "water_recommendation": "{{amount}} mm beim nächsten Bewässerungstag auftragen",
+      "water_action": "{{amount}} mm gießen",
+      "water_reason": "Wasserdefizit: {{amount}} mm diese Woche verbleibend",
+      "fertiliser_due": "Düngen fällig",
+      "fertiliser_recommendation": "Jetzt düngen — Bedingungen sind gut",
+      "fertiliser_action": "Dünger auftragen",
+      "fertiliser_reason": "Düngeintervall erreicht",
+      "mowing_soon": "Mähfenster bald",
+      "mow_action": "Mähen {{window}}",
+      "mow_action_ready": "Mähen wenn bereit",
+      "mow_reason": "Wachstumsbedingungen gut zum Mähen",
+      "recovery_mode": "Erholungsmodus",
+      "recovery_recommendation": "Rasen erholt sich — starke Störungen vermeiden",
+      "recovery_action": "Mähen vermeiden",
+      "recovery_reason": "Niedriger Wachstumswert — Gras erholt sich",
+      "healthy": "Gesund",
+      "rain_recommendation": "Regen erwartet — keine Bewässerung nötig",
+      "no_action": "Keine Maßnahme nötig",
+      "wait_for_rain": "Auf Regen warten",
+      "all_good": "Alle Bedingungen sind gut"
+    },
+    "profile": {
+      "labels": {
+        "showcase": "Schaurasen",
+        "balanced": "Ausgewogen",
+        "drought_resistant": "Trockenresistent",
+        "low_maintenance": "Pflegeleicht",
+        "shade_lawn": "Schattenrasen",
+        "custom": "Benutzerdefiniert"
+      },
+      "reasons": {
+        "heat_stress": "Schnitthöhe bei Hitzestress erhöhen",
+        "frost": "Maximale Höhe bei Frost beibehalten",
+        "drought": "Mähen verzögern für bessere Trockenresistenz",
+        "spring": "Schnitthöhe im Frühjahr schrittweise senken",
+        "shade": "Höhere Grashöhe im Schatten beibehalten"
+      },
+      "recs": {
+        "frost_protection": "Frostschutzmodus — Mähen vermeiden. Mäher auf {{height}} mm einstellen.",
+        "heat_stress_raise": "Hitzestress erkannt — Schnitthöhe auf {{height}} mm erhöhen.",
+        "drought_active": "Trockenschutzmodus aktiv — Mähfrequenz reduzieren.",
+        "increase_watering": "Bewässerung um {{pct}}% erhöhen.",
+        "drought_risk": "Trockenheitsgefahr — Mähen verzögern für bessere Trockenresistenz.",
+        "spring_growth": "Frühjahrswachstum beschleunigt — Schnitthöhe schrittweise auf {{height}} mm senken.",
+        "increase_frequency": "Mähfrequenz auf alle {{days}} Tage erhöhen.",
+        "premium_growth": "Premium-Wachstumsmodus aktiv — Schnitthöhe bei {{height}} mm halten.",
+        "drought_resistant_mode": "Trockenresistenz-Modus aktiv — alle {{days}} Tage auf {{height}} mm mähen.",
+        "low_maintenance_mode": "Pflegeleicht-Modus — alle {{days}} Tage mähen.",
+        "slow_growth": "Mähfrequenz wegen langsamen Wachstums reduzieren — nächste Mahd in {{days}} Tagen.",
+        "fertiliser_blocked": "Düngen blockiert — Bedingungen nicht geeignet.",
+        "increase_fertiliser": "Düngung um {{pct}}% erhöhen.",
+        "reduce_fertiliser": "Düngung um {{pct}}% reduzieren.",
+        "nominal": "{{profile}} — Bedingungen normal."
+      },
+      "notifications": {
+        "heat_stress": "Hitzestress erkannt — Schnitthöhe auf {{height}} mm erhöhen.",
+        "drought_protection": "Trockenschutzmodus aktiv. Schnitthöhe auf {{height}} mm erhöhen.",
+        "frost_protection": "Frostgefahr — Mähen vermeiden. Schnitthöhe auf {{height}} mm eingestellt.",
+        "premium_growth": "Premium-Wachstumsmodus aktiv.",
+        "drought_resistant": "Trockenresistenz-Modus aktiv.",
+        "spring_growth": "Frühjahrswachstum beschleunigt — Schnitthöhe schrittweise auf {{height}} mm senken.",
+        "slow_growth": "Langsames Wachstum — Mähfrequenz wird reduziert."
+      }
+    },
+    "notifications": {
+      "fertiliser_due": "Ihr Rasen ist bereit für Dünger. Bodentemperatur und Wachstumsbedingungen sehen gut aus.",
+      "fertiliser_heavy_rain": "Düngen ist fällig, aber starker Regen wird erwartet. Erwägen Sie, einige Tage zu warten.",
+      "fertiliser_upcoming_one": "Düngefenster in 1 Tag.",
+      "fertiliser_upcoming": "Düngefenster in {{days}} Tagen.",
+      "water_needed": "Ihr Rasen braucht Wasser: {{amount}} mm diese Woche verbleibend.",
+      "water_rain_delay": "Bewässerung verzögert — Regen innerhalb von 24 Stunden erwartet.",
+      "water_target_reached": "Wöchentliches Wasserziel erreicht. Keine Bewässerung nötig."
+    }
   }
 }

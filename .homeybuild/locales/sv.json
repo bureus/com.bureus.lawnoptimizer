@@ -120,5 +120,144 @@
     "invalid_longitude": "Ogiltig longitud. Måste vara mellan -180 och 180.",
     "no_location": "Ingen plats angiven. Konfigurera latitud och longitud i enhetsinställningarna.",
     "fetch_failed": "Det gick inte att hämta väderdata. Försöker igen vid nästa avsökning."
+  },
+  "services": {
+    "days": {
+      "sunday": "Söndag",
+      "monday": "Måndag",
+      "tuesday": "Tisdag",
+      "wednesday": "Onsdag",
+      "thursday": "Torsdag",
+      "friday": "Fredag",
+      "saturday": "Lördag"
+    },
+    "scoring": {
+      "frost_risk": "Frostrisk – skydda din gräsmatta",
+      "heat_stress": "Värmestress – överväg bevattning",
+      "dormant": "Vilande – gräset växer inte",
+      "very_slow_growth": "Mycket långsam tillväxt",
+      "early_growth": "Tidig tillväxt – gräset vaknar",
+      "strong_growth": "Stark tillväxt",
+      "good_growth": "Goda tillväxtförhållanden",
+      "moderate_growth": "Måttliga tillväxtförhållanden"
+    },
+    "water": {
+      "too_cold": "För kallt för bevattning",
+      "target_reached": "Ingen bevattning behövs — veckans regnmål uppnått",
+      "rain_covers_deficit": "Ingen bevattning behövs — tillräckligt regn förväntas denna vecka",
+      "rain_expected_24h": "Fördröj bevattning — regn förväntas imorgon",
+      "below_minimum": "Vattenunderskott {{amount}} mm — under minsta åtgärdsbara mängd",
+      "heat_stress": "Bevattning rekommenderas: {{amount}} mm — värmestress, vattna lite och upprepa",
+      "window": "Bevattningsfönster: {{day}} {{time}}",
+      "recommended": "Bevattning rekommenderas: {{amount}} mm behövs denna vecka"
+    },
+    "fertiliser": {
+      "no_date": "Ange senaste gödningsdatum för att aktivera schemaläggning.",
+      "outside_season": "Utanför gödslingssäsongen",
+      "soil_too_cold_overdue": "Förfallen, men fördröjd — jordtemperatur under {{minTemp}} °C",
+      "soil_too_cold": "För tidigt — jordtemperatur under {{minTemp}} °C",
+      "low_growth_overdue": "Förfallen, men fördröjd — gräset växer inte tillräckligt aktivt",
+      "low_growth": "För tidigt — gräset växer inte tillräckligt aktivt",
+      "warm_season_cool_overdue": "Förfallen, men fördröjd — jord för kall för varmsäsongsgräs",
+      "warm_season_cool": "Väntar — jord för kall för varmsäsongsgräs",
+      "heavy_rain_overdue": "Förfallen, men fördröjd — kraftigt regn förväntas",
+      "heavy_rain": "Fördröj — kraftigt regn förväntas",
+      "due_light_rain": "Dags nu — lätt regn förväntas, idealisk timing",
+      "due_no_rain": "Dags nu — inget regn förväntas, vattna efter gödsling",
+      "due_good": "Dags nu — förhållandena ser bra ut",
+      "due_tomorrow": "Förfaller imorgon",
+      "recommended_in_days": "Rekommenderas om {{days}} dagar",
+      "next_in_days": "Nästa gödsling om {{days}} dagar",
+      "next_date": "Nästa gödningsdatum: {{date}}"
+    },
+    "mowing": {
+      "too_cold": "För kallt för klippning",
+      "not_suitable": "Tillväxtförhållandena är inte lämpliga för klippning",
+      "window": "Klippningsfönster: {{day}}",
+      "today": "Idag",
+      "recommended_now": "Klippning rekommenderas nu"
+    },
+    "dashboard": {
+      "frost_risk": "Frostrisk",
+      "frost_recommendation": "Frost detekterad ({{severity}}) — skydda din gräsmatta",
+      "frost_action": "Undvik klippning",
+      "heat_stress": "Värmestress",
+      "heat_recommendation": "Vattna lätt för att kyla rotzonen",
+      "heat_action_amount": "Vattna {{amount}} mm",
+      "heat_action_light": "Vattna lätt",
+      "needs_water": "Behöver vatten",
+      "water_recommendation": "Applicera {{amount}} mm på nästa bevattningsdag",
+      "water_action": "Vattna {{amount}} mm",
+      "water_reason": "Vattenunderskott: {{amount}} mm kvar denna vecka",
+      "fertiliser_due": "Gödsling förfallen",
+      "fertiliser_recommendation": "Gödsel nu — förhållandena är bra",
+      "fertiliser_action": "Applicera gödsel",
+      "fertiliser_reason": "Gödslingintervall uppnått",
+      "mowing_soon": "Klippningsfönster snart",
+      "mow_action": "Klipp {{window}}",
+      "mow_action_ready": "Klipp när redo",
+      "mow_reason": "Tillväxtförhållandena är bra för klippning",
+      "recovery_mode": "Återhämtningsläge",
+      "recovery_recommendation": "Gräsmattan återhämtar sig — undvik kraftiga störningar",
+      "recovery_action": "Undvik klippning",
+      "recovery_reason": "Låg tillväxtpoäng — gräset återhämtar sig",
+      "healthy": "Frisk",
+      "rain_recommendation": "Regn förväntas — ingen bevattning behövs",
+      "no_action": "Ingen åtgärd behövs",
+      "wait_for_rain": "Vänta på regn",
+      "all_good": "Alla förhållanden är bra"
+    },
+    "profile": {
+      "labels": {
+        "showcase": "Utställningsgräsmatta",
+        "balanced": "Balanserad",
+        "drought_resistant": "Torktålig",
+        "low_maintenance": "Lättskötta",
+        "shade_lawn": "Skuggmatta",
+        "custom": "Anpassad"
+      },
+      "reasons": {
+        "heat_stress": "Höj klipphöjden vid värmestress",
+        "frost": "Behåll maximal höjd vid frost",
+        "drought": "Fördröj klippning för att förbättra torktåligheten",
+        "spring": "Sänk klipphöjden successivt under vårens tillväxt",
+        "shade": "Behåll högre grashöjd i skugga"
+      },
+      "recs": {
+        "frost_protection": "Frostskyddsläge — undvik klippning. Höj klipparen till {{height}} mm.",
+        "heat_stress_raise": "Värmestress detekterad — höj klipphöjden till {{height}} mm.",
+        "drought_active": "Torktålighetsskydd aktivt — minska klippfrekvensen.",
+        "increase_watering": "Öka bevattning med {{pct}}%.",
+        "drought_risk": "Torkrisk — fördröj klippning för att förbättra torktåligheten.",
+        "spring_growth": "Vårens tillväxt accelererar — sänk klipphöjden successivt till {{height}} mm.",
+        "increase_frequency": "Öka klippfrekvensen till var {{days}} dag.",
+        "premium_growth": "Premium-tillväxtläge aktivt — behåll klipphöjden på {{height}} mm.",
+        "drought_resistant_mode": "Torktålighetsinställning aktiv — klipp var {{days}} dag på {{height}} mm.",
+        "low_maintenance_mode": "Lättsköttsläge — klipp var {{days}} dag.",
+        "slow_growth": "Minska klippfrekvensen på grund av långsam tillväxt — nästa klippning om {{days}} dagar.",
+        "fertiliser_blocked": "Gödsling blockerad — förhållandena är inte lämpliga.",
+        "increase_fertiliser": "Öka gödsling med {{pct}}%.",
+        "reduce_fertiliser": "Minska gödsling med {{pct}}%.",
+        "nominal": "{{profile}} — förhållandena är normala."
+      },
+      "notifications": {
+        "heat_stress": "Värmestress detekterad — höj klipphöjden till {{height}} mm.",
+        "drought_protection": "Torktålighetsskydd aktivt. Höj klipphöjden till {{height}} mm.",
+        "frost_protection": "Frostrisk — undvik klippning. Klipphöjd inställd på {{height}} mm.",
+        "premium_growth": "Premium-tillväxtläge aktivt.",
+        "drought_resistant": "Torktålighetsinställning aktiv.",
+        "spring_growth": "Vårens tillväxt accelererar — sänk klipphöjden successivt till {{height}} mm.",
+        "slow_growth": "Långsam tillväxt — minskar klippfrekvensen."
+      }
+    },
+    "notifications": {
+      "fertiliser_due": "Din gräsmatta är redo för gödsling. Jordtemperatur och tillväxtförhållanden ser bra ut.",
+      "fertiliser_heavy_rain": "Gödsling förfallen, men kraftigt regn förväntas. Överväg att vänta några dagar.",
+      "fertiliser_upcoming_one": "Gödslingstillfälle om 1 dag.",
+      "fertiliser_upcoming": "Gödslingstillfälle om {{days}} dagar.",
+      "water_needed": "Din gräsmatta behöver vatten: {{amount}} mm kvar denna vecka.",
+      "water_rain_delay": "Bevattning fördröjd — regn förväntas inom 24 timmar.",
+      "water_target_reached": "Veckans vattenmål uppnått. Ingen bevattning behövs."
+    }
   }
 }

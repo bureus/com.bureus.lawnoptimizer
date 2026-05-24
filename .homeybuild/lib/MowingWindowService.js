@@ -1,6 +1,7 @@
 'use strict';
 
-const DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const DAY_KEYS    = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+const DAY_NAMES_EN = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 // Maximum daily precipitation (mm) considered acceptable for mowing
 const MAX_RAIN_MM = 5;
@@ -21,13 +22,13 @@ class MowingWindowService {
    * @param {number}    [p.mowingMinTemp=8]     Min root-zone temp to mow
    * @returns {MowingWindowResult}
    */
-  findNextWindow({ precipitationByDay, rootZoneTemp, mowingRecommended, mowingMinTemp = 8 }) {
+  findNextWindow({ precipitationByDay, rootZoneTemp, mowingRecommended, mowingMinTemp = 8, __ = null }) {
     const rz = rootZoneTemp ?? 0;
 
     if (!mowingRecommended) {
       const reason = rz < mowingMinTemp
-        ? 'Too cold to mow'
-        : 'Growth conditions not suitable for mowing';
+        ? (__ ? __('services.mowing.too_cold') : 'Too cold to mow')
+        : (__ ? __('services.mowing.not_suitable') : 'Growth conditions not suitable for mowing');
       return { nextMowingWindow: '—', mowingStatus: reason };
     }
 
@@ -38,10 +39,11 @@ class MowingWindowService {
         if (date <= today) continue;                    // skip past/today
         if ((totalMm ?? 0) <= MAX_RAIN_MM) {
           const d       = new Date(date + 'T00:00:00Z');
-          const dayName = DAY_NAMES[d.getUTCDay()];
+          const dayIdx  = d.getUTCDay();
+          const dayName = __ ? __(`services.days.${DAY_KEYS[dayIdx]}`) : DAY_NAMES_EN[dayIdx];
           return {
             nextMowingWindow: `${dayName} ${date}`,
-            mowingStatus:     `Mowing window: ${dayName}`,
+            mowingStatus:     __ ? __('services.mowing.window', { day: dayName }) : `Mowing window: ${dayName}`,
           };
         }
       }
@@ -49,8 +51,8 @@ class MowingWindowService {
 
     // Mowing recommended but all forecast days are rainy — suggest now
     return {
-      nextMowingWindow: 'Today',
-      mowingStatus:     'Mowing recommended now',
+      nextMowingWindow: __ ? __('services.mowing.today') : 'Today',
+      mowingStatus:     __ ? __('services.mowing.recommended_now') : 'Mowing recommended now',
     };
   }
 }

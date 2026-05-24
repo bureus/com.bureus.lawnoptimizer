@@ -120,5 +120,144 @@
     "invalid_longitude": "Longitude invalide. Doit être comprise entre -180 et 180.",
     "no_location": "Aucun emplacement défini. Veuillez configurer la latitude et la longitude dans les paramètres de l'appareil.",
     "fetch_failed": "Échec de la récupération des données météo. Nouvelle tentative lors du prochain cycle."
+  },
+  "services": {
+    "days": {
+      "sunday": "Dimanche",
+      "monday": "Lundi",
+      "tuesday": "Mardi",
+      "wednesday": "Mercredi",
+      "thursday": "Jeudi",
+      "friday": "Vendredi",
+      "saturday": "Samedi"
+    },
+    "scoring": {
+      "frost_risk": "Risque de gel – protégez votre pelouse",
+      "heat_stress": "Stress thermique – envisagez l'arrosage",
+      "dormant": "Dormance – le gazon ne pousse pas",
+      "very_slow_growth": "Croissance très lente",
+      "early_growth": "Croissance précoce – le gazon se réveille",
+      "strong_growth": "Conditions de croissance fortes",
+      "good_growth": "Bonnes conditions de croissance",
+      "moderate_growth": "Conditions de croissance modérées"
+    },
+    "water": {
+      "too_cold": "Trop froid pour arroser",
+      "target_reached": "Arrosage non nécessaire — objectif pluie hebdomadaire atteint",
+      "rain_covers_deficit": "Arrosage non nécessaire — assez de pluie prévue cette semaine",
+      "rain_expected_24h": "Retarder l'arrosage — pluie prévue demain",
+      "below_minimum": "Déficit hydrique {{amount}} mm — en dessous du seuil minimal",
+      "heat_stress": "Arrosage recommandé : {{amount}} mm — stress thermique, arroser légèrement et répéter",
+      "window": "Fenêtre d'arrosage : {{day}} {{time}}",
+      "recommended": "Arrosage recommandé : {{amount}} mm nécessaires cette semaine"
+    },
+    "fertiliser": {
+      "no_date": "Saisissez la dernière date de fertilisation pour activer la planification.",
+      "outside_season": "Hors saison de fertilisation",
+      "soil_too_cold_overdue": "Échu, mais retardé — température du sol en dessous de {{minTemp}} °C",
+      "soil_too_cold": "Trop tôt — température du sol en dessous de {{minTemp}} °C",
+      "low_growth_overdue": "Échu, mais retardé — le gazon ne pousse pas assez activement",
+      "low_growth": "Trop tôt — le gazon ne pousse pas assez activement",
+      "warm_season_cool_overdue": "Échu, mais retardé — sol trop froid pour gazon chaud-saison",
+      "warm_season_cool": "En attente — sol trop froid pour gazon chaud-saison",
+      "heavy_rain_overdue": "Échu, mais retardé — fortes pluies attendues",
+      "heavy_rain": "Retarder — fortes pluies attendues",
+      "due_light_rain": "Échu maintenant — pluie légère prévue, moment idéal",
+      "due_no_rain": "Échu maintenant — aucune pluie prévue, arroser après application",
+      "due_good": "Échu maintenant — les conditions sont bonnes",
+      "due_tomorrow": "Échu demain",
+      "recommended_in_days": "Recommandé dans {{days}} jours",
+      "next_in_days": "Prochaine fertilisation dans {{days}} jours",
+      "next_date": "Prochaine date de fertilisation : {{date}}"
+    },
+    "mowing": {
+      "too_cold": "Trop froid pour tondre",
+      "not_suitable": "Conditions de croissance non adaptées à la tonte",
+      "window": "Fenêtre de tonte : {{day}}",
+      "today": "Aujourd'hui",
+      "recommended_now": "Tonte recommandée maintenant"
+    },
+    "dashboard": {
+      "frost_risk": "Risque de gel",
+      "frost_recommendation": "Gel détecté ({{severity}}) — protégez votre pelouse",
+      "frost_action": "Éviter la tonte",
+      "heat_stress": "Stress thermique",
+      "heat_recommendation": "Arroser légèrement pour refroidir la zone racinaire",
+      "heat_action_amount": "Arroser {{amount}} mm",
+      "heat_action_light": "Arroser légèrement",
+      "needs_water": "Besoin d'eau",
+      "water_recommendation": "Appliquer {{amount}} mm au prochain jour d'arrosage",
+      "water_action": "Arroser {{amount}} mm",
+      "water_reason": "Déficit hydrique : {{amount}} mm restants cette semaine",
+      "fertiliser_due": "Fertilisation due",
+      "fertiliser_recommendation": "Fertiliser maintenant — les conditions sont bonnes",
+      "fertiliser_action": "Appliquer de l'engrais",
+      "fertiliser_reason": "Intervalle de fertilisation atteint",
+      "mowing_soon": "Fenêtre de tonte bientôt",
+      "mow_action": "Tondre {{window}}",
+      "mow_action_ready": "Tondre quand prêt",
+      "mow_reason": "Conditions de croissance bonnes pour la tonte",
+      "recovery_mode": "Mode récupération",
+      "recovery_recommendation": "Le gazon récupère — éviter les perturbations importantes",
+      "recovery_action": "Éviter la tonte",
+      "recovery_reason": "Score de croissance bas — le gazon récupère",
+      "healthy": "En bonne santé",
+      "rain_recommendation": "Pluie prévue — arrosage non nécessaire",
+      "no_action": "Aucune action requise",
+      "wait_for_rain": "Attendre la pluie",
+      "all_good": "Toutes les conditions sont bonnes"
+    },
+    "profile": {
+      "labels": {
+        "showcase": "Pelouse de prestige",
+        "balanced": "Équilibré",
+        "drought_resistant": "Résistant à la sécheresse",
+        "low_maintenance": "Faible entretien",
+        "shade_lawn": "Pelouse d'ombre",
+        "custom": "Personnalisé"
+      },
+      "reasons": {
+        "heat_stress": "Augmenter la hauteur de tonte lors d'un stress thermique",
+        "frost": "Maintenir la hauteur maximale lors du gel",
+        "drought": "Retarder la tonte pour améliorer la résistance à la sécheresse",
+        "spring": "Abaisser progressivement la hauteur de tonte au printemps",
+        "shade": "Maintenir une hauteur plus élevée à l'ombre"
+      },
+      "recs": {
+        "frost_protection": "Mode protection contre le gel — éviter la tonte. Relever la tondeuse à {{height}} mm.",
+        "heat_stress_raise": "Stress thermique détecté — augmenter la hauteur de tonte à {{height}} mm.",
+        "drought_active": "Mode protection sécheresse actif — réduire la fréquence de tonte.",
+        "increase_watering": "Augmenter l'arrosage de {{pct}}%.",
+        "drought_risk": "Risque de sécheresse — retarder la tonte pour améliorer la résistance.",
+        "spring_growth": "Croissance printanière en accélération — abaisser progressivement à {{height}} mm.",
+        "increase_frequency": "Augmenter la fréquence de tonte à tous les {{days}} jours.",
+        "premium_growth": "Mode croissance premium actif — maintenir la hauteur de tonte à {{height}} mm.",
+        "drought_resistant_mode": "Mode résistant à la sécheresse actif — tondre tous les {{days}} jours à {{height}} mm.",
+        "low_maintenance_mode": "Mode faible entretien — tondre tous les {{days}} jours.",
+        "slow_growth": "Réduire la fréquence de tonte en raison d'une croissance lente — prochaine tonte dans {{days}} jours.",
+        "fertiliser_blocked": "Fertilisation bloquée — conditions non adaptées.",
+        "increase_fertiliser": "Augmenter la fertilisation de {{pct}}%.",
+        "reduce_fertiliser": "Réduire la fertilisation de {{pct}}%.",
+        "nominal": "{{profile}} — conditions normales."
+      },
+      "notifications": {
+        "heat_stress": "Stress thermique détecté — augmenter la hauteur de tonte à {{height}} mm.",
+        "drought_protection": "Mode protection sécheresse actif. Augmenter la hauteur de tonte à {{height}} mm.",
+        "frost_protection": "Risque de gel — éviter la tonte. Hauteur de tonte réglée à {{height}} mm.",
+        "premium_growth": "Mode croissance premium actif.",
+        "drought_resistant": "Mode résistant à la sécheresse actif.",
+        "spring_growth": "Croissance printanière en accélération — abaisser progressivement à {{height}} mm.",
+        "slow_growth": "Croissance lente — réduction de la fréquence de tonte."
+      }
+    },
+    "notifications": {
+      "fertiliser_due": "Votre pelouse est prête pour la fertilisation. La température du sol et les conditions de croissance sont bonnes.",
+      "fertiliser_heavy_rain": "La fertilisation est due, mais de fortes pluies sont attendues. Envisagez d'attendre quelques jours.",
+      "fertiliser_upcoming_one": "Fenêtre de fertilisation dans 1 jour.",
+      "fertiliser_upcoming": "Fenêtre de fertilisation dans {{days}} jours.",
+      "water_needed": "Votre pelouse a besoin d'eau : {{amount}} mm restants cette semaine.",
+      "water_rain_delay": "Arrosage retardé — pluie attendue dans les 24 heures.",
+      "water_target_reached": "Objectif hydrique hebdomadaire atteint. Arrosage non nécessaire."
+    }
   }
 }
