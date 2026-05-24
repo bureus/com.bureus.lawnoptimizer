@@ -55,7 +55,26 @@
     "preferred_watering_time": "Preferred Watering Time (HH:mm)",
     "watering_min_soil_temp": "Min. Soil Temp for Watering (°C)",
     "watering_max_heat_stress_temp": "Heat Stress Temp Threshold (°C)",
-    "reset_water_weekday": "Weekly Reset Day"
+    "reset_water_weekday": "Weekly Reset Day",
+    "lawn_optimization_profile": "Lawn Optimization Profile",
+    "showcase": "Showcase Lawn",
+    "drought_resistant": "Drought Resistant",
+    "low_maintenance": "Low Maintenance",
+    "shade_lawn": "Shade Lawn",
+    "custom": "Custom",
+    "target_grass_height_mm": "Target Grass Height (mm)",
+    "minimum_grass_height_mm": "Minimum Grass Height (mm)",
+    "maximum_grass_height_mm": "Maximum Grass Height (mm)",
+    "grass_growth_speed": "Grass Growth Speed",
+    "slow": "Slow",
+    "medium": "Medium",
+    "fast": "Fast",
+    "mowing_frequency_strategy": "Mowing Frequency Strategy",
+    "adaptive": "Adaptive",
+    "fixed": "Fixed",
+    "desired_visual_quality": "Desired Visual Quality",
+    "premium": "Premium",
+    "functional": "Functional"
   },
   "capabilities": {
     "measure_temperature": {
@@ -87,7 +106,14 @@
     "watering_due": "Watering Due",
     "next_watering_date": "Next Watering Date",
     "next_watering_amount_mm": "Next Watering Amount (mm)",
-    "water_schedule_status": "Water Schedule Status"
+    "water_schedule_status": "Water Schedule Status",
+    "current_target_height_mm": "Target Mowing Height (mm)",
+    "recommended_mowing_height_mm": "Recommended Mowing Height (mm)",
+    "mowing_height_adjustment_reason": "Mowing Height Adjustment Reason",
+    "lawn_profile_active": "Lawn Profile",
+    "lawn_profile_status": "Lawn Profile Status",
+    "mowing_frequency_days": "Mowing Frequency (days)",
+    "visual_quality_score": "Visual Quality Score"
   },
   "errors": {
     "invalid_latitude": "Invalid latitude. Must be between -90 and 90.",

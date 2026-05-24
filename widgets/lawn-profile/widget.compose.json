@@ -1,0 +1,25 @@
+{
+  "name": {
+    "en": "Lawn Profile Optimizer",
+    "nl": "Gazon Profiel Optimizer",
+    "de": "Rasen-Profil-Optimizer",
+    "fr": "Optimiseur de profil de pelouse",
+    "es": "Optimizador de perfil del césped",
+    "it": "Ottimizzatore profilo prato",
+    "sv": "Gräsmattaprofiloptimering",
+    "no": "Plenprofiloptimalisering",
+    "da": "Plæneprofil-optimering",
+    "ru": "Оптимизатор профиля газона",
+    "pl": "Optymalizator profilu trawnika",
+    "ko": "잔디 프로필 최적화"
+  },
+  "height": 260,
+  "transparent": false,
+  "settings": [],
+  "api": {
+    "getData": {
+      "method": "GET",
+      "path": "/"
+    }
+  }
+}

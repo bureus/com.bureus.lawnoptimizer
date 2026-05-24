@@ -663,6 +663,138 @@ This runs 9 scenarios covering basic deficit, rain delay, target reached, heat s
 
 ---
 
+## Lawn Optimization Profiles
+
+### Why grass height matters
+
+Mowing height is one of the most impactful levers for lawn health. Taller grass:
+
+- Shades soil, slowing moisture evaporation and improving drought resistance
+- Develops deeper roots, giving access to water further down the profile
+- Reduces weed germination by cutting off light at soil level
+
+Shorter grass:
+- Creates a denser, more uniform appearance ("showcase" look)
+- Requires more frequent mowing and watering to compensate for reduced root mass
+- Is more sensitive to heat and drought events
+
+The app models all of these trade-offs and dynamically adjusts recommendations based on the active profile and live conditions.
+
+---
+
+### Available profiles
+
+| Profile | Height | Mowing Interval | Watering | Fertiliser | Best for |
+|---|---|---|---|---|---|
+| **Showcase Lawn** | 25 mm | Every 4 days | +25 % | +20 % | Formal lawns, sports turf, prestige gardens |
+| **Balanced** | 40 mm | Weekly | Standard | Standard | Most home lawns |
+| **Drought Resistant** | 60 mm | Every 14 days | −30 % | −20 % | Hot climates, sandy soil, water-restricted areas |
+| **Low Maintenance** | 70 mm | Every 21 days | −20 % | −40 % | Holiday homes, busy households, rough areas |
+| **Shade Lawn** | 55 mm | Every 12 days | −15 % | −10 % | Under trees, north-facing slopes |
+| **Custom** | User-defined | User-defined | Standard | Standard | Full manual control |
+
+---
+
+### How profiles affect automation
+
+Each profile adjusts the following outputs on every refresh cycle:
+
+**Mowing**
+- `Recommended Mowing Height (mm)` — dynamically raised during heat stress, drought, frost, or shade
+- `Mowing Frequency (days)` — shortened in spring / fast growth; lengthened in stress or low growth
+- `Mowing Height Adjustment Reason` — explains the current recommendation in plain text
+
+**Watering**
+- The `watering_adjustment_percent` output modifies the base weekly target from `WaterScheduleService`
+- Showcase lawns get +25 %, drought-resistant get −30 %
+- Additional +20 % applied automatically during heat stress events
+
+**Fertiliser**
+- The `fertiliser_adjustment_percent` scales the fertiliser scoring logic
+- Fertiliser is fully blocked (−100 %) during frost and winter regardless of profile
+
+**Stress handling**
+- `stressToleranceAdjustment` shifts the point at which the app escalates alerts
+- Showcase lawns act sooner (−10 pts); drought-resistant lawns tolerate more (+15 pts)
+
+---
+
+### Recommended mowing heights
+
+| Grass type | Showcase | Balanced | Drought resistant | Low maintenance |
+|---|---|---|---|---|
+| Cool season (fescue, ryegrass) | 20–30 mm | 35–50 mm | 55–70 mm | 65–90 mm |
+| Warm season (bermuda, zoysia) | 15–25 mm | 30–40 mm | 45–60 mm | 55–80 mm |
+| Mixed | 25–35 mm | 35–50 mm | 55–70 mm | 65–90 mm |
+
+During heat stress the app adds 8–15 mm on top of the profile target.  
+During drought (water deficit > 10 mm) an additional 5–15 mm is added.
+
+---
+
+### Using profiles with robot mowers
+
+Robot mowers typically expose a "mowing height" setting via their companion app or a Homey integration. You can use Flow to keep the robot in sync with the app's recommendations:
+
+**Example — showcase lawn automation:**
+```
+WHEN  Mowing height adjustment recommended
+AND   Recommended mowing height is above 35 mm
+THEN  Set robot mower height to [recommended_mowing_height_mm]
+```
+
+**Example — drought protection mode:**
+```
+WHEN  Lawn optimization profile status changes
+AND   Lawn profile is drought_resistant
+THEN  Set robot mower height to 65 mm
+THEN  Set robot mower zone to "once per week"
+```
+
+**Example — spring growth ramp-down:**
+```
+WHEN  Mowing height adjustment recommended
+AND   Recommended mowing height is below 35 mm
+THEN  Set robot mower height to [recommended_mowing_height_mm]
+THEN  Send notification "Spring growth — mowing height lowered"
+```
+
+---
+
+### Example scenarios
+
+**Showcase lawn on a hot summer day**
+- Root zone: 30 °C → heat stress detected
+- Profile height: 25 mm → bumped to 33 mm
+- Mowing interval: extended from 4 to 5 days
+- Watering: +45 % above target
+- Notification: "Heat stress detected — raise mowing height to 33 mm."
+
+**Drought-resistant lawn, dry week**
+- Water deficit: 18 mm → drought flag set
+- Profile height: 60 mm → bumped to 75 mm
+- Mowing interval: 26 days
+- Watering: −30 % (profile) → still reduces but maintains minimal moisture
+- Notification: "Drought protection mode active."
+
+**Low-maintenance lawn in winter**
+- Frost detected → maximum height maintained (90 mm)
+- Mowing interval: 60 days
+- Fertiliser: blocked (−100 %)
+- Notification: "Frost protection mode — avoid mowing."
+
+---
+
+### Running the validation script
+
+```bash
+node scripts/test-lawn-profiles.js
+```
+
+Runs 6 scenarios (heat stress, drought, premium showcase, shade lawn, low maintenance / winter, custom profile) plus validation of all profile constant definitions. All 63 assertions must pass.
+
+---
+
 ## License
 
 MIT — see [LICENSE](LICENSE) for details.
