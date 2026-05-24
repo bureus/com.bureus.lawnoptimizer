@@ -142,10 +142,10 @@
   <hr class="hidden" id="hr1" />
 
   <div class="actions hidden" id="actions">
-    <div class="ac"><div class="al">Next action</div><div class="av" id="action">—</div></div>
-    <div class="ac"><div class="al">Date</div>        <div class="av" id="date">—</div></div>
-    <div class="ac"><div class="al">Deficit</div>     <div class="av" id="deficit">—</div></div>
-    <div class="ac"><div class="al">Health score</div><div class="av" id="health">—</div></div>
+    <div class="ac"><div class="al" id="lbl-action"></div><div class="av" id="action">—</div></div>
+    <div class="ac"><div class="al" id="lbl-date"></div>  <div class="av" id="date">—</div></div>
+    <div class="ac"><div class="al" id="lbl-deficit"></div><div class="av" id="deficit">—</div></div>
+    <div class="ac"><div class="al" id="lbl-health"></div><div class="av" id="health">—</div></div>
   </div>
 
   <hr class="hidden" id="hr2" />
@@ -154,7 +154,103 @@
 </div>
 
 <script>
+  var I18N = {
+    en: {
+      loading: 'Loading…',
+      nextAction: 'Next action', date: 'Date', deficit: 'Deficit', healthScore: 'Health score',
+      met: '✓ Met', unknown: 'Unknown',
+      frost: 'Frost: ', heat: 'Heat: ', recovery: 'Recovery', fertiliserDue: 'Fertiliser due',
+      noData: 'No data — pair a device first.', error: 'Error: ',
+    },
+    de: {
+      loading: 'Wird geladen…',
+      nextAction: 'Nächste Maßnahme', date: 'Datum', deficit: 'Defizit', healthScore: 'Gesundheitswert',
+      met: '✓ Erreicht', unknown: 'Unbekannt',
+      frost: 'Frost: ', heat: 'Hitze: ', recovery: 'Erholung', fertiliserDue: 'Düngung fällig',
+      noData: 'Keine Daten — zuerst ein Gerät koppeln.', error: 'Fehler: ',
+    },
+    nl: {
+      loading: 'Laden…',
+      nextAction: 'Volgende actie', date: 'Datum', deficit: 'Tekort', healthScore: 'Gezondheidsscore',
+      met: '✓ Bereikt', unknown: 'Onbekend',
+      frost: 'Vorst: ', heat: 'Hitte: ', recovery: 'Herstel', fertiliserDue: 'Bemesting gereed',
+      noData: 'Geen data — koppel eerst een apparaat.', error: 'Fout: ',
+    },
+    fr: {
+      loading: 'Chargement…',
+      nextAction: 'Prochaine action', date: 'Date', deficit: 'Déficit', healthScore: 'Score de santé',
+      met: '✓ Atteint', unknown: 'Inconnu',
+      frost: 'Gel : ', heat: 'Chaleur : ', recovery: 'Récupération', fertiliserDue: 'Fertilisation due',
+      noData: 'Aucune donnée — coupler un appareil d\'abord.', error: 'Erreur : ',
+    },
+    es: {
+      loading: 'Cargando…',
+      nextAction: 'Próxima acción', date: 'Fecha', deficit: 'Déficit', healthScore: 'Puntuación de salud',
+      met: '✓ Cumplido', unknown: 'Desconocido',
+      frost: 'Helada: ', heat: 'Calor: ', recovery: 'Recuperación', fertiliserDue: 'Fertilización pendiente',
+      noData: 'Sin datos — empareja un dispositivo primero.', error: 'Error: ',
+    },
+    it: {
+      loading: 'Caricamento…',
+      nextAction: 'Prossima azione', date: 'Data', deficit: 'Deficit', healthScore: 'Punteggio salute',
+      met: '✓ Raggiunto', unknown: 'Sconosciuto',
+      frost: 'Gelo: ', heat: 'Caldo: ', recovery: 'Recupero', fertiliserDue: 'Fertilizzazione dovuta',
+      noData: 'Nessun dato — collegare prima un dispositivo.', error: 'Errore: ',
+    },
+    sv: {
+      loading: 'Laddar…',
+      nextAction: 'Nästa åtgärd', date: 'Datum', deficit: 'Underskott', healthScore: 'Hälsopoäng',
+      met: '✓ Uppnått', unknown: 'Okänt',
+      frost: 'Frost: ', heat: 'Värme: ', recovery: 'Återhämtning', fertiliserDue: 'Gödsling aktuell',
+      noData: 'Inga data — para ihop en enhet först.', error: 'Fel: ',
+    },
+    no: {
+      loading: 'Laster…',
+      nextAction: 'Neste tiltak', date: 'Dato', deficit: 'Underskudd', healthScore: 'Helsepoeng',
+      met: '✓ Oppnådd', unknown: 'Ukjent',
+      frost: 'Frost: ', heat: 'Varme: ', recovery: 'Restitusjon', fertiliserDue: 'Gjødsling forfalt',
+      noData: 'Ingen data — koble til en enhet først.', error: 'Feil: ',
+    },
+    da: {
+      loading: 'Indlæser…',
+      nextAction: 'Næste handling', date: 'Dato', deficit: 'Underskud', healthScore: 'Sundhedsscore',
+      met: '✓ Opnået', unknown: 'Ukendt',
+      frost: 'Frost: ', heat: 'Varme: ', recovery: 'Restitution', fertiliserDue: 'Gødning forfaldet',
+      noData: 'Ingen data — tilslut en enhed først.', error: 'Fejl: ',
+    },
+    pl: {
+      loading: 'Wczytywanie…',
+      nextAction: 'Następna czynność', date: 'Data', deficit: 'Niedobór', healthScore: 'Wynik zdrowia',
+      met: '✓ Osiągnięto', unknown: 'Nieznany',
+      frost: 'Mróz: ', heat: 'Upał: ', recovery: 'Regeneracja', fertiliserDue: 'Nawożenie wymagane',
+      noData: 'Brak danych — najpierw połącz urządzenie.', error: 'Błąd: ',
+    },
+    ru: {
+      loading: 'Загрузка…',
+      nextAction: 'Следующее действие', date: 'Дата', deficit: 'Дефицит', healthScore: 'Оценка здоровья',
+      met: '✓ Выполнено', unknown: 'Неизвестно',
+      frost: 'Мороз: ', heat: 'Жара: ', recovery: 'Восстановление', fertiliserDue: 'Удобрение ожидается',
+      noData: 'Нет данных — сначала сопрягите устройство.', error: 'Ошибка: ',
+    },
+    ko: {
+      loading: '로딩 중…',
+      nextAction: '다음 작업', date: '날짜', deficit: '부족량', healthScore: '건강 점수',
+      met: '✓ 충족', unknown: '알 수 없음',
+      frost: '서리: ', heat: '열기: ', recovery: '회복', fertiliserDue: '비료 필요',
+      noData: '데이터 없음 — 먼저 기기를 연결하세요.', error: '오류: ',
+    },
+  };
+
   var CIRC = 2 * Math.PI * 22; // 138.2
+
+  function getLang() {
+    var l = (navigator.language || '').toLowerCase();
+    var code = l.slice(0, 2);
+    if (code === 'nb' || code === 'nn') return 'no';
+    return I18N[code] ? code : 'en';
+  }
+
+  var t = I18N[getLang()] || I18N.en;
 
   function show(id) { document.getElementById(id).classList.remove('hidden'); }
 
@@ -180,9 +276,16 @@
     return 'g';
   }
 
+  function initLabels() {
+    document.getElementById('lbl-action').textContent  = t.nextAction;
+    document.getElementById('lbl-date').textContent    = t.date;
+    document.getElementById('lbl-deficit').textContent = t.deficit;
+    document.getElementById('lbl-health').textContent  = t.healthScore;
+  }
+
   function render(d) {
     if (!d || d.error) {
-      setMsg(d && d.error ? d.error : 'No data — pair a device first.', true);
+      setMsg(d && d.error ? d.error : t.noData, true);
       return;
     }
 
@@ -201,29 +304,31 @@
     document.getElementById('action').textContent = d['next_action'] || '—';
     document.getElementById('date').textContent   = d['next_action_date'] || '—';
     var def = d['water_deficit_mm'];
-    document.getElementById('deficit').textContent = def > 0 ? def + ' mm' : '✓ Met';
+    document.getElementById('deficit').textContent = def > 0 ? def + ' mm' : t.met;
     var hs = d['lawn_overall_score'];
     document.getElementById('health').textContent = hs != null ? hs + ' pts' : '—';
 
     var row = document.getElementById('badges');
     row.innerHTML = '';
-    row.appendChild(badge(d['lawn_status'] || 'Unknown', statusCls(d['lawn_status'])));
+    row.appendChild(badge(d['lawn_status'] || t.unknown, statusCls(d['lawn_status'])));
     var frost = d['frost_severity'];
-    if (frost && frost !== 'none') row.appendChild(badge('Frost: ' + frost, 'r'));
+    if (frost && frost !== 'none') row.appendChild(badge(t.frost + frost, 'r'));
     var heat = d['heat_stress_severity'];
-    if (heat && heat !== 'none') row.appendChild(badge('Heat: ' + heat, 'r'));
-    if (d['lawn_recovery_mode']) row.appendChild(badge('Recovery', 'a'));
+    if (heat && heat !== 'none') row.appendChild(badge(t.heat + heat, 'r'));
+    if (d['lawn_recovery_mode']) row.appendChild(badge(t.recovery, 'a'));
     var fd = d['fertiliser_days_remaining'];
-    if (fd != null && fd <= 0) row.appendChild(badge('Fertiliser due', 'a'));
+    if (fd != null && fd <= 0) row.appendChild(badge(t.fertiliserDue, 'a'));
 
     show('top'); show('hr1'); show('actions'); show('hr2'); show('badges');
   }
 
   function onHomeyReady(Homey) {
+    document.getElementById('msg').textContent = t.loading;
+    initLabels();
     Homey.ready({ height: 230 });
     Homey.api('GET', '/', {})
       .then(function(data) { render(data); })
-      .catch(function(err) { setMsg('Error: ' + (err.message || err), true); });
+      .catch(function(err) { setMsg(t.error + (err.message || err), true); });
   }
 </script>
 </body>

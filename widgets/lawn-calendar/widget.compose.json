@@ -8,7 +8,10 @@
     "it": "Calendario prato",
     "sv": "Gräsmattakalender",
     "no": "Gressplenkalender",
-    "da": "Plænekalender"
+    "da": "Plænekalender",
+    "ru": "Календарь газона",
+    "pl": "Kalendarz trawnika",
+    "ko": "잔디 캘린더"
   },
   "height": 280,
   "transparent": false,

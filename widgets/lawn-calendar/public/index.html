@@ -155,7 +155,7 @@
 
     <!-- Header -->
     <div class="hdr">
-      <span class="hdr-title">Lawn Calendar</span>
+      <span class="hdr-title" id="hdrTitle"></span>
       <span class="hdr-device" id="deviceName"></span>
       <span class="hdr-count" id="evCount"></span>
     </div>
@@ -176,8 +176,8 @@
         <line x1="36" y1="64" x2="44" y2="74" stroke="#4CAF50" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
         <line x1="44" y1="74" x2="64" y2="54" stroke="#4CAF50" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
-      <div class="empty-title">No lawn actions planned</div>
-      <div class="empty-sub">All clear for the next 14 days</div>
+      <div class="empty-title" id="emptyTitle"></div>
+      <div class="empty-sub" id="emptySub"></div>
     </div>
 
     <!-- Footer -->
@@ -186,9 +186,177 @@
 </div>
 
 <script>
-  var DAYS   = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-  var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var I18N = {
+    en: {
+      title: 'Lawn Calendar',
+      loading: 'Loading…',
+      today: 'Today', tomorrow: 'Tomorrow',
+      overdue: 'OVERDUE', critical: 'CRITICAL', high: 'HIGH', warning: 'WARNING',
+      noData: 'No data — pair a device first.',
+      error: 'Error: ', updated: 'Updated: ',
+      event: 'event', events: 'events',
+      moreEvent: 'more event', moreEvents: 'more events',
+      emptyTitle: 'No lawn actions planned', emptySub: 'All clear for the next 14 days',
+      days: ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
+      months: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+    },
+    de: {
+      title: 'Rasenkalender',
+      loading: 'Wird geladen…',
+      today: 'Heute', tomorrow: 'Morgen',
+      overdue: 'ÜBERFÄLLIG', critical: 'KRITISCH', high: 'HOCH', warning: 'WARNUNG',
+      noData: 'Keine Daten — zuerst ein Gerät koppeln.',
+      error: 'Fehler: ', updated: 'Aktualisiert: ',
+      event: 'Ereignis', events: 'Ereignisse',
+      moreEvent: 'weiteres Ereignis', moreEvents: 'weitere Ereignisse',
+      emptyTitle: 'Keine Rasenmaßnahmen geplant', emptySub: 'Alles klar für die nächsten 14 Tage',
+      days: ['So','Mo','Di','Mi','Do','Fr','Sa'],
+      months: ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'],
+    },
+    nl: {
+      title: 'Gazonkalender',
+      loading: 'Laden…',
+      today: 'Vandaag', tomorrow: 'Morgen',
+      overdue: 'ACHTERSTALLIG', critical: 'KRITIEK', high: 'HOOG', warning: 'WAARSCHUWING',
+      noData: 'Geen data — koppel eerst een apparaat.',
+      error: 'Fout: ', updated: 'Bijgewerkt: ',
+      event: 'gebeurtenis', events: 'gebeurtenissen',
+      moreEvent: 'meer gebeurtenis', moreEvents: 'meer gebeurtenissen',
+      emptyTitle: 'Geen gazonacties gepland', emptySub: 'Alles vrij voor de komende 14 dagen',
+      days: ['zo','ma','di','wo','do','vr','za'],
+      months: ['jan','feb','mrt','apr','mei','jun','jul','aug','sep','okt','nov','dec'],
+    },
+    fr: {
+      title: 'Calendrier pelouse',
+      loading: 'Chargement…',
+      today: "Aujourd'hui", tomorrow: 'Demain',
+      overdue: 'EN RETARD', critical: 'CRITIQUE', high: 'ÉLEVÉ', warning: 'AVERTISSEMENT',
+      noData: 'Aucune donnée — coupler un appareil d\'abord.',
+      error: 'Erreur : ', updated: 'Mis à jour : ',
+      event: 'événement', events: 'événements',
+      moreEvent: 'événement supplémentaire', moreEvents: 'événements supplémentaires',
+      emptyTitle: 'Aucune action de pelouse planifiée', emptySub: 'Tout est bon pour les 14 prochains jours',
+      days: ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'],
+      months: ['Jan','Fév','Mar','Avr','Mai','Juin','Juil','Août','Sep','Oct','Nov','Déc'],
+    },
+    es: {
+      title: 'Calendario del césped',
+      loading: 'Cargando…',
+      today: 'Hoy', tomorrow: 'Mañana',
+      overdue: 'VENCIDO', critical: 'CRÍTICO', high: 'ALTO', warning: 'AVISO',
+      noData: 'Sin datos — empareja un dispositivo primero.',
+      error: 'Error: ', updated: 'Actualizado: ',
+      event: 'evento', events: 'eventos',
+      moreEvent: 'evento más', moreEvents: 'eventos más',
+      emptyTitle: 'No hay acciones de césped planificadas', emptySub: 'Todo despejado para los próximos 14 días',
+      days: ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],
+      months: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
+    },
+    it: {
+      title: 'Calendario prato',
+      loading: 'Caricamento…',
+      today: 'Oggi', tomorrow: 'Domani',
+      overdue: 'SCADUTO', critical: 'CRITICO', high: 'ALTO', warning: 'AVVISO',
+      noData: 'Nessun dato — collegare prima un dispositivo.',
+      error: 'Errore: ', updated: 'Aggiornato: ',
+      event: 'evento', events: 'eventi',
+      moreEvent: 'altro evento', moreEvents: 'altri eventi',
+      emptyTitle: 'Nessuna azione sul prato pianificata', emptySub: 'Tutto a posto per i prossimi 14 giorni',
+      days: ['Dom','Lun','Mar','Mer','Gio','Ven','Sab'],
+      months: ['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'],
+    },
+    sv: {
+      title: 'Gräsmattakalender',
+      loading: 'Laddar…',
+      today: 'Idag', tomorrow: 'Imorgon',
+      overdue: 'FÖRFALLEN', critical: 'KRITISK', high: 'HÖG', warning: 'VARNING',
+      noData: 'Inga data — para ihop en enhet först.',
+      error: 'Fel: ', updated: 'Uppdaterad: ',
+      event: 'händelse', events: 'händelser',
+      moreEvent: 'till händelse', moreEvents: 'till händelser',
+      emptyTitle: 'Inga gräsmatteåtgärder planerade', emptySub: 'Allt klart de närmaste 14 dagarna',
+      days: ['Sön','Mån','Tis','Ons','Tor','Fre','Lör'],
+      months: ['Jan','Feb','Mar','Apr','Maj','Jun','Jul','Aug','Sep','Okt','Nov','Dec'],
+    },
+    no: {
+      title: 'Plenkalender',
+      loading: 'Laster…',
+      today: 'I dag', tomorrow: 'I morgen',
+      overdue: 'FORFALT', critical: 'KRITISK', high: 'HØY', warning: 'ADVARSEL',
+      noData: 'Ingen data — koble til en enhet først.',
+      error: 'Feil: ', updated: 'Oppdatert: ',
+      event: 'hendelse', events: 'hendelser',
+      moreEvent: 'hendelse til', moreEvents: 'hendelser til',
+      emptyTitle: 'Ingen plentiltak planlagt', emptySub: 'Alt klart de neste 14 dagene',
+      days: ['Søn','Man','Tir','Ons','Tor','Fre','Lør'],
+      months: ['Jan','Feb','Mar','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Des'],
+    },
+    da: {
+      title: 'Plænekalender',
+      loading: 'Indlæser…',
+      today: 'I dag', tomorrow: 'I morgen',
+      overdue: 'FORFALDET', critical: 'KRITISK', high: 'HØJ', warning: 'ADVARSEL',
+      noData: 'Ingen data — tilslut en enhed først.',
+      error: 'Fejl: ', updated: 'Opdateret: ',
+      event: 'begivenhed', events: 'begivenheder',
+      moreEvent: 'begivenhed mere', moreEvents: 'begivenheder mere',
+      emptyTitle: 'Ingen plænetiltag planlagt', emptySub: 'Alt klart de næste 14 dage',
+      days: ['Søn','Man','Tir','Ons','Tor','Fre','Lør'],
+      months: ['Jan','Feb','Mar','Apr','Maj','Jun','Jul','Aug','Sep','Okt','Nov','Dec'],
+    },
+    pl: {
+      title: 'Kalendarz trawnika',
+      loading: 'Wczytywanie…',
+      today: 'Dziś', tomorrow: 'Jutro',
+      overdue: 'PRZETERMINOWANE', critical: 'KRYTYCZNE', high: 'WYSOKIE', warning: 'OSTRZEŻENIE',
+      noData: 'Brak danych — najpierw połącz urządzenie.',
+      error: 'Błąd: ', updated: 'Zaktualizowano: ',
+      event: 'zdarzenie', events: 'zdarzenia',
+      moreEvent: 'zdarzenie więcej', moreEvents: 'zdarzenia więcej',
+      emptyTitle: 'Brak zaplanowanych działań dla trawnika', emptySub: 'Wszystko w porządku przez następne 14 dni',
+      days: ['Nd','Pn','Wt','Śr','Cz','Pt','Sb'],
+      months: ['Sty','Lut','Mar','Kwi','Maj','Cze','Lip','Sie','Wrz','Paź','Lis','Gru'],
+    },
+    ru: {
+      title: 'Календарь газона',
+      loading: 'Загрузка…',
+      today: 'Сегодня', tomorrow: 'Завтра',
+      overdue: 'ПРОСРОЧЕНО', critical: 'КРИТИЧЕСКИ',
+      high: 'ВЫСОКИЙ', warning: 'ПРЕДУПРЕЖДЕНИЕ',
+      noData: 'Нет данных — сначала сопрягите устройство.',
+      error: 'Ошибка: ', updated: 'Обновлено: ',
+      event: 'событие', events: 'событий',
+      moreEvent: 'ещё событие', moreEvents: 'ещё событий',
+      emptyTitle: 'Мероприятий по уходу не запланировано',
+      emptySub: 'Всё хорошо на следующие 14 дней',
+      days: ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'],
+      months: ['Янв','Фев','Мар','Апр','Май','Июн','Июл','Авг','Сен','Окт','Ноя','Дек'],
+    },
+    ko: {
+      title: '잔디 캘린더',
+      loading: '로딩 중…',
+      today: '오늘', tomorrow: '내일',
+      overdue: '기한 초과', critical: '위긴', high: '높음', warning: '경고',
+      noData: '데이터 없음 — 먼저 기기를 연결하세요.',
+      error: '오류: ', updated: '업데이트: ',
+      event: '이벤트', events: '이벤트',
+      moreEvent: '개 추가 이벤트', moreEvents: '개 추가 이벤트',
+      emptyTitle: '예정된 잔디 관리 작업 없음', emptySub: '향후 14일 동안 이상 없음',
+      days: ['일','월','화','수','목','금','토'],
+      months: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+    },
+  };
+
   var MAX_EVENTS = 5;
+
+  function getLang() {
+    var l = (navigator.language || '').toLowerCase();
+    var code = l.slice(0, 2);
+    if (code === 'nb' || code === 'nn') return 'no';
+    return I18N[code] ? code : 'en';
+  }
+
+  var t = I18N[getLang()] || I18N.en;
 
   function addDays(dateStr, n) {
     var d = new Date(dateStr + 'T00:00:00Z');
@@ -197,10 +365,10 @@
   }
 
   function fmtDateLabel(dateStr, today) {
-    if (dateStr === today) return 'Today';
-    if (dateStr === addDays(today, 1)) return 'Tomorrow';
+    if (dateStr === today) return t.today;
+    if (dateStr === addDays(today, 1)) return t.tomorrow;
     var d = new Date(dateStr + 'T00:00:00Z');
-    return DAYS[d.getUTCDay()] + ' ' + d.getUTCDate() + ' ' + MONTHS[d.getUTCMonth()];
+    return t.days[d.getUTCDay()] + ' ' + d.getUTCDate() + ' ' + t.months[d.getUTCMonth()];
   }
 
   function dateLabelClass(dateStr, today) {
@@ -210,10 +378,10 @@
   }
 
   function badgeLabel(ev) {
-    if (ev.status === 'overdue') return 'OVERDUE';
-    if (ev.severity === 'critical') return 'CRITICAL';
-    if (ev.severity === 'high') return 'HIGH';
-    if (ev.severity === 'medium' && (ev.type === 'frost' || ev.type === 'heat_stress')) return 'WARNING';
+    if (ev.status === 'overdue') return t.overdue;
+    if (ev.severity === 'critical') return t.critical;
+    if (ev.severity === 'high') return t.high;
+    if (ev.severity === 'medium' && (ev.type === 'frost' || ev.type === 'heat_stress')) return t.warning;
     return null;
   }
 
@@ -227,9 +395,13 @@
   function hide(id) { document.getElementById(id).classList.add('hidden'); }
 
   function render(data) {
+    setText('hdrTitle', t.title);
+    setText('emptyTitle', t.emptyTitle);
+    setText('emptySub', t.emptySub);
+
     if (!data || data.error) {
       var el = document.getElementById('msg');
-      el.textContent = (data && data.error) ? data.error : 'No data — pair a device first.';
+      el.textContent = (data && data.error) ? data.error : t.noData;
       el.className = 'err';
       el.classList.remove('hidden');
       return;
@@ -242,8 +414,8 @@
     var events = Array.isArray(data.events) ? data.events : [];
 
     setText('deviceName', data.deviceName || '');
-    setText('evCount', events.length > 0 ? events.length + ' event' + (events.length !== 1 ? 's' : '') : '');
-    setText('footer', data.lastUpdated ? 'Updated: ' + data.lastUpdated : '');
+    setText('evCount', events.length > 0 ? events.length + ' ' + (events.length !== 1 ? t.events : t.event) : '');
+    setText('footer', data.lastUpdated ? t.updated + data.lastUpdated : '');
 
     if (events.length === 0) {
       hide('event-list');
@@ -314,18 +486,19 @@
     if (remaining > 0) {
       var moreEl = document.createElement('div');
       moreEl.style.cssText = 'font-size:0.68em;color:var(--text-3);margin-top:4px;text-align:right;';
-      moreEl.textContent = '+ ' + remaining + ' more event' + (remaining !== 1 ? 's' : '');
+      moreEl.textContent = '+ ' + remaining + ' ' + (remaining !== 1 ? t.moreEvents : t.moreEvent);
       listEl.appendChild(moreEl);
     }
   }
 
   function onHomeyReady(Homey) {
+    document.getElementById('msg').textContent = t.loading;
     Homey.ready({ height: 280 });
     Homey.api('GET', '/', {})
       .then(function(data) { render(data); })
       .catch(function(err) {
         var el = document.getElementById('msg');
-        el.textContent = 'Error: ' + (err.message || err);
+        el.textContent = t.error + (err.message || err);
         el.className = 'err';
       });
   }

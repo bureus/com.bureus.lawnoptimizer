@@ -8,7 +8,10 @@
     "it": "Riepilogo mensile del prato",
     "sv": "Månadssammanfattning gräsmatta",
     "no": "Månedlig gressplensammendrag",
-    "da": "Månedlig plænesammenfatning"
+    "da": "Månedlig plænesammenfatning",
+    "ru": "Ежемесячная сводка газона",
+    "pl": "Miesięczne podsumowanie trawnika",
+    "ko": "월간 잔디 요약"
   },
   "height": 260,
   "transparent": false,

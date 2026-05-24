@@ -24,7 +24,20 @@
       "Bash(grep -rn \"widget.compose.json\" \"C:\\\\nvm4w\\\\nodejs\\\\node_modules\\\\homey\\\\\" 2>/dev/null)",
       "Bash(powershell -command \"Get-ChildItem 'C:\\\\Code\\\\com.bureus.lawnoptimizer\\\\widgets\\\\lawn-dashboard'\")",
       "Bash(ls /mnt/c/Code/com.bureus.lawnoptimizer/assets/icons/ 2>/dev/null || echo \"Directory does not exist\")",
-      "Bash(ls /mnt/c/Code/com.bureus.lawnoptimizer/ 2>/dev/null)"
+      "Bash(ls /mnt/c/Code/com.bureus.lawnoptimizer/ 2>/dev/null)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Code\\\\com.bureus.lawnoptimizer\" -Recurse -Force)",
+      "Bash(Select-Object -ExpandProperty FullName)",
+      "Bash(Sort-Object)",
+      "Bash(node scripts/test-lawn-profiles.js)",
+      "Bash(node -e \"JSON.parse\\(require\\('fs'\\).readFileSync\\('app.json','utf8'\\)\\); console.log\\('JSON valid'\\)\")",
+      "Bash(node -e \"JSON.parse\\(require\\('fs'\\).readFileSync\\('app.json','utf8'\\)\\); console.log\\('app.json valid'\\)\")",
+      "Bash(node -e \"JSON.parse\\(require\\('fs'\\).readFileSync\\('locales/en.json','utf8'\\)\\); console.log\\('en.json valid'\\)\")",
+      "Bash(node -e ' *)",
+      "Bash(git add *)",
+      "Bash(gh pr create --title 'Add lawn profile optimization system with dynamic mowing height intelligence' --body ' *)",
+      "Bash(git ls-remote *)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Code\\\\com.bureus.lawnoptimizer\" -Recurse -Directory -Name)",
+      "PowerShell(head -40)"
     ]
   }
 }
