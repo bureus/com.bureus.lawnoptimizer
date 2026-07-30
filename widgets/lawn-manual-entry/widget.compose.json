@@ -1,0 +1,37 @@
+{
+  "name": {
+    "en": "Lawn Manual Entry",
+    "nl": "Gazon Handmatige Invoer",
+    "de": "Rasen Manuelle Eingabe",
+    "fr": "Saisie manuelle pelouse",
+    "es": "Entrada manual del césped",
+    "it": "Inserimento manuale prato",
+    "sv": "Manuell registrering gräsmatta",
+    "no": "Manuell registrering gressplen",
+    "da": "Manuel registrering plæne",
+    "ru": "Ручной ввод данных газона",
+    "pl": "Ręczny wpis trawnika",
+    "ko": "잔디 수동 입력"
+  },
+  "height": 320,
+  "transparent": false,
+  "settings": [],
+  "api": {
+    "getData": {
+      "method": "GET",
+      "path": "/"
+    },
+    "applyRain": {
+      "method": "POST",
+      "path": "/rain"
+    },
+    "applyIrrigation": {
+      "method": "POST",
+      "path": "/irrigation"
+    },
+    "markFertilised": {
+      "method": "POST",
+      "path": "/fertilised"
+    }
+  }
+}

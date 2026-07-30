@@ -211,12 +211,15 @@ class LawnSoilOptimizerApp extends Homey.App {
           target_grass_height_mm:     40,
           minimum_grass_height_mm:    30,
           maximum_grass_height_mm:    60,
-          grass_growth_speed:         'medium',
+          grass_growth_speed:         'auto',
           mowing_frequency_strategy:  'adaptive',
           desired_visual_quality:     'balanced',
         });
         return args.device.refreshData();
       });
+
+    this.homey.flow.getActionCard('mark_mowed_today')
+      .registerRunListener(async (args) => args.device.markMowedOn(args.date || null));
 
     // ── Water schedule actions ─────────────────────────────────────────────────
 

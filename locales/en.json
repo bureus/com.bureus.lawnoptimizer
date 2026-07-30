@@ -174,8 +174,12 @@
       "too_cold": "Too cold to mow",
       "not_suitable": "Growth conditions not suitable for mowing",
       "window": "Mowing window: {{day}}",
+      "due_window": "Due — mow on {{day}}",
+      "overdue_window": "Overdue — mow on {{day}}",
       "today": "Today",
-      "recommended_now": "Mowing recommended now"
+      "recommended_now": "Mowing recommended now",
+      "due_now": "Due — mow at the next dry moment",
+      "overdue_now": "Overdue — mow as soon as it dries out"
     },
     "dashboard": {
       "frost_risk": "Frost risk",

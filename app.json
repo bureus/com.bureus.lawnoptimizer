@@ -758,6 +758,53 @@
         "getData": {
           "method": "GET",
           "path": "/"
+        },
+        "completeEvent": {
+          "method": "POST",
+          "path": "/complete"
+        },
+        "uncompleteEvent": {
+          "method": "POST",
+          "path": "/uncomplete"
+        }
+      }
+    },
+
+    "lawn-manual-entry": {
+      "id": "lawn-manual-entry",
+      "name": {
+        "en": "Lawn Manual Entry",
+        "nl": "Gazon Handmatige Invoer",
+        "de": "Rasen Manuelle Eingabe",
+        "fr": "Saisie manuelle pelouse",
+        "es": "Entrada manual del césped",
+        "it": "Inserimento manuale prato",
+        "sv": "Manuell registrering gräsmatta",
+        "no": "Manuell registrering gressplen",
+        "da": "Manuel registrering plæne",
+        "ru": "Ручной ввод данных газона",
+        "pl": "Ręczny wpis trawnika",
+        "ko": "잔디 수동 입력"
+      },
+      "height": 320,
+      "transparent": false,
+      "settings": [],
+      "api": {
+        "getData": {
+          "method": "GET",
+          "path": "/"
+        },
+        "applyRain": {
+          "method": "POST",
+          "path": "/rain"
+        },
+        "applyIrrigation": {
+          "method": "POST",
+          "path": "/irrigation"
+        },
+        "markFertilised": {
+          "method": "POST",
+          "path": "/fertilised"
         }
       }
     },
@@ -1272,7 +1319,7 @@
               "id": "target_grass_height_mm",
               "type": "number",
               "label": { "en": "Target Grass Height (mm)" },
-              "hint": { "en": "Desired mowing height in mm. Used as target for the custom profile and as the baseline for built-in profiles." },
+              "hint": { "en": "Desired mowing height in mm. Applies to all profiles — the selected profile only supplies fallback numbers when this value is not set." },
               "value": 40,
               "min": 15,
               "max": 100
@@ -1281,7 +1328,7 @@
               "id": "minimum_grass_height_mm",
               "type": "number",
               "label": { "en": "Minimum Grass Height (mm)" },
-              "hint": { "en": "The mower will never be recommended below this height." },
+              "hint": { "en": "The mower will never be recommended below this height. Applies to all profiles." },
               "value": 30,
               "min": 10,
               "max": 80
@@ -1290,7 +1337,7 @@
               "id": "maximum_grass_height_mm",
               "type": "number",
               "label": { "en": "Maximum Grass Height (mm)" },
-              "hint": { "en": "During stress events the mower height will not exceed this value." },
+              "hint": { "en": "During stress events the mower height will not exceed this value. Applies to all profiles." },
               "value": 60,
               "min": 20,
               "max": 120
@@ -1299,9 +1346,10 @@
               "id": "grass_growth_speed",
               "type": "dropdown",
               "label": { "en": "Grass Growth Speed" },
-              "hint": { "en": "Observed growth rate. Affects how quickly mowing frequency is adjusted." },
-              "value": "medium",
+              "hint": { "en": "Auto derives from the live growth score. Choose Slow/Medium/Fast to override." },
+              "value": "auto",
               "values": [
+                { "id": "auto",   "label": { "en": "Auto (from growth score)" } },
                 { "id": "slow",   "label": { "en": "Slow" } },
                 { "id": "medium", "label": { "en": "Medium" } },
                 { "id": "fast",   "label": { "en": "Fast" } }
@@ -1388,6 +1436,15 @@
                 "ko": "잔디깎기 최소 온도 (°C)"
               },
               "value": 8
+            },
+            {
+              "id": "mowing_rain_threshold_mm",
+              "type": "number",
+              "label": { "en": "Max Rain to Mow (mm/day)" },
+              "hint": { "en": "The mowing window will skip forecast days with more than this much rain. When the lawn is overdue this limit is relaxed automatically." },
+              "value": 5,
+              "min": 0,
+              "max": 30
             },
             {
               "id": "preferred_fertilizing_min_temp",
@@ -3313,6 +3370,16 @@
         "hint": { "en": "Resets lawn optimization profile back to 'Balanced' with default heights." },
         "args": [
           { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" }
+        ]
+      },
+      {
+        "id": "mark_mowed_today",
+        "title": { "en": "Record that mowing was done" },
+        "titleFormatted": { "en": "Record mowing done (optional date [[date]])" },
+        "hint": { "en": "Records the last mow date so the app knows how overdue the lawn is. Leave date empty for today." },
+        "args": [
+          { "name": "device", "type": "device", "filter": "driver_id=lawn_soil_optimizer" },
+          { "name": "date", "type": "text", "title": { "en": "Date (YYYY-MM-DD, optional)" }, "required": false, "placeholder": { "en": "e.g. 2026-05-19 or leave empty" } }
         ]
       },
       {

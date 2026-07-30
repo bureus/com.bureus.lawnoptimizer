@@ -20,6 +20,14 @@
     "getData": {
       "method": "GET",
       "path": "/"
+    },
+    "completeEvent": {
+      "method": "POST",
+      "path": "/complete"
+    },
+    "uncompleteEvent": {
+      "method": "POST",
+      "path": "/uncomplete"
     }
   }
 }

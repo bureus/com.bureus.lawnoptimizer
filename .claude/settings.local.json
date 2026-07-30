@@ -42,7 +42,22 @@
       "Bash(Select-Object FullName)",
       "Bash(find /mnt/c/Code/com.bureus.lawnoptimizer/widgets -type f | sort)",
       "Bash(Get-ChildItem -Path \"C:\\\\Code\\\\com.bureus.lawnoptimizer\" -Directory)",
-      "Bash(Select-Object Name)"
+      "Bash(Select-Object Name)",
+      "Bash(sed -n '1673,1730p' \"C:/Users/burer/AppData/Local/nvm/v24.5.0/node_modules/homey/lib/App.js\")",
+      "Bash(# Let's check the homey-lib validator source to understand what Homey Pro checks *)",
+      "Bash(find \"C:/Users/burer/AppData/Local/nvm/v24.5.0/node_modules/homey-lib\" -name \"*.js\" 2>/dev/null | head -10)",
+      "Bash(ls C:/Code/)",
+      "Bash(node -c widgets/lawn-manual-entry/api.js)",
+      "Bash(node -c widgets/lawn-calendar/api.js)",
+      "Bash(node -c lib/LawnCalendarService.js)",
+      "Bash(node -c drivers/lawn_soil_optimizer/device.js)",
+      "Bash(find scripts *)",
+      "Bash(grep -l \"LawnCalendarService\" scripts/*.js)",
+      "Bash(powershell -Command \"Get-Item widgets/lawn-calendar/preview-light.png, widgets/lawn-calendar/preview-dark.png, widgets/lawn-dashboard/preview-light.png | Select-Object Name,Length,Directory\")",
+      "PowerShell(Add-Type -AssemblyName System.Drawing; foreach \\($p in @\\('widgets/lawn-calendar/preview-light.png','widgets/lawn-dashboard/preview-light.png','widgets/lawn-profile/preview-light.png','widgets/lawn-monthly/preview-light.png'\\)\\) { $img = [System.Drawing.Image]::FromFile\\(\\(Resolve-Path $p\\)\\); Write-Output \"$p : $\\($img.Width\\) x $\\($img.Height\\)\"; $img.Dispose\\(\\) })",
+      "PowerShell(& powershell -ExecutionPolicy Bypass -File scripts/gen-manual-entry-previews.ps1)",
+      "Bash(git rm *)",
+      "Bash(awk '{print $NF}')"
     ]
   }
 }

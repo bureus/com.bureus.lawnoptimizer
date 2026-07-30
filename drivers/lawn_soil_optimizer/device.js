@@ -59,6 +59,7 @@ const STORE_PREV_MOWING_HEIGHT = 'prevRecommendedHeightMm';
 const STORE_PREV_MOWING_FREQ   = 'prevMowingFrequencyDays';
 const STORE_PREV_PROFILE_STATUS = 'prevProfileStatus';
 const STORE_NOTIF_PROFILE_DATE = 'profileNotifDate';
+const STORE_LAST_MOW_DATE      = 'lastMowDate';
 
 class LawnSoilOptimizerDevice extends Homey.Device {
 
@@ -151,6 +152,28 @@ class LawnSoilOptimizerDevice extends Homey.Device {
     }
   }
 
+  // ─── Last-mow tracking ─────────────────────────────────────────────────────
+
+  _daysSinceLastMow() {
+    const iso = this.getStoreValue(STORE_LAST_MOW_DATE);
+    if (!iso) return null;
+    const then = new Date(iso + 'T00:00:00Z').getTime();
+    if (Number.isNaN(then)) return null;
+    const days = Math.floor((Date.now() - then) / (24 * 3600 * 1000));
+    return days >= 0 ? days : 0;
+  }
+
+  /**
+   * Record that mowing happened on the given date (YYYY-MM-DD; defaults to today).
+   * Called from flow actions and can be triggered by external mower integrations.
+   */
+  async markMowedOn(dateStr = null) {
+    const iso = (dateStr || new Date().toISOString().slice(0, 10)).slice(0, 10);
+    await this.setStoreValue(STORE_LAST_MOW_DATE, iso);
+    this.log(`Last mow date set to ${iso}`);
+    return this.refreshData();
+  }
+
   // ─── Core data refresh ─────────────────────────────────────────────────────
 
   async refreshData() {
@@ -196,12 +219,19 @@ class LawnSoilOptimizerDevice extends Homey.Device {
         growthScore:  assessment.growthScore,
       });
 
+      // ── Lawn profile optimization ─────────────────────────────────────────────
+      const profileResult = this._calcLawnProfileOptimization(settings, temps, assessment, waterResult, __);
+
       // ── Mowing window ────────────────────────────────────────────────────────
+      const daysSinceLastMow = this._daysSinceLastMow();
       const mowingResult = this._mowingService.findNextWindow({
-        precipitationByDay: snapshot.precipitationByDay,
-        rootZoneTemp:       temps.rootZone,
-        mowingRecommended:  assessment.mowingRecommended,
-        mowingMinTemp:      settings.preferred_mowing_min_temp ?? 8,
+        precipitationByDay:  snapshot.precipitationByDay,
+        rootZoneTemp:        temps.rootZone,
+        mowingRecommended:   assessment.mowingRecommended,
+        mowingMinTemp:       settings.preferred_mowing_min_temp ?? 8,
+        rainThresholdMm:     settings.mowing_rain_threshold_mm ?? 5,
+        daysSinceLastMow,
+        mowingFrequencyDays: profileResult.mowingFrequencyDays,
         __,
       });
 
@@ -214,9 +244,6 @@ class LawnSoilOptimizerDevice extends Homey.Device {
         stressResult,
         __,
       });
-
-      // ── Lawn profile optimization ─────────────────────────────────────────────
-      const profileResult = this._calcLawnProfileOptimization(settings, temps, assessment, waterResult, __);
 
       await this._updateCapabilities(temps, assessment, fertResult, waterResult, mowingResult, stressResult, dashboard, profileResult);
       await this._fireTriggers(temps, assessment, fertResult, waterResult, profileResult);
@@ -481,6 +508,18 @@ class LawnSoilOptimizerDevice extends Homey.Device {
       });
 
       await this.setStoreValue(LawnCalendarService.STORE_KEY, events);
+
+      // GC completion records: drop entries whose event id is no longer in the calendar
+      // (i.e. event was completed and the schedule advanced past it).
+      const completed = this.getStoreValue('lawnCalendarCompleted');
+      if (completed && typeof completed === 'object') {
+        const activeIds = new Set(events.map(e => e.id));
+        let changed = false;
+        for (const id of Object.keys(completed)) {
+          if (!activeIds.has(id)) { delete completed[id]; changed = true; }
+        }
+        if (changed) await this.setStoreValue('lawnCalendarCompleted', completed);
+      }
 
       // Update next_lawn_event / next_lawn_event_date capabilities
       const next = this._calendarService.nextEvent(events);
@@ -810,6 +849,46 @@ class LawnSoilOptimizerDevice extends Homey.Device {
     const amount = Math.max(0, Number(amountMm) || 0);
     this.log(`Manual irrigation: set to ${amount} mm this week`);
     await this.setSettings({ manual_irrigation_this_week_mm: amount });
+    await this.refreshData();
+  }
+
+  // ── Calendar event completion ───────────────────────────────────────────────
+
+  async markCalendarEventComplete({ id, type, date, amountMm }) {
+    if (!id) throw new Error('Missing event id');
+
+    const completed = this.getStoreValue('lawnCalendarCompleted') ?? {};
+    completed[id] = new Date().toISOString();
+    await this.setStoreValue('lawnCalendarCompleted', completed);
+    this.log(`Calendar event marked complete: ${id} (type=${type})`);
+
+    const todayIso = new Date().toISOString().slice(0, 10);
+
+    // Auto-log the underlying action
+    if (type === 'fertiliser') {
+      const targetDate = date && /^\d{4}-\d{2}-\d{2}$/.test(date) && date <= todayIso ? date : todayIso;
+      await this.setLastFertiliserDate(targetDate);
+    } else if (type === 'watering') {
+      const amt = Number(amountMm);
+      if (Number.isFinite(amt) && amt > 0) {
+        await this.addManualIrrigation(amt);
+      } else {
+        await this.refreshData();
+      }
+    } else {
+      // Frost / heat_stress / recovery / mowing — visual marking only
+      await this.refreshData();
+    }
+  }
+
+  async unmarkCalendarEventComplete(id) {
+    if (!id) throw new Error('Missing event id');
+    const completed = this.getStoreValue('lawnCalendarCompleted') ?? {};
+    if (id in completed) {
+      delete completed[id];
+      await this.setStoreValue('lawnCalendarCompleted', completed);
+      this.log(`Calendar event un-marked: ${id}`);
+    }
     await this.refreshData();
   }
 

@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lawn Manual Entry</title>
+  <style>
+    :root {
+      --bg:      var(--homey-color-background,       #f5f5f3);
+      --chip:    var(--homey-color-background-light, #eaeae8);
+      --text:    var(--homey-color-text,       #1a1a1a);
+      --text-2:  var(--homey-color-text-light, #6b7280);
+      --text-3:  var(--homey-color-text-light, #9ca3af);
+      --border:  var(--homey-color-border, rgba(0,0,0,0.09));
+      --ok:      #4caf50; --ok-bg:   #e8f5e9; --ok-txt:   #2e7d32;
+      --warn:    #ff9800; --warn-bg: #fff3e0; --warn-txt: #e65100;
+      --err:     #f44336; --err-bg:  #ffebee; --err-txt:  #b71c1c;
+      --info:    #1e88e5; --info-bg: #e3f2fd; --info-txt: #1565c0;
+      --dot-water: #1e88e5;
+      --dot-fert:  #ff9800;
+      --btn-bg:    rgba(0,0,0,0.04);
+      --btn-bg-h:  rgba(0,0,0,0.08);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg:      var(--homey-color-background,       #18181b);
+        --chip:    var(--homey-color-background-light, #2e2e33);
+        --text:    var(--homey-color-text,       #f4f4f5);
+        --text-2:  var(--homey-color-text-light, #a1a1aa);
+        --text-3:  var(--homey-color-text-light, #71717a);
+        --border:  var(--homey-color-border, rgba(255,255,255,0.09));
+        --ok-bg:   rgba(76,175,80,0.18);   --ok-txt:   #86efac;
+        --warn-bg: rgba(255,152,0,0.18);   --warn-txt: #fbbf24;
+        --err-bg:  rgba(244,67,54,0.18);   --err-txt:  #f87171;
+        --info-bg: rgba(30,136,229,0.18);  --info-txt: #93c5fd;
+        --btn-bg:    rgba(255,255,255,0.06);
+        --btn-bg-h:  rgba(255,255,255,0.12);
+      }
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%; height: 100%;
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 13px;
+      overflow: hidden;
+    }
+
+    .widget {
+      display: flex;
+      flex-direction: column;
+      padding: 10px 12px;
+      height: 100%;
+      gap: 6px;
+    }
+
+    #msg {
+      flex: 1; display: flex; align-items: center; justify-content: center;
+      font-size: 0.85em; color: var(--text-3); text-align: center; padding: 8px;
+    }
+    #msg.err { color: var(--warn-txt); background: var(--warn-bg); border-radius: 8px; font-size: 0.8em; }
+
+    /* ── Header ── */
+    .hdr { display: flex; align-items: baseline; gap: 6px; margin-bottom: 2px; }
+    .hdr-title { font-size: 0.9em; font-weight: 800; white-space: nowrap; }
+    .hdr-device {
+      font-size: 0.65em; color: var(--text-3);
+      flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      text-align: right;
+    }
+
+    /* ── Card / section ── */
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 7px 9px;
+      background: var(--chip);
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .card-hdr { display: flex; align-items: center; gap: 6px; }
+    .card-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .card-dot.water { background: var(--dot-water); }
+    .card-dot.fert  { background: var(--dot-fert);  }
+    .card-title {
+      font-size: 0.78em; font-weight: 700; flex: 1;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .card-status {
+      font-size: 0.62em; color: var(--text-3);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      max-width: 60%;
+    }
+    .card-status.due { color: var(--warn-txt); font-weight: 700; }
+
+    .card-body {
+      font-size: 0.68em; color: var(--text-2);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .card-body strong { color: var(--text); font-weight: 700; }
+
+    /* ── Buttons + input ── */
+    .actions { display: flex; gap: 4px; align-items: center; }
+
+    .btn {
+      flex: 1;
+      font-family: inherit;
+      font-size: 0.72em;
+      font-weight: 700;
+      color: var(--text);
+      background: var(--btn-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 5px 4px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background-color .12s ease;
+    }
+    .btn:hover  { background: var(--btn-bg-h); }
+    .btn:active { transform: translateY(1px); }
+    .btn:disabled { opacity: .5; cursor: not-allowed; }
+    .btn.primary {
+      background: var(--ok);
+      color: white;
+      border-color: var(--ok);
+    }
+    .btn.primary:hover { filter: brightness(1.08); background: var(--ok); }
+
+    .input {
+      width: 50px;
+      font-family: inherit;
+      font-size: 0.72em;
+      color: var(--text);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 5px 6px;
+      text-align: center;
+    }
+    .input.date { width: 100px; }
+
+    /* ── Toast ── */
+    #toast {
+      position: absolute; left: 50%; bottom: 8px; transform: translateX(-50%);
+      background: var(--ok); color: white;
+      font-size: 0.7em; font-weight: 700;
+      padding: 4px 10px; border-radius: 12px;
+      opacity: 0; pointer-events: none;
+      transition: opacity .2s ease;
+      z-index: 10;
+    }
+    #toast.err { background: var(--err); }
+    #toast.show { opacity: 1; }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+<div class="widget" style="position:relative;">
+  <div id="msg">Loading…</div>
+
+  <div id="content" class="hidden" style="display:flex;flex-direction:column;flex:1;gap:6px;">
+
+    <div class="hdr">
+      <span class="hdr-title" id="hdrTitle"></span>
+      <span class="hdr-device" id="deviceName"></span>
+    </div>
+
+    <!-- ── Fertiliser card ── -->
+    <div class="card">
+      <div class="card-hdr">
+        <div class="card-dot fert"></div>
+        <div class="card-title" id="fertTitle">Fertiliser</div>
+        <div class="card-status" id="fertStatus"></div>
+      </div>
+      <div class="card-body" id="fertBody"></div>
+      <div class="actions">
+        <button class="btn primary" id="fertTodayBtn">Mark fertilised today</button>
+        <input type="date" class="input date" id="fertDate" />
+        <button class="btn" id="fertDateBtn">Set</button>
+      </div>
+    </div>
+
+    <!-- ── Rain card ── -->
+    <div class="card">
+      <div class="card-hdr">
+        <div class="card-dot water"></div>
+        <div class="card-title" id="rainTitle">Rain this week</div>
+        <div class="card-status" id="rainStatus"></div>
+      </div>
+      <div class="actions">
+        <button class="btn" id="rain2Btn">+2 mm</button>
+        <button class="btn" id="rain5Btn">+5 mm</button>
+        <button class="btn" id="rain10Btn">+10 mm</button>
+        <input type="number" class="input" id="rainInput" min="0" max="200" step="0.5" placeholder="mm" />
+        <button class="btn" id="rainSetBtn">Set</button>
+      </div>
+    </div>
+
+    <!-- ── Irrigation card ── -->
+    <div class="card">
+      <div class="card-hdr">
+        <div class="card-dot water"></div>
+        <div class="card-title" id="irrTitle">Irrigation this week</div>
+        <div class="card-status" id="irrStatus"></div>
+      </div>
+      <div class="actions">
+        <button class="btn" id="irr5Btn">+5 mm</button>
+        <button class="btn" id="irr10Btn">+10 mm</button>
+        <button class="btn" id="irr20Btn">+20 mm</button>
+        <input type="number" class="input" id="irrInput" min="0" max="200" step="0.5" placeholder="mm" />
+        <button class="btn" id="irrSetBtn">Set</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div id="toast"></div>
+</div>
+
+<script>
+  var I18N = {
+    en: {
+      title: 'Manual Entry', loading: 'Loading…', noData: 'No data — pair a device first.', error: 'Error: ',
+      fertTitle: 'Fertiliser', fertLast: 'Last:', fertNext: 'Next:', fertNever: 'Never',
+      fertDue: 'DUE', fertDaysLeft: 'in {n} d', fertOverdue: 'overdue {n} d',
+      markToday: 'Mark fertilised today', setDate: 'Set',
+      rainTitle: 'Rain this week', irrTitle: 'Irrigation this week',
+      weeklyTarget: 'Target {n} mm · deficit {d} mm', weeklyMet: 'Target {n} mm · ✓ met',
+      rainNow: '{n} mm', irrigationNow: '{n} mm',
+      added: 'Added {n} mm', setTo: 'Set to {n} mm', markedToday: 'Marked fertilised today',
+      markedOn: 'Fertilised on {d}', errInvalid: 'Invalid value', errDate: 'Invalid date',
+    },
+    sv: {
+      title: 'Manuell registrering', loading: 'Laddar…', noData: 'Inga data — para ihop en enhet först.', error: 'Fel: ',
+      fertTitle: 'Gödning', fertLast: 'Senast:', fertNext: 'Nästa:', fertNever: 'Aldrig',
+      fertDue: 'FÖRFALLEN', fertDaysLeft: 'om {n} d', fertOverdue: 'försenad {n} d',
+      markToday: 'Markera gödslad idag', setDate: 'Ange',
+      rainTitle: 'Regn denna vecka', irrTitle: 'Bevattning denna vecka',
+      weeklyTarget: 'Mål {n} mm · brist {d} mm', weeklyMet: 'Mål {n} mm · ✓ nått',
+      rainNow: '{n} mm', irrigationNow: '{n} mm',
+      added: 'Lade till {n} mm', setTo: 'Satt till {n} mm', markedToday: 'Markerad gödslad idag',
+      markedOn: 'Gödslad {d}', errInvalid: 'Ogiltigt värde', errDate: 'Ogiltigt datum',
+    },
+    de: {
+      title: 'Manuelle Eingabe', loading: 'Lädt…', noData: 'Keine Daten — zuerst ein Gerät koppeln.', error: 'Fehler: ',
+      fertTitle: 'Dünger', fertLast: 'Letzte:', fertNext: 'Nächste:', fertNever: 'Nie',
+      fertDue: 'FÄLLIG', fertDaysLeft: 'in {n} T', fertOverdue: 'überfällig {n} T',
+      markToday: 'Heute gedüngt', setDate: 'Setzen',
+      rainTitle: 'Regen diese Woche', irrTitle: 'Bewässerung diese Woche',
+      weeklyTarget: 'Ziel {n} mm · Defizit {d} mm', weeklyMet: 'Ziel {n} mm · ✓ erreicht',
+      rainNow: '{n} mm', irrigationNow: '{n} mm',
+      added: '{n} mm hinzugefügt', setTo: 'Gesetzt auf {n} mm', markedToday: 'Heute als gedüngt markiert',
+      markedOn: 'Gedüngt am {d}', errInvalid: 'Ungültiger Wert', errDate: 'Ungültiges Datum',
+    },
+    nl: {
+      title: 'Handmatige invoer', loading: 'Laden…', noData: 'Geen data — koppel eerst een apparaat.', error: 'Fout: ',
+      fertTitle: 'Bemesting', fertLast: 'Laatst:', fertNext: 'Volgend:', fertNever: 'Nooit',
+      fertDue: 'NU', fertDaysLeft: 'over {n} d', fertOverdue: '{n} d achterstallig',
+      markToday: 'Bemest vandaag', setDate: 'OK',
+      rainTitle: 'Regen deze week', irrTitle: 'Beregening deze week',
+      weeklyTarget: 'Doel {n} mm · tekort {d} mm', weeklyMet: 'Doel {n} mm · ✓ bereikt',
+      rainNow: '{n} mm', irrigationNow: '{n} mm',
+      added: '+ {n} mm toegevoegd', setTo: 'Ingesteld op {n} mm', markedToday: 'Bemest vandaag',
+      markedOn: 'Bemest op {d}', errInvalid: 'Ongeldige waarde', errDate: 'Ongeldige datum',
+    },
+    fr: {
+      title: 'Saisie manuelle', loading: 'Chargement…', noData: 'Aucune donnée — coupler un appareil d\'abord.', error: 'Erreur : ',
+      fertTitle: 'Fertilisation', fertLast: 'Dernière :', fertNext: 'Prochaine :', fertNever: 'Jamais',
+      fertDue: 'À FAIRE', fertDaysLeft: 'dans {n} j', fertOverdue: 'en retard {n} j',
+      markToday: "Fertilisé aujourd'hui", setDate: 'OK',
+      rainTitle: 'Pluie cette semaine', irrTitle: 'Arrosage cette semaine',
+      weeklyTarget: 'Objectif {n} mm · déficit {d} mm', weeklyMet: 'Objectif {n} mm · ✓ atteint',
+      rainNow: '{n} mm', irrigationNow: '{n} mm',
+      added: '+ {n} mm ajouté', setTo: 'Réglé sur {n} mm', markedToday: "Fertilisé aujourd'hui",
+      markedOn: 'Fertilisé le {d}', errInvalid: 'Valeur invalide', errDate: 'Date invalide',
+    },
+    es: {
+      title: 'Entrada manual', loading: 'Cargando…', noData: 'Sin datos — empareja un dispositivo primero.', error: 'Error: ',
+      fertTitle: 'Fertilizante', fertLast: 'Último:', fertNext: 'Próximo:', fertNever: 'Nunca',
+      fertDue: 'PENDIENTE', fertDaysLeft: 'en {n} d', fertOverdue: 'atrasado {n} d',
+      markToday: 'Fertilizado hoy', setDate: 'OK',
+      rainTitle: 'Lluvia esta semana', irrTitle: 'Riego esta semana',
+      weeklyTarget: 'Meta {n} mm · déficit {d} mm', weeklyMet: 'Meta {n} mm · ✓ alcanzada',
+      rainNow: '{n} mm', irrigationNow: '{n} mm',
+      added: '+ {n} mm añadido', setTo: 'Ajustado a {n} mm', markedToday: 'Fertilizado hoy',
+      markedOn: 'Fertilizado el {d}', errInvalid: 'Valor no válido', errDate: 'Fecha no válida',
+    },
+    it: {
+      title: 'Inserimento manuale', loading: 'Caricamento…', noData: 'Nessun dato — collegare prima un dispositivo.', error: 'Errore: ',
+      fertTitle: 'Fertilizzante', fertLast: 'Ultimo:', fertNext: 'Prossimo:', fertNever: 'Mai',
+      fertDue: 'SCADUTO', fertDaysLeft: 'tra {n} g', fertOverdue: 'in ritardo {n} g',
+      markToday: 'Fertilizzato oggi', setDate: 'OK',
+      rainTitle: 'Pioggia questa settimana', irrTitle: 'Irrigazione questa settimana',
+      weeklyTarget: 'Obiettivo {n} mm · deficit {d} mm', weeklyMet: 'Obiettivo {n} mm · ✓ raggiunto',
+      rainNow: '{n} mm', irrigationNow: '{n} mm',
+      added: '+ {n} mm aggiunti', setTo: 'Impostato a {n} mm', markedToday: 'Fertilizzato oggi',
+      markedOn: 'Fertilizzato il {d}', errInvalid: 'Valore non valido', errDate: 'Data non valida',
+    },
+    no: {
+      title: 'Manuell registrering', loading: 'Laster…', noData: 'Ingen data — koble til en enhet først.', error: 'Feil: ',
+      fertTitle: 'Gjødsel', fertLast: 'Sist:', fertNext: 'Neste:', fertNever: 'Aldri',
+      fertDue: 'FORFALT', fertDaysLeft: 'om {n} d', fertOverdue: 'forsinket {n} d',
+      markToday: 'Gjødslet i dag', setDate: 'OK',
+      rainTitle: 'Regn denne uken', irrTitle: 'Vanning denne uken',
+      weeklyTarget: 'Mål {n} mm · underskudd {d} mm', weeklyMet: 'Mål {n} mm · ✓ nådd',
+      rainNow: '{n} mm', irrigationNow: '{n} mm',
+      added: 'La til {n} mm', setTo: 'Satt til {n} mm', markedToday: 'Gjødslet i dag',
+      markedOn: 'Gjødslet {d}', errInvalid: 'Ugyldig verdi', errDate: 'Ugyldig dato',
+    },
+    da: {
+      title: 'Manuel registrering', loading: 'Indlæser…', noData: 'Ingen data — tilslut en enhed først.', error: 'Fejl: ',
+      fertTitle: 'Gødning', fertLast: 'Sidst:', fertNext: 'Næste:', fertNever: 'Aldrig',
+      fertDue: 'FORFALDET', fertDaysLeft: 'om {n} d', fertOverdue: 'forsinket {n} d',
+      markToday: 'Gødsket i dag', setDate: 'OK',
+      rainTitle: 'Regn denne uge', irrTitle: 'Vanding denne uge',
+      weeklyTarget: 'Mål {n} mm · underskud {d} mm', weeklyMet: 'Mål {n} mm · ✓ nået',
+      rainNow: '{n} mm', irrigationNow: '{n} mm',
+      added: 'Tilføjede {n} mm', setTo: 'Sat til {n} mm', markedToday: 'Gødsket i dag',
+      markedOn: 'Gødsket {d}', errInvalid: 'Ugyldig værdi', errDate: 'Ugyldig dato',
+    },
+    pl: {
+      title: 'Wpis ręczny', loading: 'Wczytywanie…', noData: 'Brak danych — najpierw połącz urządzenie.', error: 'Błąd: ',
+      fertTitle: 'Nawóz', fertLast: 'Ostatnio:', fertNext: 'Następne:', fertNever: 'Nigdy',
+      fertDue: 'TERAZ', fertDaysLeft: 'za {n} d', fertOverdue: '{n} d po terminie',
+      markToday: 'Nawożono dziś', setDate: 'OK',
+      rainTitle: 'Deszcz w tym tygodniu', irrTitle: 'Podlewanie w tym tygodniu',
+      weeklyTarget: 'Cel {n} mm · niedobór {d} mm', weeklyMet: 'Cel {n} mm · ✓ osiągnięty',
+      rainNow: '{n} mm', irrigationNow: '{n} mm',
+      added: 'Dodano {n} mm', setTo: 'Ustawiono na {n} mm', markedToday: 'Nawożono dziś',
+      markedOn: 'Nawożono {d}', errInvalid: 'Nieprawidłowa wartość', errDate: 'Nieprawidłowa data',
+    },
+    ru: {
+      title: 'Ручной ввод', loading: 'Загрузка…', noData: 'Нет данных — сначала сопрягите устройство.', error: 'Ошибка: ',
+      fertTitle: 'Удобрение', fertLast: 'Последний:', fertNext: 'Следующий:', fertNever: 'Никогда',
+      fertDue: 'СЕЙЧАС', fertDaysLeft: 'через {n} д', fertOverdue: 'просрочено {n} д',
+      markToday: 'Удобрено сегодня', setDate: 'OK',
+      rainTitle: 'Дождь за неделю', irrTitle: 'Полив за неделю',
+      weeklyTarget: 'Цель {n} мм · дефицит {d} мм', weeklyMet: 'Цель {n} мм · ✓ достигнута',
+      rainNow: '{n} мм', irrigationNow: '{n} мм',
+      added: 'Добавлено {n} мм', setTo: 'Установлено {n} мм', markedToday: 'Удобрено сегодня',
+      markedOn: 'Удобрено {d}', errInvalid: 'Недопустимое значение', errDate: 'Неверная дата',
+    },
+    ko: {
+      title: '수동 입력', loading: '로딩 중…', noData: '데이터 없음 — 먼저 기기를 연결하세요.', error: '오류: ',
+      fertTitle: '비료', fertLast: '마지막:', fertNext: '다음:', fertNever: '없음',
+      fertDue: '필요', fertDaysLeft: '{n}일 후', fertOverdue: '{n}일 초과',
+      markToday: '오늘 비료 표시', setDate: '확인',
+      rainTitle: '이번 주 비', irrTitle: '이번 주 관수',
+      weeklyTarget: '목표 {n} mm · 부족 {d} mm', weeklyMet: '목표 {n} mm · ✓ 달성',
+      rainNow: '{n} mm', irrigationNow: '{n} mm',
+      added: '+ {n} mm', setTo: '{n} mm로 설정', markedToday: '오늘 비료 표시됨',
+      markedOn: '{d} 비료 표시', errInvalid: '잘못된 값', errDate: '잘못된 날짜',
+    },
+  };
+
+  function getLang() {
+    var l = (navigator.language || '').toLowerCase();
+    var code = l.slice(0, 2);
+    if (code === 'nb' || code === 'nn') return 'no';
+    return I18N[code] ? code : 'en';
+  }
+
+  var t = I18N[getLang()] || I18N.en;
+
+  function fmt(template, params) {
+    return template.replace(/\{(\w+)\}/g, function (_, k) { return params && params[k] != null ? params[k] : ''; });
+  }
+
+  function $(id) { return document.getElementById(id); }
+  function show(id) { $(id).classList.remove('hidden'); }
+  function hide(id) { $(id).classList.add('hidden'); }
+  function setText(id, txt) { $(id).textContent = txt; }
+
+  function todayIso() {
+    var d = new Date();
+    return d.getFullYear() + '-' +
+      String(d.getMonth() + 1).padStart(2, '0') + '-' +
+      String(d.getDate()).padStart(2, '0');
+  }
+
+  function toast(msg, isErr) {
+    var el = $('toast');
+    el.textContent = msg;
+    el.className = isErr ? 'err show' : 'show';
+    clearTimeout(toast._timer);
+    toast._timer = setTimeout(function () { el.className = isErr ? 'err' : ''; }, 1800);
+  }
+
+  function render(data) {
+    setText('hdrTitle', t.title);
+    setText('fertTitle', t.fertTitle);
+    setText('rainTitle', t.rainTitle);
+    setText('irrTitle', t.irrTitle);
+    $('fertTodayBtn').textContent = t.markToday;
+    $('fertDateBtn').textContent = t.setDate;
+    $('rainSetBtn').textContent = t.setDate;
+    $('irrSetBtn').textContent = t.setDate;
+
+    if (!data || data.error) {
+      var el = $('msg');
+      el.textContent = (data && data.error) ? data.error : t.noData;
+      el.className = 'err';
+      el.classList.remove('hidden');
+      return;
+    }
+
+    hide('msg');
+    show('content');
+
+    setText('deviceName', data.deviceName || '');
+
+    // ── Fertiliser ─────────────────────────────────────────────────────────
+    var fertLast = data.lastFertiliserDate || t.fertNever;
+    var fertNext = data.fertiliserNextDate && data.fertiliserNextDate !== '—' ? data.fertiliserNextDate : '—';
+    $('fertBody').innerHTML =
+      '<strong>' + t.fertLast + '</strong> ' + fertLast +
+      '  ·  <strong>' + t.fertNext + '</strong> ' + fertNext;
+
+    var fertStatusEl = $('fertStatus');
+    if (data.fertiliserDue) {
+      fertStatusEl.textContent = t.fertDue;
+      fertStatusEl.classList.add('due');
+    } else if (typeof data.fertiliserDaysRemaining === 'number') {
+      var d = data.fertiliserDaysRemaining;
+      fertStatusEl.textContent = d < 0
+        ? fmt(t.fertOverdue, { n: Math.abs(d) })
+        : fmt(t.fertDaysLeft, { n: d });
+      fertStatusEl.classList.remove('due');
+    } else {
+      fertStatusEl.textContent = '';
+    }
+
+    // pre-fill date field with today
+    if (!$('fertDate').value) {
+      $('fertDate').value = todayIso();
+    }
+
+    // ── Rain ──────────────────────────────────────────────────────────────
+    setText('rainStatus', fmt(t.rainNow, { n: round1(data.rainThisWeekMm) }));
+
+    // ── Irrigation ────────────────────────────────────────────────────────
+    setText('irrStatus', fmt(t.irrigationNow, { n: round1(data.irrigationThisWeekMm) }));
+
+    // ── Weekly target shown under rain title via body? Put it as a small subtitle on irrigation ──
+    // (Skipped to keep layout compact — deficit info is in dashboard widget.)
+  }
+
+  function round1(n) {
+    return Math.round((Number(n) || 0) * 10) / 10;
+  }
+
+  var _homey = null;
+
+  function call(path, body) {
+    return _homey.api('POST', path, body || {});
+  }
+
+  function bindEvents() {
+    $('fertTodayBtn').addEventListener('click', function () {
+      var date = todayIso();
+      call('/fertilised', { date: date })
+        .then(function () { toast(t.markedToday); refresh(); })
+        .catch(function (err) { toast(t.error + (err.message || err), true); });
+    });
+
+    $('fertDateBtn').addEventListener('click', function () {
+      var d = ($('fertDate').value || '').trim();
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(d)) { toast(t.errDate, true); return; }
+      call('/fertilised', { date: d })
+        .then(function () { toast(fmt(t.markedOn, { d: d })); refresh(); })
+        .catch(function (err) { toast(t.error + (err.message || err), true); });
+    });
+
+    bindAdd('rain2Btn',  '/rain',       2);
+    bindAdd('rain5Btn',  '/rain',       5);
+    bindAdd('rain10Btn', '/rain',      10);
+    bindAdd('irr5Btn',   '/irrigation', 5);
+    bindAdd('irr10Btn',  '/irrigation', 10);
+    bindAdd('irr20Btn',  '/irrigation', 20);
+
+    bindSet('rainSetBtn', 'rainInput', '/rain');
+    bindSet('irrSetBtn',  'irrInput',  '/irrigation');
+  }
+
+  function bindAdd(btnId, path, amount) {
+    $(btnId).addEventListener('click', function () {
+      call(path, { amountMm: amount, mode: 'add' })
+        .then(function () { toast(fmt(t.added, { n: amount })); refresh(); })
+        .catch(function (err) { toast(t.error + (err.message || err), true); });
+    });
+  }
+
+  function bindSet(btnId, inputId, path) {
+    $(btnId).addEventListener('click', function () {
+      var v = parseFloat($(inputId).value);
+      if (!isFinite(v) || v < 0) { toast(t.errInvalid, true); return; }
+      call(path, { amountMm: v, mode: 'set' })
+        .then(function () { toast(fmt(t.setTo, { n: round1(v) })); $(inputId).value = ''; refresh(); })
+        .catch(function (err) { toast(t.error + (err.message || err), true); });
+    });
+  }
+
+  function refresh() {
+    return _homey.api('GET', '/', {})
+      .then(function (data) { render(data); })
+      .catch(function (err) {
+        var el = $('msg');
+        el.textContent = t.error + (err.message || err);
+        el.className = 'err';
+        el.classList.remove('hidden');
+      });
+  }
+
+  function onHomeyReady(Homey) {
+    _homey = Homey;
+    $('msg').textContent = t.loading;
+    Homey.ready({ height: 320 });
+    bindEvents();
+    refresh();
+  }
+</script>
+</body>
+</html>

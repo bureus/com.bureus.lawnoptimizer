@@ -1,0 +1,10 @@
+# Homey CLI build output (regenerated on every install/run)
+.homeybuild/
+
+# Node
+node_modules/
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db

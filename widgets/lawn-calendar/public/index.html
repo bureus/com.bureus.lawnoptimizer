@@ -96,7 +96,38 @@
     }
 
     /* Event row */
-    .ev-row { display: flex; align-items: center; gap: 8px; padding: 4px 0; min-width: 0; }
+    .ev-row {
+      display: flex; align-items: center; gap: 8px; padding: 4px 4px; min-width: 0;
+      border-radius: 6px; cursor: pointer; user-select: none;
+      transition: background-color .12s ease;
+    }
+    .ev-row:hover  { background: rgba(0,0,0,0.04); }
+    .ev-row:active { background: rgba(0,0,0,0.08); }
+    @media (prefers-color-scheme: dark) {
+      .ev-row:hover  { background: rgba(255,255,255,0.05); }
+      .ev-row:active { background: rgba(255,255,255,0.10); }
+    }
+    .ev-row.completed { opacity: .55; }
+    .ev-row.completed .ev-title {
+      text-decoration: line-through;
+      text-decoration-thickness: 1.5px;
+      color: var(--text-3);
+    }
+
+    /* Checkbox */
+    .ev-check {
+      width: 16px; height: 16px; border-radius: 4px;
+      border: 1.5px solid var(--text-3);
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      transition: background-color .12s ease, border-color .12s ease;
+    }
+    .ev-row.completed .ev-check {
+      background: var(--ok);
+      border-color: var(--ok);
+    }
+    .ev-check svg { width: 10px; height: 10px; display: none; }
+    .ev-row.completed .ev-check svg { display: block; }
 
     /* Type dot */
     .ev-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
@@ -448,7 +479,17 @@
       }
 
       var rowEl = document.createElement('div');
-      rowEl.className = 'ev-row';
+      rowEl.className = 'ev-row' + (ev.completed ? ' completed' : '');
+      rowEl.dataset.id   = ev.id;
+      rowEl.dataset.type = ev.type;
+      rowEl.dataset.date = ev.date;
+      if (ev.amountMm != null) rowEl.dataset.amount = ev.amountMm;
+      rowEl.addEventListener('click', onToggleEvent);
+
+      var checkEl = document.createElement('div');
+      checkEl.className = 'ev-check';
+      checkEl.innerHTML = '<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path d="M3 8.5 L6.5 12 L13 5" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      rowEl.appendChild(checkEl);
 
       var dotEl = document.createElement('div');
       dotEl.className = 'ev-dot ' + ev.type;
@@ -491,16 +532,61 @@
     }
   }
 
-  function onHomeyReady(Homey) {
-    document.getElementById('msg').textContent = t.loading;
-    Homey.ready({ height: 280 });
-    Homey.api('GET', '/', {})
+  var _homey = null;
+
+  function refresh() {
+    return _homey.api('GET', '/', {})
       .then(function(data) { render(data); })
       .catch(function(err) {
         var el = document.getElementById('msg');
         el.textContent = t.error + (err.message || err);
         el.className = 'err';
       });
+  }
+
+  function onToggleEvent(ev) {
+    if (!_homey) return;
+    var row = ev.currentTarget;
+    var id  = row.dataset.id;
+    if (!id) return;
+
+    var isCompleted = row.classList.contains('completed');
+    // Optimistic toggle for instant feedback
+    row.classList.toggle('completed');
+
+    var path = isCompleted ? '/uncomplete' : '/complete';
+    var body = isCompleted
+      ? { id: id }
+      : {
+          id:       id,
+          type:     row.dataset.type || '',
+          date:     row.dataset.date || '',
+          amountMm: row.dataset.amount ? Number(row.dataset.amount) : null,
+        };
+
+    _homey.api('POST', path, body)
+      .then(function () { refresh(); })
+      .catch(function (err) {
+        // Roll back optimistic toggle on error
+        row.classList.toggle('completed');
+        var el = document.getElementById('msg');
+        var prevText = el.textContent;
+        var prevCls  = el.className;
+        el.textContent = t.error + (err.message || err);
+        el.className = 'err';
+        el.classList.remove('hidden');
+        setTimeout(function () {
+          el.textContent = prevText;
+          el.className = prevCls;
+        }, 2200);
+      });
+  }
+
+  function onHomeyReady(Homey) {
+    _homey = Homey;
+    document.getElementById('msg').textContent = t.loading;
+    Homey.ready({ height: 280 });
+    refresh();
   }
 </script>
 </body>
